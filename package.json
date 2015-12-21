@@ -1,0 +1,19 @@
+{
+  "name": "survarium-front",
+  "version": "0.0.1",
+  "description": "survarium frontend",
+  "scripts": { },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vaseker/survarium-front.git"
+  },
+  "keywords": [
+    "survarium"
+  ],
+  "author": "Dmitry Vasilyev <vaseker@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/vaseker/survarium-front/issues"
+  },
+  "homepage": "https://github.com/vaseker/survarium-front#readme"
+}
