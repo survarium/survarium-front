@@ -67,11 +67,7 @@ var Matches = function (params) {
 			var $this = $(this);
 			var id = $this.data('id');
 			$this.addClass('player-matches__item_current').siblings().removeClass('player-matches__item_current');
-			params.api
-				.matchInfo(id)
-				.then(function (data) {
-					match.data('load')(data);
-				});
+			match.data('load')(id);
 		});
 
 		return domElem;

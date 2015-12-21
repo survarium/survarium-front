@@ -52,7 +52,7 @@ var Results = function (params) {
 			}).join('');
 
 			return `<div>
-							<h4>${i18n.team} ${+teamNum + 1}</h4>
+							<h4>${i18n.team} ${+teamNum + 1} (${data.stats['team_' + (+teamNum + 1) + '_score']})</h4>
 							<table>
 								<thead>
 									<tr>
@@ -98,6 +98,7 @@ var Results = function (params) {
 		});
 
 		var loader = domElem.find('.loading');
+		loader.detach();
 
 		var body = $('<div>');
 		body.appendTo(domElem);
@@ -115,13 +116,14 @@ var Results = function (params) {
 		});
 
 		domElem.data('load', function (data) {
+			loader.appendTo(domElem);
 			var ids = getIds(data.stats.accounts);
 			params.api
 				.getNickNames(ids)
 				.then(function (nicknames) {
-					loader.detach();
 					body.html(tpl(data, nicknames));
 					domElem.trigger('loaded');
+					loader.detach();
 				});
 		}.bind(domElem));
 
@@ -175,6 +177,7 @@ var Match = function (params) {
 		});
 
 		var loader = domElem.find('.loading');
+		loader.detach();
 
 		var info = $('<div>');
 		info.appendTo(domElem);
@@ -189,11 +192,16 @@ var Match = function (params) {
 			return player = component;
 		});
 
-		domElem.data('load', function (data) {
-			loader.detach();
-			info.html(tpl(data));
-			details.data('load')(data);
-			domElem.trigger('loaded');
+		domElem.data('load', function (matchId) {
+			loader.appendTo(domElem);
+			params.api
+				.matchInfo(matchId)
+				.then(function (data) {
+					info.html(tpl(data));
+					details.data('load')(data);
+					domElem.trigger('loaded');
+					loader.detach();
+				});
 		}.bind(domElem));
 
 		return domElem;
@@ -224,16 +232,12 @@ var Search = function (params) {
 		var domElem = $('<form>', {
 			className: 'match-search',
 			html: `<h1>${i18n.title}</h1>
-						<div class="loading">Loading...</div>
 						<label>
 							${i18n.matchId}:
 							<input name="matchId" type="number" value="${params.storage.get(storageKey)}" />
 						</label>
 						<input type="submit" value="${i18n.find}" />`
 		});
-
-		var loader = domElem.find('.loading');
-		loader.detach();
 
 		var match;
 		if (options.match) {
@@ -254,14 +258,7 @@ var Search = function (params) {
 
 			params.storage.set(storageKey, matchId);
 
-			loader.appendTo(domElem);
-
-			params.api
-				.matchInfo(matchId)
-				.then(function (data) {
-					match.data('load')(data);
-					loader.detach();
-				});
+			match.data('load')(matchId);
 		});
 
 		return domElem;
@@ -301,23 +298,21 @@ var Latest = function (params) {
 		}
 
 		var updateTitle = function (id) {
-			title.html(`${i18n.title}: ${id}`);
+			title.html(`${i18n.title}: <span class="match-latest__number" data-id="${id}">${id}</span>`);
 			return id;
 		};
 
-		domElem.data('load', function (data) {
-			loader.detach();
-			updateTitle(data.id);
-			match.data('load')(data);
-			domElem.trigger('loaded');
-		}.bind(domElem));
+		domElem.on('click', '.match-latest__number', function (e) {
+			e.preventDefault();
+			match.data('load')($(this).data('id'));
+		});
 
 		params.api
 			.maxMatch()
 			.then(updateTitle)
-			.then(params.api.matchInfo)
-			.then(function (data) {
-				domElem.data('load')(data);
+			.then(function () {
+				loader.detach();
+				domElem.trigger('loaded');
 			});
 
 		return domElem;
