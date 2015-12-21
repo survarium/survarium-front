@@ -2,7 +2,10 @@
   "name": "survarium-front",
   "version": "0.0.1",
   "description": "survarium frontend",
-  "scripts": { },
+  "scripts": {
+    "build": "webpack",
+    "dev": "webpack-dev-server"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/vaseker/survarium-front.git"
@@ -15,5 +18,8 @@
   "bugs": {
     "url": "https://github.com/vaseker/survarium-front/issues"
   },
-  "homepage": "https://github.com/vaseker/survarium-front#readme"
+  "homepage": "https://github.com/vaseker/survarium-front#readme",
+  "dependencies": {
+    "webpack": "^1.12.9"
+  }
 }
