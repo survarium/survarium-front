@@ -44,12 +44,12 @@ var Matches = function (params) {
 		var pagination = (new Pagination(params))();
 		//pagination.appendTo(domElem);
 
-		var total = 0;
+		var total = 25;
 		var pid;
 		var skip = 0;
 
 		domElem.data('load', function ($pid, $total) {
-			total = Number($total);
+			total = Number($total || 25);
 			pid   = $pid;
 			skip  = 0;
 			params
@@ -66,6 +66,7 @@ var Matches = function (params) {
 			e.preventDefault();
 			var $this = $(this);
 			var id = $this.data('id');
+			$this.addClass('player-matches__item_current').siblings().removeClass('player-matches__item_current');
 			params.api
 				.matchInfo(id)
 				.then(function (data) {
@@ -200,10 +201,15 @@ var Info = function (params) {
 			matches.appendTo(domElem);
 		}
 
-		domElem.data('load', function (data) {
-			info.html(tpl(data));
-			matches.data('load')(data.pid, data.matchCount);
-			domElem.trigger('loaded');
+		domElem.data('load', function (pid) {
+			params
+				.api
+				.__getUserInfo(pid, params.language)
+				.then(function (data) {
+					info.html(tpl(data));
+					matches.data('load')(data.pid, data.matchCount);
+					domElem.trigger('loaded');
+				});
 		});
 
 		return domElem;
@@ -226,6 +232,12 @@ var Search = function (params) {
 		}
 	}[params.language];
 
+	var tpl = function (data) {
+		return data.map(function (player) {
+			return `<li class="player-search__result" data-pid="${player.pid}">${player.nickname}</li>`;
+		}).join('');
+	};
+
 	return function (options) {
 		options = options || {};
 
@@ -239,8 +251,11 @@ var Search = function (params) {
 							${i18n.nickname}:
 							<input name="nickname" value="${params.storage.get(storageKey) || ''}" />
 						</label>
-						<input type="submit" value="${i18n.find}" />`
+						<input type="submit" value="${i18n.find}" />
+						<ul class="player-search__results"></ul>`
 		});
+
+		var results = domElem.find('.player-search__results');
 
 		var loader = domElem.find('.loading');
 		loader.detach();
@@ -249,9 +264,18 @@ var Search = function (params) {
 		if (options.player) {
 			player = options.player;
 		} else {
-			player = (new Info(params))();
+			player = (new Info(params))(options);
 			player.appendTo(domElem);
 		}
+
+		domElem.data('player', player);
+
+		domElem.on('click', '.player-search__result', function (e) {
+			e.preventDefault();
+			var elem = $(this);
+			elem.addClass('player-search__result_current').siblings().removeClass('player-search__result_current');
+			return player.data('load')(elem.data('pid'));
+		});
 
 		domElem.on('submit', function (e) {
 			e.preventDefault();
@@ -266,10 +290,26 @@ var Search = function (params) {
 
 			loader.appendTo(domElem);
 
-			params.api
-				.__getUserInfo(nickname, params.language)
+			params
+				.api
+				.getPublicIdByNickname(nickname)
 				.then(function (data) {
-					player.data('load')(data);
+					results.empty();
+					if (!data.amount) {
+						return;
+					}
+					var paids = data.paids;
+					var nicknames = Object.keys(paids);
+					if (data.amount === 1) {
+						var nick = nicknames[0];
+						var pid = paids[nick];
+						return player.data('load')(pid);
+					}
+					return results.html(tpl(nicknames.map(function (nick) {
+						return { nickname: nick, pid: paids[nick] };
+					})));
+				})
+				.then(function () {
 					loader.detach();
 				});
 		});

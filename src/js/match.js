@@ -33,7 +33,9 @@ var Results = function (params) {
 				return;
 			}
 
-			var tbody = Object.keys(team).map(function (i, index) {
+			var tbody = Object.keys(team).sort(function (a, b) {
+				return Number(team[a].score) < Number(team[b].score);
+			}).map(function (i, index) {
 				var player = team[i];
 				var kill   = Number(player.kill);
 				var die    = Number(player.die);
@@ -41,7 +43,7 @@ var Results = function (params) {
 
 				return `<tr>
 							<td>${index + 1}</td>
-							<td>${nicknames[player.pid]}</td>
+							<td><span class="match-results__nickname" data-pid="${player.pid}">${nicknames[player.pid]}</span></td>
 							<td>${kill}</td>
 							<td>${die}</td>
 							<td>${utils.kdRatio(kill, die)}</td>
@@ -90,6 +92,7 @@ var Results = function (params) {
 
 	return function () {
 		var domElem = $('<div>', {
+			className: 'match-results',
 			html: '<h1>' + i18n.title + '</h1>' +
 			'<div class="loading">Loading...</div>'
 		});
@@ -98,6 +101,18 @@ var Results = function (params) {
 
 		var body = $('<div>');
 		body.appendTo(domElem);
+
+		var player;
+
+		domElem.data('setPlayer', function (component) {
+			return player = component;
+		});
+
+		domElem.on('click', '.match-results__nickname', function (e) {
+			e.preventDefault();
+			var $this = $(this);
+			player.data('load')($this.data('pid'));
+		});
 
 		domElem.data('load', function (data) {
 			var ids = getIds(data.stats.accounts);
@@ -136,6 +151,10 @@ var Match = function (params) {
 
 	var tpl = function (data) {
 		var stats = data.stats;
+		var replay = function (link) {
+			return link ? `<a href="http://${decodeURIComponent(link)}" target="_blank">${i18n.replay}</a>` : '';
+		};
+
 		return `<h3>${i18n.id} ${data.id}</h3>
 					<h4>${stats.name} (${stats.weather}) &mdash; ${stats.mode}</h4>
 					<small>
@@ -143,12 +162,15 @@ var Match = function (params) {
 						${i18n.duration} ${stats.game_duration}${i18n.durationMetric}
 					</small>
 					<div>
-						<a href="http://${decodeURIComponent(stats.replay_path)}" target="_blank">${i18n.replay}</a>
+						${replay(stats.replay_path)}
 					</div>`;
 	};
 
-	return function () {
+	return function (options) {
+		options = options || {};
+
 		var domElem = $('<div>', {
+			className: 'match-info',
 			html: '<div class="loading">Loading...</div>'
 		});
 
@@ -157,8 +179,15 @@ var Match = function (params) {
 		var info = $('<div>');
 		info.appendTo(domElem);
 
-		var details = (new Results(params))();
+		var details = (new Results(params))(options);
 		details.appendTo(domElem);
+
+		var player;
+
+		domElem.data('setPlayer', function (component) {
+			details.data('setPlayer')(component);
+			return player = component;
+		});
 
 		domElem.data('load', function (data) {
 			loader.detach();
@@ -193,6 +222,7 @@ var Search = function (params) {
 		var storageKey = 'match:search';
 
 		var domElem = $('<form>', {
+			className: 'match-search',
 			html: `<h1>${i18n.title}</h1>
 						<div class="loading">Loading...</div>
 						<label>
@@ -254,11 +284,12 @@ var Latest = function (params) {
 		options = options || {};
 
 		var domElem = $('<div>', {
-			html: '<h1 class="latestMatch__title">' + i18n.title + '</h1>' +
+			className: 'match-latest',
+			html: '<h1 class="match-latest__title">' + i18n.title + '</h1>' +
 			'<div class="loading">Loading...</div>'
 		});
 
-		var title  = domElem.find('.latestMatch__title');
+		var title  = domElem.find('.match-latest__title');
 		var loader = domElem.find('.loading');
 
 		var match;

@@ -47,7 +47,7 @@ module.exports = function (config) {
 					}
 				})
 				.then(function (result) {
-					return result.pid;
+					return { amount: result.amount, paids: result.paids };
 				});
 		},
 		getUserData: function (pid, language) {
@@ -86,46 +86,42 @@ module.exports = function (config) {
 		/**
 		 * Double underscore-prefixed methods are not native
 		 */
-		__getUserInfo: function (nickname, language) {
-			return this
-				.getPublicIdByNickname(nickname)
-				.then(function (pid) {
-					var defer = $.Deferred();
-					var result = {
-						pid: pid
-					};
+		__getUserInfo: function (pid, language) {
+			var defer = $.Deferred();
+			var result = {
+				pid: pid
+			};
 
-					var defers = [
-						function () {
-							return this
-								.matchesCountByPublicId(pid)
-								.then(success('matchCount'))
-								.fail(defer.reject);
-						},
-						function () {
-							return this
-								.getUserData(pid, language)
-								.then(success('userData'))
-								.fail(defer.reject);
-						}
-					];
-					var deferAmount = defers.length;
+			var defers = [
+				function () {
+					return this
+						.matchesCountByPublicId(pid)
+						.then(success('matchCount'))
+						.fail(defer.reject);
+				},
+				function () {
+					return this
+						.getUserData(pid, language)
+						.then(success('userData'))
+						.fail(defer.reject);
+				}
+			];
+			var deferAmount = defers.length;
 
-					function success(type) {
-						return function (data) {
-							result[type] = data;
-							if (!--deferAmount) {
-								return defer.resolve(result);
-							}
-						};
+			function success(type) {
+				return function (data) {
+					result[type] = data;
+					if (!--deferAmount) {
+						return defer.resolve(result);
 					}
+				};
+			}
 
-					defers.forEach(function (deferred) {
-						return deferred.call(this);
-					}, this);
+			defers.forEach(function (deferred) {
+				return deferred.call(this);
+			}, this);
 
-					return defer.promise();
-				}.bind(this));
+			return defer.promise();
 		}
 	};
 };
