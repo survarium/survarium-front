@@ -1,6 +1,8 @@
 var utils = require('./utils');
 
 var Results = function (params) {
+	var $ = params.$;
+
 	var i18n = {
 		russian: {
 			title: 'Результаты',
@@ -113,6 +115,8 @@ var Results = function (params) {
 };
 
 var Match = function (params) {
+	var $ = params.$;
+
 	var i18n = {
 		russian: {
 			id: 'ID',
@@ -168,6 +172,8 @@ var Match = function (params) {
 };
 
 var Search = function (params) {
+	var $ = params.$;
+
 	var i18n = {
 		russian: {
 			title: 'Поиск матча',
@@ -233,6 +239,8 @@ var Search = function (params) {
 };
 
 var Latest = function (params) {
+	var $ = params.$;
+
 	var i18n = {
 		russian: {
 			title: 'Последний матч'

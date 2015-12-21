@@ -3,6 +3,8 @@ var Match = require('./match');
 var Pagination = require('./pagination');
 
 var Matches = function (params) {
+	var $ = params.$;
+
 	var i18n = {
 		russian: {
 			title: 'Матчи'
@@ -76,6 +78,8 @@ var Matches = function (params) {
 };
 
 var Info = function (params) {
+	var $ = params.$;
+
 	var i18n = {
 		russian: {
 			progress: 'Прогресс',
@@ -207,6 +211,8 @@ var Info = function (params) {
 };
 
 var Search = function (params) {
+	var $ = params.$;
+
 	var i18n = {
 		russian: {
 			title: 'Поиск игроков',

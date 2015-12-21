@@ -1,3 +1,5 @@
+var $ = require('jquery');
+
 var config = {
 	apiPath: '//api.' + window.location.hostname + '/v0',
 	languages: ['russian', 'english'],

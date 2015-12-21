@@ -1,4 +1,6 @@
 var Switcher = function (params) {
+	var $ = params.$;
+	
 	var i18n = {
 		russian: {
 			russian: 'Русский',

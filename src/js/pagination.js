@@ -1,4 +1,6 @@
-var Pagination = function () {
+var Pagination = function (params) {
+	var $ = params.$;
+
 	return function () {
 		var domElem = $('<div>', {
 			className: 'pagination'
