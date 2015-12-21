@@ -30,3 +30,4 @@ node_modules
 .DS_*
 
 static/*bundle.*
+static/*chunk.*

@@ -3,15 +3,16 @@ const webpack = require('webpack');
 
 module.exports = {
 	entry: {
-		app: "./webpack.js",
+		index: "./src/index.js",
 		vendor: ['jquery']
 	},
 	output: {
 		path: path.join(__dirname, 'static'),
-		filename: "bundle.js"
+		filename: "[name].entry.chunk.js"
 	},
 	plugins: [
-		new webpack.optimize.CommonsChunkPlugin(/* chunkName= */"vendor", /* filename= */"vendor.bundle.js")
+		new webpack.optimize.CommonsChunkPlugin("commons.bundle.js", ["index"]),
+		new webpack.optimize.CommonsChunkPlugin("vendor", "vendor.bundle.js")
 	],
 	module: {
 		loaders: [
