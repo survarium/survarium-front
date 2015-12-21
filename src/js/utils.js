@@ -1,11 +1,11 @@
-exports.kdRatio = function (kill, die) {
+var kdRatio = function (kill, die) {
 	return die ?
 		kill ? (kill / die).toFixed(1) :
 			-die:
 		kill;
 };
 
-exports.query = function () {
+var getQuery = function () {
 	return window.location.search ?
 		window.location.search.slice(1).split('&').reduce(function (result, pair) {
 			var keyVal = pair.split('=');
@@ -18,9 +18,38 @@ exports.query = function () {
 			} else {
 				result[key] = [
 					result[key],
-				    val
+					val
 				];
 			}
 			return result;
 		}, {}) : null;
 };
+
+var setQuery = function (params) {
+	if (!params || !(params instanceof Object)) {
+		return;
+	}
+	var query = Object.keys(params).reduce(function (result, key) {
+		result[key] = params[key];
+		return result;
+	}, getQuery() || {});
+
+	query = Object.keys(query).map(function (key) {
+		var value = query[key];
+		if (value instanceof Array) {
+			return value.map(function (val) {
+				return encodeURIComponent(key) + '=' + encodeURIComponent(val);
+			}).join('&');
+		}
+		return encodeURIComponent(key) + '=' + encodeURIComponent(value);
+	}).join('&');
+
+	window.history.pushState(params, null, '?' + query);
+};
+
+
+exports.kdRatio = kdRatio;
+exports.query = getQuery;
+exports.setQuery = setQuery;
+
+

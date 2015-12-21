@@ -179,15 +179,27 @@ var Info = function (params) {
 				`;
 	};
 
+	var startup = function (load) {
+		var query = utils.query();
+		if (!query || !query.pid) {
+			return;
+		}
+		return load(query.pid, { noStory: true });
+	};
+
 	return function (options) {
 		options = options || {};
 
 		var domElem = $('<div>', {
 			className: 'player',
-			html: '<div class="player__info"></div>'
+			html: `<div class="player__info"></div>
+				<pre class="error"></pre>`
 		});
 
 		var info = domElem.find('.player__info');
+
+		var error = domElem.find('.error');
+		error.detach();
 
 		var matches;
 		if (options.matches) {
@@ -197,16 +209,27 @@ var Info = function (params) {
 			matches.appendTo(domElem);
 		}
 
-		domElem.data('load', function (pid) {
+		domElem.data('load', function (pid, opts) {
+			opts = opts || {};
+
+			error.detach();
 			params
 				.api
 				.__getUserInfo(pid, params.language)
 				.then(function (data) {
 					info.html(tpl(data));
 					matches.data('load')(data.pid, data.matchCount);
+					if (!opts.noStory) {
+						utils.setQuery({ pid: pid });
+					}
 					domElem.trigger('loaded');
+				})
+				.fail(function (err) {
+					error.text('Error: ' + JSON.stringify(err.responseJSON, null, 4)).prependTo(domElem);
 				});
 		});
+
+		startup(domElem.data('load'));
 
 		return domElem;
 	};

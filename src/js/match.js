@@ -168,16 +168,28 @@ var Match = function (params) {
 					</div>`;
 	};
 
+	var startup = function (load) {
+		var query = utils.query();
+		if (!query || !query.match) {
+			return;
+		}
+		return load(query.match, { noStory: true });
+	};
+
 	return function (options) {
 		options = options || {};
 
 		var domElem = $('<div>', {
 			className: 'match-info',
-			html: '<div class="loading">Loading...</div>'
+			html: `<div class="loading">Loading...</div>
+			<pre class="error"></pre>`
 		});
 
 		var loader = domElem.find('.loading');
 		loader.detach();
+
+		var error = domElem.find('.error');
+		error.detach();
 
 		var info = $('<div>');
 		info.appendTo(domElem);
@@ -192,7 +204,10 @@ var Match = function (params) {
 			return player = component;
 		});
 
-		domElem.data('load', function (matchId) {
+		domElem.data('load', function (matchId, opts) {
+			opts = opts || {};
+
+			error.detach();
 			loader.appendTo(domElem);
 			params.api
 				.matchInfo(matchId)
@@ -200,9 +215,17 @@ var Match = function (params) {
 					info.html(tpl(data));
 					details.data('load')(data);
 					domElem.trigger('loaded');
+					if (!opts.noStory) {
+						utils.setQuery({ match: matchId });
+					}
 					loader.detach();
+				})
+				.fail(function (err) {
+					error.text('Error: ' + JSON.stringify(err.responseJSON, null, 4)).prependTo(domElem);
 				});
 		}.bind(domElem));
+
+		startup(domElem.data('load'));
 
 		return domElem;
 	};
