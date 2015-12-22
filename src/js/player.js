@@ -199,6 +199,7 @@ var Info = function (params) {
 		});
 
 		var info = domElem.find('.player__info');
+		info.detach();
 
 		var error = domElem.find('.error');
 		error.detach();
@@ -220,6 +221,7 @@ var Info = function (params) {
 				.__getUserInfo(pid, params.language)
 				.then(function (data) {
 					info.html(tpl(data));
+					info.insertBefore(matches);
 					matches.data('load')(data.pid, data.matchCount);
 					if (!opts.noStory) {
 						utils.setQuery({ pid: pid });
