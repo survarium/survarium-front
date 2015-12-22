@@ -1,3 +1,5 @@
+require('./styl/index.styl');
+
 var config = require('./js/config');
 
 var Lang   = require('./js/lang');

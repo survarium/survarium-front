@@ -1,5 +1,6 @@
 const path = require('path');
 const webpack = require('webpack');
+const poststylus = require('poststylus');
 
 module.exports = {
 	entry: {
@@ -16,7 +17,12 @@ module.exports = {
 	],
 	module: {
 		loaders: [
-			{ test: /\.css$/, loader: "style!css" }
+			{ test: /\.styl$/, loader: 'style-loader!css-loader!stylus-loader' }
+		]
+	},
+	stylus: {
+		use: [
+			poststylus([ 'autoprefixer', 'rucksack-css' ])
 		]
 	},
 	devServer: {

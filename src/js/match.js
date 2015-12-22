@@ -1,3 +1,5 @@
+require('../styl/match.styl');
+
 var utils = require('./utils');
 
 var Results = function (params) {
@@ -51,9 +53,9 @@ var Results = function (params) {
 						</tr>`;
 			}).join('');
 
-			return `<div>
-							<h4>${i18n.team} ${+teamNum + 1} (${data.stats['team_' + (+teamNum + 1) + '_score']})</h4>
-							<table>
+			return `<div class="match-results__team-scores flex-item">
+							<h4 class="match-results__team">${i18n.team} ${+teamNum + 1} (${data.stats['team_' + (+teamNum + 1) + '_score']})</h4>
+							<table class="match-results__scores">
 								<thead>
 									<tr>
 										<th>#</th>
@@ -69,11 +71,7 @@ var Results = function (params) {
 						</div>`;
 		});
 
-		return `<table>
-					<tr>
-						<td>${result.join('</td><td>')}</td>
-					</tr>
-				</table>`;
+		return `${result.join('</td><td>')}`;
 	};
 
 	var getIds = function (teams) {
@@ -100,7 +98,9 @@ var Results = function (params) {
 		var loader = domElem.find('.loading');
 		loader.detach();
 
-		var body = $('<div>');
+		var body = $('<div>', {
+			class: 'match-results__results flex'
+		});
 		body.appendTo(domElem);
 
 		var player;

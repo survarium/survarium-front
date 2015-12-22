@@ -1,3 +1,5 @@
+require('../styl/player.styl');
+
 var utils = require('./utils');
 var Match = require('./match');
 var Pagination = require('./pagination');
@@ -18,7 +20,7 @@ var Matches = function (params) {
 
 	var tpl = function (data) {
 		return Object.keys(data).map(function (key) {
-			return `<li class="player-matches__item" data-id="${data[key]}">${data[key]}</li>`;
+			return `<li><span class="player-matches__item" data-id="${data[key]}">${data[key]}</span></li>`;
 		}).join('');
 	};
 
@@ -26,7 +28,7 @@ var Matches = function (params) {
 		options = options || {};
 
 		var domElem = $('<div>', {
-			class: 'player-matches',
+			class: 'player-matches flex-item',
 			html: `<h1>${i18n.title}</h1>
 						<ol class="player-matches__info"></ol>`
 		});
@@ -66,7 +68,7 @@ var Matches = function (params) {
 			e.preventDefault();
 			var $this = $(this);
 			var id = $this.data('id');
-			$this.addClass('player-matches__item_current').siblings().removeClass('player-matches__item_current');
+			$this.addClass('player-matches__item_current').parent().siblings().children().removeClass('player-matches__item_current');
 			match.data('load')(id);
 		});
 
@@ -191,8 +193,8 @@ var Info = function (params) {
 		options = options || {};
 
 		var domElem = $('<div>', {
-			class: 'player',
-			html: `<div class="player__info"></div>
+			class: 'player flex',
+			html: `<div class="player__info flex-item"></div>
 				<pre class="error"></pre>`
 		});
 

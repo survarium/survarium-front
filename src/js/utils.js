@@ -1,7 +1,7 @@
 var kdRatio = function (kill, die) {
 	return die ?
-		kill ? (kill / die).toFixed(1) :
-			-die:
+		/*kill ? */(kill / die).toFixed(1) :
+			/*-die:*/
 		kill;
 };
 
@@ -36,12 +36,13 @@ var setQuery = function (params) {
 
 	query = Object.keys(query).map(function (key) {
 		var value = query[key];
+		key = encodeURIComponent(key);
 		if (value instanceof Array) {
 			return value.map(function (val) {
-				return encodeURIComponent(key) + '=' + encodeURIComponent(val);
+				return key + '=' + encodeURIComponent(val);
 			}).join('&');
 		}
-		return encodeURIComponent(key) + '=' + encodeURIComponent(value);
+		return key + '=' + encodeURIComponent(value);
 	}).join('&');
 
 	window.history.pushState(params, null, '?' + query);

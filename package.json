@@ -20,7 +20,13 @@
   },
   "homepage": "https://github.com/vaseker/survarium-front#readme",
   "dependencies": {
+    "autoprefixer": "^6.2.1",
+    "css-loader": "^0.23.1",
     "jquery": "^2.1.4",
+    "poststylus": "^0.2.2",
+    "rucksack-css": "^0.8.5",
+    "style-loader": "^0.13.0",
+    "stylus-loader": "^1.4.2",
     "webpack": "^1.12.9"
   }
 }
