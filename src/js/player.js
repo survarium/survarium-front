@@ -26,7 +26,7 @@ var Matches = function (params) {
 		options = options || {};
 
 		var domElem = $('<div>', {
-			className: 'player-matches',
+			class: 'player-matches',
 			html: `<h1>${i18n.title}</h1>
 						<ol class="player-matches__info"></ol>`
 		});
@@ -191,7 +191,7 @@ var Info = function (params) {
 		options = options || {};
 
 		var domElem = $('<div>', {
-			className: 'player',
+			class: 'player',
 			html: `<div class="player__info"></div>
 				<pre class="error"></pre>`
 		});
@@ -263,7 +263,7 @@ var Search = function (params) {
 		var storageKey = 'player:search';
 
 		var domElem = $('<form>', {
-			className: 'player-search',
+			class: 'player-search',
 			html: `<h1>${i18n.title}</h1>
 						<div class="loading">Loading...</div>
 						<label>

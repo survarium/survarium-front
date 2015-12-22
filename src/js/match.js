@@ -92,7 +92,7 @@ var Results = function (params) {
 
 	return function () {
 		var domElem = $('<div>', {
-			className: 'match-results',
+			class: 'match-results',
 			html: '<h1>' + i18n.title + '</h1>' +
 			'<div class="loading">Loading...</div>'
 		});
@@ -180,7 +180,7 @@ var Match = function (params) {
 		options = options || {};
 
 		var domElem = $('<div>', {
-			className: 'match-info',
+			class: 'match-info',
 			html: `<div class="loading">Loading...</div>
 			<pre class="error"></pre>`
 		});
@@ -253,7 +253,7 @@ var Search = function (params) {
 		var storageKey = 'match:search';
 
 		var domElem = $('<form>', {
-			className: 'match-search',
+			class: 'match-search',
 			html: `<h1>${i18n.title}</h1>
 						<label>
 							${i18n.matchId}:
@@ -304,7 +304,7 @@ var Latest = function (params) {
 		options = options || {};
 
 		var domElem = $('<div>', {
-			className: 'match-latest',
+			class: 'match-latest',
 			html: '<h1 class="match-latest__title">' + i18n.title + '</h1>' +
 			'<div class="loading">Loading...</div>'
 		});

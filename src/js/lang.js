@@ -1,6 +1,6 @@
 var Switcher = function (params) {
 	var $ = params.$;
-	
+
 	var i18n = {
 		russian: {
 			russian: 'Русский',
@@ -14,7 +14,7 @@ var Switcher = function (params) {
 
 	return function () {
 		var domElem = $('<div>', {
-			className: 'lang-switcher',
+			class: 'lang-switcher',
 			html: params.languages.map(function (lang) {
 				return `<a href="#!/${lang}" data-lang="${lang}" class="lang-switcher__elem">${i18n[lang]}</a>`;
 			}).join('&nbsp;|&nbsp;')

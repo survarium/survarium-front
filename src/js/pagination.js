@@ -3,7 +3,7 @@ var Pagination = function (params) {
 
 	return function () {
 		var domElem = $('<div>', {
-			className: 'pagination'
+			class: 'pagination'
 		});
 
 		var total;
