@@ -229,7 +229,7 @@ var Info = function (params) {
 					domElem.trigger('loaded');
 				})
 				.fail(function (err) {
-					error.text('Error: ' + JSON.stringify(err.responseJSON, null, 4)).prependTo(domElem);
+					error.text('Error: ' + (err.responseJSON ? JSON.stringify(err.responseJSON, null, 4) : err.statusText)).prependTo(domElem);
 				});
 		});
 
@@ -321,7 +321,7 @@ var Search = function (params) {
 					if (!data.amount) {
 						return;
 					}
-					var paids = data.paids;
+					var paids = data.result;
 					var nicknames = Object.keys(paids);
 					if (data.amount === 1) {
 						var nick = nicknames[0];

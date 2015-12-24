@@ -45,9 +45,6 @@ module.exports = function (config) {
 					data: {
 						nickname: nickname
 					}
-				})
-				.then(function (result) {
-					return { amount: result.amount, paids: result.paids };
 				});
 		},
 		getUserData: function (pid, language) {

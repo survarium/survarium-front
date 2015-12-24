@@ -221,7 +221,7 @@ var Match = function (params) {
 					loader.detach();
 				})
 				.fail(function (err) {
-					error.text('Error: ' + JSON.stringify(err.responseJSON, null, 4)).prependTo(domElem);
+					error.text('Error: ' + (err.responseJSON ? JSON.stringify(err.responseJSON, null, 4) : err.statusText)).prependTo(domElem);
 				});
 		}.bind(domElem));
 
