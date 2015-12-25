@@ -1,3 +1,5 @@
+require('../styl/lang.styl');
+
 var Switcher = function (params) {
 	var $ = params.$;
 

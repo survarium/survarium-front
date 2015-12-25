@@ -30,7 +30,7 @@ var Matches = function (params) {
 
 		var domElem = $('<div>', {
 			class: 'player-matches flex-item',
-			html: `<h1>${i18n.title}</h1>
+			html: `<h2>${i18n.title}</h2>
 						<ol class="player-matches__info"></ol>`
 		});
 
@@ -292,7 +292,7 @@ var Search = function (params) {
 
 		var domElem = $('<form>', {
 			class: 'player-search',
-			html: `<h1>${i18n.title}</h1>
+			html: `<h2>${i18n.title}</h2>
 						<div class="loading">Loading...</div>
 						<label>
 							${i18n.nickname}:
