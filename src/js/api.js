@@ -80,9 +80,27 @@ module.exports = function (config) {
 					return result.matches_ids;
 				});
 		},
+		getClanInfo: function (id) {
+			return $.ajax(config.apiPath + '/getClanInfo', {
+					data: {
+						id: id
+					}
+				})
+				.then(function (result) {
+					return result.clan_info;
+				});
+		},
 		/**
 		 * Double underscore-prefixed methods are not native
 		 */
+		__getClanInfo: function (id) {
+			if (id) {
+				return this.getClanInfo(id);
+			}
+			var deferred = $.Deferred();
+			deferred.resolve(null);
+			return deferred.promise();
+		},
 		__getUserInfo: function (pid, language) {
 			var defer = $.Deferred();
 			var result = {
@@ -99,6 +117,13 @@ module.exports = function (config) {
 				function () {
 					return this
 						.getUserData(pid, language)
+						.then(function (result) {
+							return this.__getClanInfo(result.clan_id)
+								.then(function (clanInfo) {
+									result.clan = clanInfo;
+									return result;
+								});
+						}.bind(this))
 						.then(success('userData'))
 						.fail(defer.reject);
 				}

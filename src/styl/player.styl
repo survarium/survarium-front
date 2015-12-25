@@ -1,17 +1,24 @@
-.player-matches
-  &__item
-    cursor pointer
-    padding .4em .1em
-    display block
-    &:hover
-      background-color rgba(100, 100, 100, .3)
-    &_current
-      background-color rgba(100, 100, 100, .1)
+.player
+  &-search
+    &__result
+      cursor pointer
+      &:hover
+        background-color rgba(100, 100, 100, .3)
+      &_current
+        background-color rgba(100, 100, 100, .1)
 
-.player-search
-  &__result
-    cursor pointer
-    &:hover
-      background-color rgba(100, 100, 100, .3)
-    &_current
-      background-color rgba(100, 100, 100, .1)
+  &-matches
+    &__item
+      cursor pointer
+      padding .4em .1em
+      display block
+      &:hover
+        background-color rgba(100, 100, 100, .3)
+      &_current
+        background-color rgba(100, 100, 100, .1)
+
+  &__clantag
+    &:before
+      content '['
+    &:after
+      content '] '

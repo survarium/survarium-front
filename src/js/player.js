@@ -130,6 +130,13 @@ var Info = function (params) {
 		}, {});
 	};
 
+	var tplClan = function (data) {
+		if (!data) {
+			return '';
+		}
+		return `<span class="player__clantag" data-id="${data.id}" title="${data.name}">${data.abbreviation}</span>`;
+	};
+
 	var tpl = function (data) {
 		var info = data.userData;
 		var stats = info.matches_stats;
@@ -142,7 +149,7 @@ var Info = function (params) {
 
 		var ammunition = tplAmmunition(info.ammunition);
 
-		return `<h2>${info.nickname}</h2>
+		return `<h2>${tplClan(info.clan)}${info.nickname}</h2>
 					<h4>${i18n.progress}</h4>
 					<dl>
 					  <dt>${i18n.level}</dt>
