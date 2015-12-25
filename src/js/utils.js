@@ -48,9 +48,25 @@ var setQuery = function (params) {
 	window.history.pushState(params, null, '?' + query);
 };
 
+var leadZeros = function (num, rate) {
+	rate = rate || 2;
+	var str = String(num);
+	var fill = rate - str.length;
+	if (fill <= 0) {
+		return str;
+	}
+	return (Array(fill + 1)).join('0') + str;
+};
+
+var duration = function (sec) {
+	var d = new Date();
+	d.setUTCHours(0, 0, 0, 0);
+	d.setSeconds(sec);
+	return leadZeros(d.getUTCMinutes(), 2) + ':' + leadZeros(d.getUTCSeconds(), 2);
+};
 
 exports.kdRatio = kdRatio;
 exports.query = getQuery;
 exports.setQuery = setQuery;
-
+exports.duration = duration;
 

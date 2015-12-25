@@ -138,16 +138,16 @@ var Match = function (params) {
 		russian: {
 			id: 'ID',
 			replay: 'Скачать реплей',
+			level: 'Уровень матча',
 			time_start: 'Время начала матча',
-			duration: 'Продолжительность',
-			durationMetric: 'сек.'
+			duration: 'Продолжительность'
 		},
 		english: {
 			id: 'ID',
 			replay: 'Download replay',
+			level: 'Match level',
 			time_start: 'Time of match start',
-			duration: 'Match duration',
-			durationMetric: 'sec.'
+			duration: 'Match duration'
 		}
 	}[params.language];
 
@@ -160,8 +160,9 @@ var Match = function (params) {
 		return `<h3>${i18n.id} ${data.id}</h3>
 					<h4>${stats.name} (${stats.weather}) &mdash; ${stats.mode}</h4>
 					<small>
-						${i18n.time_start} ${stats.time_start},
-						${i18n.duration} ${stats.game_duration}${i18n.durationMetric}
+						<div>${i18n.time_start} ${stats.time_start}</div>
+						<div>${i18n.duration} ${utils.duration(stats.game_duration)}</div>
+						<div>${i18n.level} ${stats.match_level}</div>
 					</small>
 					<div>
 						${replay(stats.replay_path)}
