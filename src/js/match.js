@@ -139,16 +139,16 @@ var Match = function (params) {
 		russian: {
 			id: 'ID',
 			replay: 'Скачать реплей',
-			level: 'Уровень матча',
-			time_start: 'Время начала матча',
+			level: 'Уровень',
+			time_start: 'Время начала',
 			duration: 'Продолжительность'
 		},
 		english: {
 			id: 'ID',
 			replay: 'Download replay',
-			level: 'Match level',
-			time_start: 'Time of match start',
-			duration: 'Match duration'
+			level: 'Level',
+			time_start: 'Time of start',
+			duration: 'Duration'
 		}
 	}[params.language];
 
