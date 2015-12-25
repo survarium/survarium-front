@@ -1,4 +1,5 @@
 require('../styl/match.styl');
+require('../styl/def-list.styl');
 
 var utils = require('./utils');
 
@@ -91,7 +92,7 @@ var Results = function (params) {
 	return function () {
 		var domElem = $('<div>', {
 			class: 'match-results',
-			html: '<h1>' + i18n.title + '</h1>' +
+			html: '<h2>' + i18n.title + '</h2>' +
 			'<div class="loading">Loading...</div>'
 		});
 
@@ -157,13 +158,23 @@ var Match = function (params) {
 			return link ? `<a href="http://${decodeURIComponent(link)}" target="_blank">${i18n.replay}</a>` : '';
 		};
 
-		return `<h3>${i18n.id} ${data.id}</h3>
-					<h4>${stats.name} (${stats.weather}) &mdash; ${stats.mode}</h4>
-					<small>
-						<div>${i18n.time_start} ${stats.time_start}</div>
-						<div>${i18n.duration} ${utils.duration(stats.game_duration)}</div>
-						<div>${i18n.level} ${stats.match_level}</div>
-					</small>
+		return `<h3 class="match-info__title">${i18n.id} ${data.id} / ${stats.name} (${stats.weather}) / ${stats.mode}</h3>
+
+					<dl class="def-list">
+						<dt class="def-list__term">${i18n.time_start}</dt>
+						<dd class="def-list__desc">${stats.time_start}</dd>
+					</dl>
+
+					<dl class="def-list">
+						<dt class="def-list__term">${i18n.duration}</dt>
+						<dd class="def-list__desc">${utils.duration(stats.game_duration)}</dd>
+					</dl>
+
+					<dl class="def-list">
+						<dt class="def-list__term">${i18n.level}</dt>
+						<dd class="def-list__desc">${stats.match_level}</dd>
+					</dl>
+
 					<div>
 						${replay(stats.replay_path)}
 					</div>`;
@@ -255,7 +266,7 @@ var Search = function (params) {
 
 		var domElem = $('<form>', {
 			class: 'match-search',
-			html: `<h1>${i18n.title}</h1>
+			html: `<h2>${i18n.title}</h2>
 						<label>
 							${i18n.matchId}:
 							<input name="matchId" type="number" value="${params.storage.get(storageKey)}" />
@@ -306,7 +317,7 @@ var Latest = function (params) {
 
 		var domElem = $('<div>', {
 			class: 'match-latest',
-			html: '<h1 class="match-latest__title">' + i18n.title + '</h1>' +
+			html: '<h2 class="match-latest__title">' + i18n.title + '</h2>' +
 			'<div class="loading">Loading...</div>'
 		});
 
