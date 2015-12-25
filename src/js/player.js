@@ -1,4 +1,5 @@
 require('../styl/player.styl');
+require('../styl/def-list.styl');
 
 var utils = require('./utils');
 var Match = require('./match');
@@ -151,36 +152,52 @@ var Info = function (params) {
 
 		return `<h2>${tplClan(info.clan)}${info.nickname}</h2>
 					<h4>${i18n.progress}</h4>
-					<dl>
-					  <dt>${i18n.level}</dt>
-					  <dd>${info.progress.level}</dd>
+					<dl class="def-list">
+					  <dt class="def-list__term">${i18n.level}</dt>
+					  <dd class="def-list__desc">${info.progress.level}</dd>
+					</dl>
 
-					  <dt>${i18n.rating}</dt>
-					  <dd>${info.progress.elo}</dd>
+					<dl class="def-list">
+					  <dt class="def-list__term">${i18n.rating}</dt>
+					  <dd class="def-list__desc">${info.progress.elo}</dd>
+					</dl>
 
-					  <dt>${i18n.exp}</dt>
-					  <dd>${info.progress.experience}</dd>
+					<dl class="def-list">
+					  <dt class="def-list__term">${i18n.exp}</dt>
+					  <dd class="def-list__desc">${info.progress.experience}</dd>
 					</dl>
 
 					<h4>${i18n.actions}</h4>
-					<dl>
-					  <dt>${i18n.kills}</dt>
-					  <dd>${kill}</dd>
+					<dl class="def-list">
+					  <dt class="def-list__term">${i18n.kills}</dt>
+					  <dd class="def-list__desc">${kill}</dd>
 
-					  <dt>${i18n.deaths}</dt>
-					  <dd>${die}</dd>
+					</dl>
 
-					  <dt>${i18n.kdRatio}</dt>
-					  <dd>${utils.kdRatio(kill, die)}</dd>
+					<dl class="def-list">
+					  <dt class="def-list__term">${i18n.deaths}</dt>
+					  <dd class="def-list__desc">${die}</dd>
 
-					  <dt>${i18n.victories}</dt>
-					  <dd>${wins}</dd>
+					</dl>
 
-					  <dt>${i18n.looses}</dt>
-					  <dd>${total - wins}</dd>
+					<dl class="def-list">
+					  <dt class="def-list__term">${i18n.kdRatio}</dt>
+					  <dd class="def-list__desc">${utils.kdRatio(kill, die)}</dd>
+					</dl>
 
-					  <dt>${i18n.totalMatches}</dt>
-					  <dd>${total} (<abbr title="${i18n.totalMatchesCount}">${matchCount}</abbr>)</dd>
+					<dl class="def-list">
+					  <dt class="def-list__term">${i18n.victories}</dt>
+					  <dd class="def-list__desc">${wins}</dd>
+					</dl>
+
+					<dl class="def-list">
+					  <dt class="def-list__term">${i18n.looses}</dt>
+					  <dd class="def-list__desc">${total - wins}</dd>
+					</dl>
+
+					<dl class="def-list">
+					  <dt class="def-list__term">${i18n.totalMatches}</dt>
+					  <dd class="def-list__desc">${total} (<abbr title="${i18n.totalMatchesCount}">${matchCount}</abbr>)</dd>
 					</dl>
 
 					<h4>${i18n.ammunition}</h4>

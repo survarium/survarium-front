@@ -1,0 +1,18 @@
+.def-list
+  display inline-block
+  text-align center
+
+  &:nth-of-type(1n + 1)
+    margin-right 1em
+
+  &__term
+    &::after
+      content ':'
+
+  &__desc
+    &::before
+      content ''
+      display block
+      border-top 1px solid rgba(0, 0, 0, .2)
+      margin .2em
+    margin-left 0
