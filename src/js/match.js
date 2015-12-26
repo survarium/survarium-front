@@ -27,6 +27,39 @@ var Results = function (params) {
 		}
 	}[params.language];
 
+	var gameActions = {
+		headshot_kill: { russian: 'Хедшоты', english: 'Headshots', abbr: 'HS' },
+		grenade_kill: { russian: 'Убийств гранатами', english: 'Grenade kills', abbr: 'G' },
+		melee_kill: { russian: 'Убийств прикладом', english: 'Melee kills', abbr: 'M' },
+		artefact_kill: { russian: 'Убийств артефактами', english: 'Artefacts kills', abbr: 'AK' },
+		capture_a_point: { russian: 'Захватов точек', english: 'Point captures', abbr: 'CAP' },
+		bring_a_box: { russian: 'Принесено ящиков', english: 'Boxes bringed', abbr: 'BB' },
+		use_artefact: { russian: 'Использований артефактов', english: 'Artifacts usages', abbr: 'AU' }
+	};
+
+	var gameActionsKeys = Object.keys(gameActions);
+	gameActionsKeys.forEach(function (action) {
+		i18n[action] = gameActions[action][params.language];
+	});
+
+	var tplDetails = function (player) {
+		var result = [];
+		gameActionsKeys.forEach(function (action) {
+			var val = Number(player[action]);
+			if (!val || isNaN(val)) {
+				return;
+			}
+			result.push(`<span class="match-results__action match-results__action_type_${action}" title="${i18n[action]}">
+				<span class="match-results__action-title">${gameActions[action].abbr}</span>
+				<span class="match-results__action-val">${val}</span>
+			</span>`);
+		});
+		if (!result.length) {
+			return '';
+		}
+		return `<div class="match-results__actions">${result.join('')}</div>`;
+	};
+
 	var tpl = function (data, nicknames) {
 		var teams = data.stats.accounts;
 		var result = ['0', '1'].map(function (teamNum) {
@@ -46,7 +79,7 @@ var Results = function (params) {
 
 				return `<tr>
 							<td>${index + 1}</td>
-							<td><span class="match-results__nickname" data-pid="${player.pid}">${nicknames[player.pid]}</span></td>
+							<td><span class="match-results__nickname" data-pid="${player.pid}">${nicknames[player.pid]}</span>${tplDetails(player)}</td>
 							<td>${kill}</td>
 							<td>${die}</td>
 							<td>${utils.kdRatio(kill, die)}</td>

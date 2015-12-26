@@ -27,6 +27,24 @@
     td
       &:nth-of-type(1n + 3)
         text-align center
+    td
+      padding .2em 0
 
   &__team
     padding-left 1em
+
+  &__actions
+    font-size .7em
+
+  &__action
+    display relative
+    &::after
+      content ', '
+      margin-left -.2em
+      margin-right .1em
+    &:last-of-type
+      &::after
+        display none
+    &-title
+      &::after
+        content ': '
