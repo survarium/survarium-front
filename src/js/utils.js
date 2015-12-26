@@ -55,7 +55,7 @@ var leadZeros = function (num, rate) {
 	if (fill <= 0) {
 		return str;
 	}
-	return (Array(fill + 1)).join('0') + str;
+	return (new Array(fill + 1)).join('0') + str;
 };
 
 var duration = function (sec) {
@@ -65,8 +65,18 @@ var duration = function (sec) {
 	return leadZeros(d.getUTCMinutes(), 2) + ':' + leadZeros(d.getUTCSeconds(), 2);
 };
 
+var timeParse = function (date) {
+	return date.getFullYear() + '-' +
+		leadZeros(date.getMonth() + 1) + '-' +
+		leadZeros(date.getDate()) + ' ' +
+		leadZeros(date.getHours()) + ':' +
+		leadZeros(date.getMinutes()) + ':' +
+		leadZeros(date.getSeconds());
+};
+
 exports.kdRatio = kdRatio;
 exports.query = getQuery;
 exports.setQuery = setQuery;
 exports.duration = duration;
-
+exports.leadZeros = leadZeros;
+exports.timeParse = timeParse;

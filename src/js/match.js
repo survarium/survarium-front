@@ -152,6 +152,10 @@ var Match = function (params) {
 		}
 	}[params.language];
 
+	var timeParse = function (string) {
+		return utils.timeParse(new Date(string.replace(/\s/, 'T')));
+	};
+
 	var tpl = function (data) {
 		var stats = data.stats;
 		var replay = function (link) {
@@ -162,7 +166,7 @@ var Match = function (params) {
 
 					<dl class="def-list">
 						<dt class="def-list__term">${i18n.time_start}</dt>
-						<dd class="def-list__desc">${stats.time_start}</dd>
+						<dd class="def-list__desc">${timeParse(stats.time_start)}</dd>
 					</dl>
 
 					<dl class="def-list">
