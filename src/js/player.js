@@ -218,9 +218,13 @@ var Info = function (params) {
 
 		var domElem = $('<div>', {
 			class: 'player flex',
-			html: `<div class="player__info flex-item"></div>
+			html: `<div class="loading">Loading...</div>
+				<div class="player__info flex-item"></div>
 				<pre class="error"></pre>`
 		});
+
+		var loader = domElem.find('.loading');
+		loader.detach();
 
 		var info = domElem.find('.player__info');
 		info.detach();
@@ -229,27 +233,33 @@ var Info = function (params) {
 		error.detach();
 
 		var matches;
+		var matchesAppended;
 		if (options.matches) {
 			matches = options.matches;
 		} else {
 			matches = (new Matches(params))({ match: options.match });
-			matches.appendTo(domElem);
 		}
 
 		domElem.data('load', function (pid, opts) {
 			opts = opts || {};
 
+			loader.prependTo(domElem);
 			error.detach();
 			params
 				.api
 				.__getUserInfo(pid, params.language)
 				.then(function (data) {
 					info.html(tpl(data));
-					info.insertBefore(matches);
+					if (!matchesAppended) {
+						matchesAppended = true;
+						matches.appendTo(domElem);
+					}
 					matches.data('load')(data.pid, data.matchCount);
+					info.insertBefore(matches);
 					if (!opts.noStory) {
 						utils.setQuery({ pid: pid });
 					}
+					loader.detach();
 					domElem.trigger('loaded');
 				})
 				.fail(function (err) {

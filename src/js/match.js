@@ -150,7 +150,7 @@ var Results = function (params) {
 		});
 
 		domElem.data('load', function (data) {
-			loader.appendTo(domElem);
+			loader.prependTo(domElem);
 			var ids = getIds(data.stats.accounts);
 			params.api
 				.getNickNames(ids)
