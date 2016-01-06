@@ -1,0 +1,31 @@
+.panes
+  &__tab
+    &::before, &::after
+      content ''
+      position absolute
+      left 0
+      top 0
+      right 0
+      bottom 0
+
+    &::after
+      content ''
+      background-color rgba(0, 0, 0, .1)
+      border 1px solid rgba(0, 0, 0, .5)
+      opacity .5
+      transform opacity ease-in-out .3s
+
+    display inline-block
+    position relative
+    cursor pointer
+    padding .8em 1em
+    text-align center
+    margin .5em .5em .5em 0
+
+    &_active
+      &::after
+        opacity .75
+
+    &:hover
+      &::after
+        opacity 1

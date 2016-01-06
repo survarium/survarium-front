@@ -1,11 +1,9 @@
 require('./styl/global.styl');
 
 var config        = require('./js/config');
-var utils         = require('./js/utils');
 var LangSwitcher  = require('./js/lang-switcher');
-var PlayerFind    = require('./js/player/find');
-var PlayerDetails = require('./js/player/details');
-var PlayerMatches = require('./js/player/matches');
+var Panes         = require('./js/panes/panes');
+var PlayerPane    = require('./js/panes/playerPane');
 
 var $ = config.$;
 
@@ -13,29 +11,15 @@ $(document).ready(function () {
 	var main = $('#main');
 	var footer = $('#footer');
 
+	var panes = new (Panes(config))();
+	var playerPane = new PlayerPane(config);
+	panes.add(playerPane);
+	panes.elem.appendTo(main);
+
+	panes.ensureActive(playerPane.name);
+
 	var langSwitcher  = new (LangSwitcher(config))();
-	var playerFind    = new (PlayerFind(config))();
-	var playerDetails = new (PlayerDetails(config))();
-	var playerMatches = new (PlayerMatches(config))();
-
-	playerFind.attachPlayerDetails(playerDetails);
-	playerDetails.attachPlayerMatches(playerMatches);
-
-	playerFind.elem.appendTo(main);
-	playerDetails.elem.appendTo(main);
-	playerMatches.elem.appendTo(main);
-
 	langSwitcher.elem.prependTo(footer);
-
-	(function () {
-		var query = utils.query();
-		if (!query) {
-			return;
-		}
-		if (query.player) {
-			playerDetails.load(query.player, { noStory: true });
-		}
-	})();
 
 	main.find('> .loading').remove();
 });
