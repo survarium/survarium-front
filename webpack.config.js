@@ -4,7 +4,8 @@ const poststylus = require('poststylus');
 
 module.exports = {
 	entry: {
-		index: "./src/index.js",
+		v0: "./src/v0/index.js",
+		v1: "./src/v1/index.js",
 		vendor: ['jquery']
 	},
 	output: {

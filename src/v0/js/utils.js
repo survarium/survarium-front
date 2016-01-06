@@ -1,6 +1,6 @@
 var kdRatio = function (kill, die) {
 	return die ?
-		kill ? (kill / die).toFixed(1) :
+		kill ? (kill / die).toFixed(2) :
 			0:
 		kill;
 };

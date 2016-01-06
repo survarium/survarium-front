@@ -325,7 +325,7 @@ var Search = function (params) {
 			var matchId = Number(this.matchId.value);
 
 			if (isNaN(matchId)) {
-				return console.error('wrong type of matchId');
+				return console._error('wrong type of matchId');
 			}
 
 			params.storage.set(storageKey, matchId);

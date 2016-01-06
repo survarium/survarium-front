@@ -3,9 +3,9 @@ module.exports = function (config) {
 
 	$.ajaxSetup({
 		dataType: 'json',
-		timeout: 5 * 1000,
-		error: function (err) {
-			console.error(err.responseJSON || err);
+		timeout : 5 * 1000,
+		_error  : function (err) {
+			console._error(err.responseJSON || err);
 		}
 	});
 

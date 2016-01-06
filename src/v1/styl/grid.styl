@@ -1,0 +1,21 @@
+cell(n)
+  flex-grow n
+  flex-shrink n
+  flex-basis n * 11px
+
+.grid
+  margin: 0 auto;
+  display: flex;
+
+  &_ta_center
+    text-align center
+
+  &__cell
+    margin 10px
+    flex-grow 1
+    flex-shrink 1
+    flex-basis 0
+
+    &_2
+      cell(2)
+

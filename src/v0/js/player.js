@@ -340,7 +340,7 @@ var Search = function (params) {
 			var nickname = this.nickname.value;
 
 			if ([undefined, null, ''].indexOf(nickname) > -1) {
-				return console.error('wrong format of nickname');
+				return console._error('wrong format of nickname');
 			}
 
 			params.storage.set(storageKey, nickname);
