@@ -1,0 +1,27 @@
+.player
+  &__graph
+    position relative
+    line-height 0
+
+  &__stats
+    &__stat
+      margin .7em auto
+
+      &__actions
+        font-size .7em
+
+        .grid__cell {
+          margin-top 0px
+        }
+
+      &__descriptions
+        font-weight 800
+
+    &-chart
+      height 400px
+      width 50%
+      display inline-block
+
+      @media all and (max-width: 870px)
+        width 100%
+        display block

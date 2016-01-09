@@ -1,7 +1,7 @@
 var utils         = require('../utils');
 var PlayerFind    = require('../player/find');
 var PlayerDetails = require('../player/details');
-var PlayerMatches = require('../player/matches');
+var PlayerStats   = require('../player/stats');
 
 module.exports = function (params) {
 	var i18n = {
@@ -17,15 +17,15 @@ module.exports = function (params) {
 
 	var playerFind    = new (PlayerFind(params))();
 	var playerDetails = new (PlayerDetails(params))();
-	var playerMatches = new (PlayerMatches(params))();
+	var playerStats   = new (PlayerStats(params))();
 
 	playerFind.attachPlayerDetails(playerDetails);
-	playerDetails.attachPlayerMatches(playerMatches);
+	playerDetails.attachPlayerMatches(playerStats);
 
 	pane.append([
 		playerFind.elem,
 		playerDetails.elem,
-		playerMatches.elem
+		playerStats.elem
 	]);
 
 	var isActive = (function () {
@@ -46,7 +46,7 @@ module.exports = function (params) {
 		components: {
 			find: playerFind,
 			details: playerDetails,
-			matches: playerMatches
+			stats: playerStats
 		}
 	};
 };
