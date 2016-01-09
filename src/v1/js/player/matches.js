@@ -4,6 +4,8 @@ require('../../styl/player/matches.styl');
 var Loader = require('../loader');
 var utils  = require('../utils');
 
+require('datatables.net');
+
 module.exports = function (params) {
 	var $ = params.$;
 	var lang = params.language;
@@ -16,9 +18,18 @@ module.exports = function (params) {
 			loose: 'Проигрыш',
 			date: 'Дата',
 			map: 'Карта',
+			mode: 'Режим',
 			level: 'Уровень',
 			kdStat: 'У/С (KD)',
-			score: 'Счет'
+			score: 'Счет',
+			kills: 'Убийств',
+			dies: 'Смертей',
+			kd: 'У/С',
+			dt: {
+				basic: 'Общее',
+				actions: 'Действия',
+				all: 'Показать все'
+			}
 		},
 		english: {
 			title: 'Player\'s matches',
@@ -27,9 +38,18 @@ module.exports = function (params) {
 			loose: 'Loose',
 			date: 'Date',
 			map: 'Map',
+			mode: 'Mode',
 			level: 'Level',
 			kdStat: 'K/D (KD)',
-			score: 'Score'
+			score: 'Score',
+			kills: 'Kills',
+			dies: 'Dies',
+			kd: 'K/D',
+			dt: {
+				basic: 'Basic',
+				actions: 'Actions',
+				all: 'Show all'
+			}
 		}
 	}[lang];
 
@@ -61,11 +81,81 @@ module.exports = function (params) {
 		if (!matches || !matches.length) {
 			return this._empty();
 		}
-		return this._render(matches);
+		return this._table(matches);
 	};
 
 	Class.prototype._empty = function () {
+		this.table && this.tableApi.clear().draw();
 		return this.elem.text(i18n.noMatches);
+	};
+
+	Class.prototype._table = function (matches) {
+		var table = this.table;
+		if (table) {
+			return this.tableApi.clear().rows.add(matches).draw();
+		}
+		table = this.table = $('<table>');
+		table.appendTo(this.elem);
+		table.dataTable({
+			buttons    : [
+				'colvis',
+				{
+					extend: 'colvisGroup',
+					text: i18n.dt.basic,
+					show: [ 0, 1, 2, 3, 4, 5, 6, 7, 8 ],
+					hide: [ 9, 10, 11, 12, 13, 14, 15 ]
+				},
+				{
+					extend: 'colvisGroup',
+					text: i18n.dt.actions,
+					show: [ 9, 10, 11, 12, 13, 14, 15 ],
+					hide: [ 0, 1, 2, 3, 4, 5, 6, 7, 8 ]
+				},
+				{
+					extend: 'colvisGroup',
+					text: i18n.dt.all,
+					show: ':hidden'
+				}
+			],
+			data       : matches,
+			columnDefs: [
+				{ className: 'dataTable__cell_centered', targets: [ 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 ] }
+			],
+			columns: [
+				{
+					title: i18n.date,
+					data: 'date',
+					render: function (data) {
+						return utils.timeParse(data);
+					}
+				},
+				{ title: i18n.map, data: `map.lang.${lang}.name` },
+				{ title: i18n.mode, data: `map.lang.${lang}.mode` },
+				{ title: i18n.level, data: 'match.level' },
+				{
+					title: i18n.win,
+					data: 'victory',
+					render: function (data) {
+						return data ? i18n.win : i18n.loose;
+					}
+				},
+				{ title: i18n.kills, data: 'kills' },
+				{ title: i18n.dies, data: 'dies' },
+				{ title: i18n.kd, data: 'kd' },
+				{ title: i18n.score, data: 'score' },
+				{ title: i18n.headshots.full, data: 'headshots' },
+				{ title: i18n.grenadeKills.full, data: 'grenadeKills' },
+				{ title: i18n.meleeKills.full, data: 'meleeKills' },
+				{ title: i18n.artefactKills.full, data: 'artefactKills' },
+				{ title: i18n.artefactUses.full, data: 'artefactUses' },
+				{ title: i18n.pointCaptures.full, data: 'pointCaptures' },
+				{ title: i18n.boxesBringed.full, data: 'boxesBringed' }
+			]
+		});
+		var api = this.tableApi = table.api();
+		table.on('click', 'tr', function () {
+			console.log('match', api.row(this).data().match.id);
+		});
 	};
 
 	Class.prototype._render = function (matches) {

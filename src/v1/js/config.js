@@ -19,4 +19,6 @@ config.language = config.languages.indexOf(language) > -1 ?
 var api = require('./api')(config);
 config.api = api;
 
+require('./config-dt')(config);
+
 module.exports = config;

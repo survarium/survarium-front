@@ -1,0 +1,6 @@
+{
+  "name": "datatables.net",
+  "version": "0.0.0",
+  "description": "datatables bundle",
+  "main": "index.js"
+}

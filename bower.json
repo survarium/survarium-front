@@ -1,0 +1,23 @@
+{
+  "name": "survarium-front",
+  "description": "survarium frontend",
+  "main": "",
+  "authors": [
+    "Dmitry Vasilyev <vaseker@gmail.com>"
+  ],
+  "license": "MIT",
+  "keywords": [
+    "survarium"
+  ],
+  "homepage": "https://github.com/survarium/survarium-front",
+  "moduleType": [],
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+  }
+}

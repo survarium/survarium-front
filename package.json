@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "description": "survarium frontend",
   "scripts": {
-    "build": "webpack",
+    "build": "webpack -p",
     "dev": "webpack-dev-server"
   },
   "repository": {
@@ -21,6 +21,9 @@
   "homepage": "https://github.com/vaseker/survarium-front#readme",
   "dependencies": {
     "autoprefixer": "^6.2.1",
+    "babel-core": "^6.4.0",
+    "babel-loader": "^6.2.1",
+    "babel-preset-es2015": "^6.3.13",
     "css-loader": "^0.23.1",
     "jquery": "^2.1.4",
     "poststylus": "^0.2.2",

@@ -19,10 +19,12 @@ module.exports = function (config) {
 					}
 				});
 		},
-		player: function (query, byName) {
+		player: function (query, options) {
+			options = options || {};
 			return $.ajax(config.apiPath + '/players/' + query, {
 				data: {
-					byName: byName,
+					byName: options.byName,
+					fullStats: options.fullStats,
 					lang: config.language
 				}
 			});

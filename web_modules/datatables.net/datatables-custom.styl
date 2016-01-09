@@ -1,0 +1,60 @@
+.dataTable
+
+  &s_scrollHead
+    overflow-x auto !important
+
+  &s_scrollBody
+    border-bottom-color #ddd !important
+
+  &s_wrapper
+    .dataTables_filter,
+    .dt-buttons
+      padding 10px 0
+
+    .dataTables_filter
+      padding-top 13px
+
+
+  &__cell_centered
+    text-align center
+
+  &s_scrollHeadInner
+
+    .sorting
+      &,
+      &_desc,
+      &_asc
+        position relative
+        padding-right 10px
+        &::after
+          position absolute
+          right 4px
+
+      &_desc
+        &::after
+          content '\2193'
+
+      &_asc
+        &::after
+          content '\2191'
+
+      &::after
+        content '\21c5'
+
+  .odd
+    background-color #f9f9f9
+
+  td,
+  th
+    padding 8px
+    border 1px solid #ddd
+    border-left-width 0
+    border-top-width 0
+    box-sizing border-box
+    &:first-of-type
+      border-left-width 1px
+
+  th
+    text-align left
+    border-top-width 1px
+

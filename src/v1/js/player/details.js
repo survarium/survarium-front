@@ -81,7 +81,7 @@ module.exports = function (params) {
 		self._loader.show();
 		self._error.hide();
 		return api
-			.player(nick, true)
+			.player(nick, { fullStats: true, byName: true })
 			.then(function (player) {
 				self._setCurrent(nick, opts);
 				self._render(player);
@@ -107,7 +107,6 @@ module.exports = function (params) {
 	};
 
 	Class.prototype._render = function (data) {
-		console.log(data);
 		var clan = data.clan ? `<a class="player__clan" title="${data.clan.name}">[${data.clan.abbr}]</a> `: '';
 		var totals = `<h4>${i18n.progress}</h4>
 					<dl class="def-list">
