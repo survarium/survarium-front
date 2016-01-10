@@ -23,7 +23,7 @@ module.exports = function (params) {
 			class: 'match__find',
 			html: `
 			<h3>${i18n.title}</h3>
-			<input type="text" name="match" type="number" placeholder="${i18n.match}" value="${params.storage.get(storageKey) || ''}" />
+			<input name="match" type="number" placeholder="${i18n.match}" value="${params.storage.get(storageKey) || ''}" />
 			<input type="submit" value="${i18n.find}">`
 		});
 
