@@ -150,14 +150,14 @@ module.exports = function (params) {
 				{
 					extend: 'colvisGroup',
 					text: i18n.dt.basic,
-					show: [ 0, 1, 2, 3, 4, 5, 6, 7 ],
-					hide: [ 8, 9, 10, 11, 12, 13, 14, 15 ]
+					show: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 ],
+					hide: [ 10, 11, 12, 13, 14, 15, 16 ]
 				},
 				{
 					extend: 'colvisGroup',
 					text: i18n.dt.actions,
-					show: [ 4, 8, 9, 10, 11, 12, 13, 14, 15 ],
-					hide: [ 0, 1, 2, 3, 5, 6, 7 ]
+					show: [ 5, 10, 11, 12, 13, 14, 15, 16 ],
+					hide: [ 0, 1, 2, 3, 4, 6, 7, 8, 9 ]
 				},
 				{
 					extend: 'colvisGroup',
@@ -190,6 +190,7 @@ module.exports = function (params) {
 				},
 				{ title: i18n.map, data: `map.lang.${language}.name` },
 				{ title: i18n.mode, data: `map.lang.${language}.mode` },
+				{ title: i18n.level, data: `match.level` },
 				{
 					title: i18n.player,
 					data: 'player.nickname'
