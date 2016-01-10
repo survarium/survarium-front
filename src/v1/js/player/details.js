@@ -69,6 +69,9 @@ module.exports = function (params) {
 
 		this._error = new (Error(params))();
 		this._error.elem.appendTo(this.elem);
+
+		this.info = $('<div>', { class: 'player__details' })
+			.appendTo(this.elem);
 	};
 
 	Class.prototype.load = function (nick, opts) {
@@ -93,7 +96,7 @@ module.exports = function (params) {
 
 	Class.prototype._setCurrent = function (nick, opts) {
 		if (!opts.noStory) {
-			utils.setQuery({ player: nick });
+			utils.setQuery({ player: nick }, { replace: true });
 		}
 		this._current = nick;
 		clearTimeout(this._currentUnset);
@@ -197,7 +200,7 @@ module.exports = function (params) {
 
 		var html = `<h3 class="player__name">${clan}<span class="player__nick">${data.nickname}</span></h3>
 		<div class="player__totals">${totals}</div>`;
-		return this.elem.html(html);
+		return this.info.html(html);
 	};
 
 	return Class;

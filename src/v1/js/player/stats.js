@@ -78,6 +78,10 @@ module.exports = function (params) {
 		this._loader.elem.appendTo(this.elem);
 	};
 
+	Class.prototype.__attach = function (Pane) {
+		this.Pane = Pane;
+	};
+
 	Class.prototype.load = function (stats) {
 		if (!stats || !stats.length) {
 			return this._empty();
@@ -326,9 +330,12 @@ module.exports = function (params) {
 		if (table) {
 			return this.tableApi.clear().rows.add(stats).draw();
 		}
-		table = this.table = $('<table>');
+		table = this.table = $('<table>', {
+			id: 'player__stats'
+		});
 		table.appendTo(this.elem);
 		table.dataTable({
+			scroller   : true,
 			buttons    : [
 				'colvis',
 				{
@@ -385,8 +392,9 @@ module.exports = function (params) {
 			]
 		});
 		var api = this.tableApi = table.api();
+		var self = this;
 		table.on('click', 'tr', function () {
-			console.log('match', api.row(this).data().match.id);
+			self.Pane.emit({ pane: 'match', event: 'load', value: api.row(this).data().match.id });
 		});
 	};
 

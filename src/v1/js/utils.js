@@ -18,14 +18,21 @@ var getQuery = function () {
 		}, {}) : null;
 };
 
-var setQuery = function (params) {
+/**
+ * Обновить ?query
+ * @param {Object}  params              список ключ-значение
+ * @param {Object}  [options]
+ * @param {Boolean} [options.replace]   не объединять с текущим query
+ */
+var setQuery = function (params, options) {
 	if (!params || !(params instanceof Object)) {
 		return;
 	}
+	options = options || {};
 	var query = Object.keys(params).reduce(function (result, key) {
 		result[key] = params[key];
 		return result;
-	}, getQuery() || {});
+	}, options.replace ? {} : getQuery() || {});
 
 	query = Object.keys(query).map(function (key) {
 		var value = query[key];

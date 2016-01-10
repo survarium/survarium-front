@@ -43,7 +43,6 @@ module.exports = function (config) {
 	$.extend( $.fn.dataTable.defaults, {
 		dom        : 'Bfrtip', // l - amount of entities
 		deferRender: true,
-		scroller   : true,
 		scrollX    : false,
 		scrollY    : 400,
 		paging     : true,

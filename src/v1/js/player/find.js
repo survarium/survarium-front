@@ -42,7 +42,7 @@ module.exports = function (params) {
 		});
 	};
 
-	Class.prototype.attachPlayerDetails = function (instance) {
+	Class.prototype.attachDetails = function (instance) {
 		return this.playerDetails = instance;
 	};
 

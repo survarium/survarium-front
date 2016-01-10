@@ -30,6 +30,7 @@ module.exports = function (params) {
 			}
 			self._close();
 			self._open(pane);
+			window.scrollTop = 0;
 		});
 	};
 
@@ -54,12 +55,36 @@ module.exports = function (params) {
 			return;
 		}
 		paneInstance.tab = $(`<div data-name="${paneInstance.name}" class="panes__tab">${paneInstance.title}</div>`);
+		paneInstance.events = paneInstance.events || {};
 		this.panes[paneInstance.name] = paneInstance;
 		this._tabs.append(paneInstance.tab);
 
 		if (paneInstance.active) {
 			this.ensureActive(paneInstance.name);
 		}
+
+		this._attachPaneInstance(paneInstance);
+	};
+
+	/**
+	 * Привязка большого Pane к компонентам вкладки
+	 * @param paneInstance
+	 * @private
+	 */
+	Class.prototype._attachPaneInstance = function (paneInstance) {
+		var components = paneInstance.components;
+		var component;
+		Object.keys(components).forEach(function (componentName) {
+			component = components[componentName];
+			if (!component.__attach) {
+				return;
+			}
+			component.__attach(this);
+		}, this);
+	};
+
+	Class.prototype.emit = function (params) {
+		this.panes[params.pane].events[params.event].call(this, params.value);
 	};
 
 	Class.prototype.ensureActive = function (name) {

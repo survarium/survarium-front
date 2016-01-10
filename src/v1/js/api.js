@@ -19,6 +19,14 @@ module.exports = function (config) {
 					}
 				});
 		},
+		match: function (id, slim) {
+			return $.ajax(config.apiPath + '/matches/' + id, {
+					data: {
+						slim: slim,
+						lang: config.language
+					}
+				});
+		},
 		player: function (query, options) {
 			options = options || {};
 			return $.ajax(config.apiPath + '/players/' + query, {
