@@ -164,8 +164,7 @@ module.exports = function (params) {
 				{ className: 'foo', targets: [2] },
 				{ className: 'dataTable__cell_centered', targets: '_all' },
 				{ visible: false, targets: [0, 1] },
-				{ orderData: [1, 6], targets: [1, 6] },
-				{ orderData: [6, 1], targets: [6] },
+				{ orderData: [1, 3], targets: [1, 3] },
 				{ orderData: [1, 2], targets: [2] }
 			],
 			drawCallback: function () {
@@ -204,10 +203,10 @@ module.exports = function (params) {
 								data;
 					}
 				},
+				{ title: i18n.score, data: 'score' },
 				{ title: i18n.kills, data: 'kills' },
 				{ title: i18n.dies, data: 'dies' },
 				{ title: i18n.kd, data: 'kd' },
-				{ title: i18n.score, data: 'score' },
 				{ title: i18n.headshots.full, data: 'headshots' },
 				{ title: i18n.grenadeKills.full, data: 'grenadeKills' },
 				{ title: i18n.meleeKills.full, data: 'meleeKills' },
