@@ -36,6 +36,13 @@ module.exports = function (config) {
 					lang: config.language
 				}
 			});
+		},
+		clan: function (abbr) {
+			return $.ajax(config.apiPath + '/clans/' + abbr, {
+				data: {
+					lang: config.language
+				}
+			});
 		}
 	};
 };

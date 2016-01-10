@@ -60,6 +60,8 @@ module.exports = function (params) {
 	}[params.language];
 
 	var Class = function () {
+		var self = this;
+
 		this.elem = $('<div>', {
 			class: 'player__info'
 		});
@@ -71,7 +73,16 @@ module.exports = function (params) {
 		this._error.elem.appendTo(this.elem);
 
 		this.info = $('<div>', { class: 'player__details' })
-			.appendTo(this.elem);
+			.appendTo(this.elem)
+			.on('click', '.player__clan', function (e) {
+				e.preventDefault();
+				self.Pane.emit({ pane: 'clan', event: 'load', value: $(e.target).data('abbr') });
+				return false;
+			})
+	};
+
+	Class.prototype.__attach = function (Pane) {
+		this.Pane = Pane;
 	};
 
 	Class.prototype.load = function (nick, opts) {
@@ -110,7 +121,7 @@ module.exports = function (params) {
 	};
 
 	Class.prototype._render = function (data) {
-		var clan = data.clan ? `<a class="player__clan" title="${data.clan.name}">[${data.clan.abbr}]</a> `: '';
+		var clan = data.clan ? `<a class="player__clan" href="#" title="${data.clan.name}" data-abbr="${data.clan.abbr}">[${data.clan.abbr}]</a> `: '';
 		var totals = `<h4>${i18n.progress}</h4>
 					<dl class="def-list">
 					  <dt class="def-list__term">${i18n.level}</dt>

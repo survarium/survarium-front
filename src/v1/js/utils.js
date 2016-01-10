@@ -77,6 +77,10 @@ var timeParse = function (date) {
 		leadZeros(date.getSeconds());
 };
 
+String.prototype.capitalize = function () {
+	return this.charAt(0).toUpperCase() + this.slice(1);
+};
+
 exports.query = getQuery;
 exports.setQuery = setQuery;
 exports.duration = duration;

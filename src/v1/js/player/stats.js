@@ -347,8 +347,8 @@ module.exports = function (params) {
 				{
 					extend: 'colvisGroup',
 					text: i18n.dt.actions,
-					show: [ 9, 10, 11, 12, 13, 14, 15 ],
-					hide: [ 0, 1, 2, 3, 4, 5, 6, 7, 8 ]
+					show: [ 1, 9, 10, 11, 12, 13, 14, 15 ],
+					hide: [ 0, 2, 3, 4, 5, 6, 7, 8 ]
 				},
 				{
 					extend: 'colvisGroup',
@@ -358,7 +358,10 @@ module.exports = function (params) {
 			],
 			data       : stats,
 			columnDefs: [
-				{ className: 'dataTable__cell_centered', targets: [ 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 ] }
+				{ className: 'dataTable__cell_centered', targets: [ 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 ] },
+				{ targets: [1, 2], searchable: true },
+				{ targets: '_all', searchable: false },
+				{ targets: [9, 10, 11, 12, 13, 14, 15], visible: false }
 			],
 			columns: [
 				{

@@ -19,7 +19,8 @@ module.exports = function (config) {
 				next: 'Вперед',
 				previous: 'Назад'
 			},
-			emptyTable: 'Нет данных для отображения'
+			emptyTable: 'Нет данных для отображения',
+			zeroRecords: 'Данные не найдены'
 		},
 		english: {
 			buttons: {
@@ -36,7 +37,8 @@ module.exports = function (config) {
 				next: 'Next',
 				previous: 'Previous'
 			},
-			emptyTable: 'No data available in table'
+			emptyTable: 'No data available in table',
+			zeroRecords: 'No matching records found'
 		}
 	}[config.language];
 

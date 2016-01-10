@@ -54,7 +54,6 @@ module.exports = function (params) {
 		}
 	}[language];
 
-
 	var _actionsI18N = {
 		headshots: { russian: 'Хедшоты', english: 'Headshots', abbr: 'HS' },
 		grenadeKills: { russian: 'Убийств гранатами', english: 'Grenade kills', abbr: 'G' },
@@ -172,10 +171,10 @@ module.exports = function (params) {
 				var rows = api.rows({ page:'current' }).nodes();
 				var last = null;
 
-				api.column(1, {page:'current'} ).data().each(function (group, i) {
+				api.column(1, { page:'current' }).data().each(function (group, i) {
 					if (last !== group) {
 						$(rows).eq( i ).before(
-							`<tr class="dataTable__row_group"><td colspan="12">${i18n.team}: ` + (group ? 'A': 'B') + `</td></tr>`
+							`<tr class="dataTable__row_group"><td colspan="12">${i18n.team}: ` + (!group ? 'A': 'B') + `</td></tr>`
 						);
 						last = group;
 					}
@@ -222,7 +221,7 @@ module.exports = function (params) {
 		table
 			.on('click', '.player__clan', function (e) {
 				e.preventDefault();
-				console.log('clan', $(e.target).data('abbr'));
+				self.Pane.emit({ pane: 'clan', event: 'load', value: $(e.target).data('abbr') });
 				return false;
 			})
 			/*.on('click', '.dataTable__row_group', function (e) {
@@ -271,7 +270,7 @@ module.exports = function (params) {
 					+ (data.stats.length ?
 					`<dl class="def-list">
 						<dt class="def-list__term">${i18n.win}</dt>
-						<dd class="def-list__desc">${(data.stats[0].team && data.stats[0].victory) ? 'A' : 'B' }</dd>
+						<dd class="def-list__desc">${(data.stats[0].victory && !data.stats[0].team) ? 'A' : 'B' }</dd>
 					</dl>` : ``) +
 
 					`<div>
