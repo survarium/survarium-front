@@ -44,7 +44,7 @@ module.exports = function (params) {
 			},
 			roles       : {
 				commander: 'Командир',
-				warlord  : 'Военачальник',
+				warlord  : 'Сержант',
 				assistant: 'Зам. командира',
 				soldier  : 'Рядовой'
 			}
