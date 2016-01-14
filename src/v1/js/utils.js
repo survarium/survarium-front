@@ -81,8 +81,16 @@ String.prototype.capitalize = function () {
 	return this.charAt(0).toUpperCase() + this.slice(1);
 };
 
+var kdRatio = function (kill, die) {
+	return die ?
+		kill ? (kill / die).toFixed(2) :
+			0:
+		kill;
+};
+
 exports.query = getQuery;
 exports.setQuery = setQuery;
 exports.duration = duration;
 exports.leadZeros = leadZeros;
 exports.timeParse = timeParse;
+exports.kd = kdRatio;

@@ -7,82 +7,121 @@ var utils  = require('../utils');
 require('datatables.net');
 
 module.exports = function (params) {
-	var $ = params.$;
-	var api = params.api;
+	var $        = params.$;
+	var api      = params.api;
 	var language = params.language;
 
 	var i18n = {
 		russian: {
-			id: 'ID',
-			date: 'Дата',
-			clanLevel: 'Уровень клана',
-			level  : 'Уровень',
-			win    : 'Победа',
-			wins   : 'Побед',
-			map    : 'Карта',
-			mode   : 'Режим',
-			loose  : 'Проигрыш',
-			score  : 'Счет',
-			kills  : 'Убийств',
-			dies   : 'Смертей',
-			kd     : 'У/С',
-			player : 'Имя',
-			members: 'Участники',
-			matches: 'Матчи',
-			role   : 'Роль',
-			dt     : {
-				basic: 'Общее',
+			id          : 'ID',
+			date        : 'Дата',
+			level       : 'Уровень',
+			win         : 'Победа',
+			wins        : 'Побед',
+			map         : 'Карта',
+			mode        : 'Режим',
+			loose       : 'Проигрыш',
+			score       : 'Счет',
+			kills       : 'Убийств',
+			dies        : 'Смертей',
+			kd          : 'У/С',
+			player      : 'Имя',
+			members     : 'Участники',
+			matches     : 'Матчи',
+			role        : 'Роль',
+			rating      : 'Рейтинг',
+			winrate     : 'Винрейт',
+			victories   : 'Побед',
+			totalMatches: 'Всего матчей',
+			actions     : 'Действия',
+			details     : 'Детали',
+			dt          : {
+				basic  : 'Общее',
 				actions: 'Действия',
-				all: 'Показать все'
+				all    : 'Показать все'
 			},
-			roles : {
+			roles       : {
 				commander: 'Командир',
-				warlord: 'Военачальник',
+				warlord  : 'Военачальник',
 				assistant: 'Зам. командира',
-				soldier: 'Рядовой'
+				soldier  : 'Рядовой'
 			}
 		},
 		english: {
-			id: 'ID',
-			data: 'Date',
-			clanLevel: 'Clan level',
-			win    : 'Win',
-			wins   : 'Wins',
-			map    : 'Map',
-			mode   : 'Mode',
-			loose  : 'Loose',
-			level  : 'Level',
-			score  : 'Score',
-			kills  : 'Kills',
-			dies   : 'Dies',
-			kd     : 'K/D',
-			player : 'Name',
-			members: 'Members',
-			matches: 'Matches',
-			role   : 'Role',
-			dt     : {
-				basic: 'Basic',
+			id          : 'ID',
+			data        : 'Date',
+			win         : 'Win',
+			wins        : 'Wins',
+			map         : 'Map',
+			mode        : 'Mode',
+			loose       : 'Loose',
+			level       : 'Level',
+			score       : 'Score',
+			kills       : 'Kills',
+			dies        : 'Dies',
+			kd          : 'K/D',
+			player      : 'Name',
+			members     : 'Members',
+			matches     : 'Matches',
+			role        : 'Role',
+			rating      : 'Rating',
+			winrate     : 'Winrate',
+			victories   : 'Victories',
+			totalMatches: 'Total matches',
+			details     : 'Details',
+			actions     : 'Actions',
+			dt          : {
+				basic  : 'Basic',
 				actions: 'Actions',
-				all: 'Show all'
+				all    : 'Show all'
 			},
-			roles: {
-
-			}
+			roles       : {}
 		}
 	}[language];
 
 	var _actionsI18N = {
-		headshots: { russian: 'Хедшоты', english: 'Headshots', abbr: 'HS' },
-		grenadeKills: { russian: 'Убийств гранатами', english: 'Grenade kills', abbr: 'G' },
-		meleeKills: { russian: 'Убийств прикладом', english: 'Melee kills', abbr: 'M' },
-		artefactKills: { russian: 'Убийств артефактами', english: 'Artefacts kills', abbr: 'AK' },
-		pointCaptures: { russian: 'Захватов точек', english: 'Point captures', abbr: 'CAP' },
-		boxesBringed: { russian: 'Принесено ящиков', english: 'Boxes bringed', abbr: 'BB' },
-		artefactUses: { russian: 'Использований артефактов', english: 'Artifacts usages', abbr: 'AU' }
+		headshots    : {
+			russian: 'Хедшоты',
+			english: 'Headshots',
+			abbr   : 'HS'
+		},
+		grenadeKills : {
+			russian: 'Убийств гранатами',
+			english: 'Grenade kills',
+			abbr   : 'G'
+		},
+		meleeKills   : {
+			russian: 'Убийств прикладом',
+			english: 'Melee kills',
+			abbr   : 'M'
+		},
+		artefactKills: {
+			russian: 'Убийств артефактами',
+			english: 'Artefacts kills',
+			abbr   : 'AK'
+		},
+		pointCaptures: {
+			russian: 'Захватов точек',
+			english: 'Point captures',
+			abbr   : 'CAP'
+		},
+		boxesBringed : {
+			russian: 'Принесено ящиков',
+			english: 'Boxes bringed',
+			abbr   : 'BB'
+		},
+		artefactUses : {
+			russian: 'Использований артефактов',
+			english: 'Artifacts usages',
+			abbr   : 'AU'
+		}
 	};
 
 	Object.keys(_actionsI18N).reduce(function (i18n, action) {
-		i18n[action] = { full: _actionsI18N[action][language], abbr: _actionsI18N[action].abbr };
+		i18n[action] = {
+			full: _actionsI18N[action][language],
+			abbr: _actionsI18N[action].abbr
+		};
 		return i18n;
 	}, i18n);
 
@@ -106,7 +145,7 @@ module.exports = function (params) {
 			return;
 		}
 		var self = this;
-		opts = opts || {};
+		opts     = opts || {};
 
 		self._loader.show();
 		self._error.hide();
@@ -137,76 +176,103 @@ module.exports = function (params) {
 			this.statsTableApi.clear().rows.add(stats).draw();
 			return;
 		}
-		var wrap = $(`<div class="clan__players-wrap"><h3>${i18n.matches}</h3></div>`);
+		var wrap   = $(`<div class="clan__players-wrap"><h3>${i18n.matches}</h3></div>`);
 		statsTable = this.statsTable = $('<table>', {
 			id: 'clan__stats'
 		});
 		statsTable.appendTo(wrap);
 		wrap.appendTo(this.elem);
 		statsTable.dataTable({
-			scroller   : true,
-			buttons    : [
-				'colvis',
-				{
-					extend: 'colvisGroup',
-					text: i18n.dt.basic,
-					show: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 ],
-					hide: [ 10, 11, 12, 13, 14, 15, 16 ]
-				},
-				{
-					extend: 'colvisGroup',
-					text: i18n.dt.actions,
-					show: [ 5, 10, 11, 12, 13, 14, 15, 16 ],
-					hide: [ 0, 1, 2, 3, 4, 6, 7, 8, 9 ]
-				},
-				{
-					extend: 'colvisGroup',
-					text: i18n.dt.all,
-					show: ':hidden'
+			scroller  : true,
+			buttons   : ['colvis', {
+				extend: 'colvisGroup',
+				text  : i18n.dt.basic,
+				show  : [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+				hide  : [10, 11, 12, 13, 14, 15, 16]
+			}, {
+				extend: 'colvisGroup',
+				text  : i18n.dt.actions,
+				show  : [5, 10, 11, 12, 13, 14, 15, 16],
+				hide  : [0, 1, 2, 3, 4, 6, 7, 8, 9]
+			}, {
+				extend: 'colvisGroup',
+				text  : i18n.dt.all,
+				show  : ':hidden'
+			}],
+			data      : stats,
+			columnDefs: [{
+				className: 'foo',
+				targets  : [2]
+			}, {
+				targets   : [2, 3, 4],
+				searchable: true
+			}, {
+				className : 'dataTable__cell_centered',
+				targets   : '_all',
+				searchable: false
+			}, {
+				visible: false,
+				targets: [8, 9, 10, 11, 12, 13, 14, 15]
+			}],
+			stateSave : true,
+			columns   : [{
+				title : i18n.date,
+				data  : 'date',
+				render: function (data) {
+					return utils.timeParse(data);
 				}
-			],
-			data       : stats,
-			columnDefs: [
-				{ className: 'foo', targets: [2] },
-				{ targets: [2, 3, 4], searchable: true },
-				{ className: 'dataTable__cell_centered', targets: '_all', searchable: false },
-				{ visible: false, targets: [ 8, 9, 10, 11, 12, 13, 14, 15 ] }
-			],
-			stateSave  : true,
-			columns: [
-				{
-					title: i18n.date,
-					data: 'date',
-					render: function (data) {
-						return utils.timeParse(data);
-					}
-				},
-				{
-					title: i18n.win,
-					data: 'victory',
-					render: function (data) {
-						return data ? i18n.win : i18n.loose;
-					}
-				},
-				{ title: i18n.map, data: `map.lang.${language}.name` },
-				{ title: i18n.mode, data: `map.lang.${language}.mode` },
-				{ title: i18n.level, data: `match.level` },
-				{
-					title: i18n.player,
-					data: 'player.nickname'
-				},
-				{ title: i18n.score, data: 'score' },
-				{ title: i18n.kills, data: 'kills' },
-				{ title: i18n.dies, data: 'dies' },
-				{ title: i18n.kd, data: 'kd' },
-				{ title: i18n.headshots.full, data: 'headshots' },
-				{ title: i18n.grenadeKills.full, data: 'grenadeKills' },
-				{ title: i18n.meleeKills.full, data: 'meleeKills' },
-				{ title: i18n.artefactKills.full, data: 'artefactKills' },
-				{ title: i18n.artefactUses.full, data: 'artefactUses' },
-				{ title: i18n.pointCaptures.full, data: 'pointCaptures' },
-				{ title: i18n.boxesBringed.full, data: 'boxesBringed' }
-			]
+			}, {
+				title : i18n.win,
+				data  : 'victory',
+				render: function (data) {
+					return data ? i18n.win : i18n.loose;
+				}
+			}, {
+				title: i18n.map,
+				data : `map.lang.${language}.name`
+			}, {
+				title: i18n.mode,
+				data : `map.lang.${language}.mode`
+			}, {
+				title: i18n.level,
+				data : `match.level`
+			}, {
+				title: i18n.player,
+				data : 'player.nickname'
+			}, {
+				title: i18n.score,
+				data : 'score'
+			}, {
+				title: i18n.kills,
+				data : 'kills'
+			}, {
+				title: i18n.dies,
+				data : 'dies'
+			}, {
+				title: i18n.kd,
+				data : 'kd'
+			}, {
+				title: i18n.headshots.full,
+				data : 'headshots'
+			}, {
+				title: i18n.grenadeKills.full,
+				data : 'grenadeKills'
+			}, {
+				title: i18n.meleeKills.full,
+				data : 'meleeKills'
+			}, {
+				title: i18n.artefactKills.full,
+				data : 'artefactKills'
+			}, {
+				title: i18n.artefactUses.full,
+				data : 'artefactUses'
+			}, {
+				title: i18n.pointCaptures.full,
+				data : 'pointCaptures'
+			}, {
+				title: i18n.boxesBringed.full,
+				data : 'boxesBringed'
+			}]
 		});
 
 		var api = this.statsTableApi = statsTable.api();
@@ -217,7 +283,11 @@ module.exports = function (params) {
 				if (!data) {
 					return;
 				}
-				self.Pane.emit({ pane: 'match', event: 'load', value: api.row(this).data().match.id });
+				self.Pane.emit({
+					pane : 'match',
+					event: 'load',
+					value: api.row(this).data().match.id
+				});
 			});
 	};
 
@@ -227,67 +297,91 @@ module.exports = function (params) {
 			this.playersTableApi.clear().rows.add(stats).draw();
 			return;
 		}
-		var wrap = $(`<div class="clan__players-wrap"><h3>${i18n.members}</h3></div>`);
+		var wrap     = $(`<div class="clan__players-wrap"><h3>${i18n.members}</h3></div>`);
 		playersTable = this.playersTable = $('<table>', {
 			id: 'clan__players'
 		});
 		playersTable.appendTo(wrap);
 		wrap.appendTo(this.elem);
 		playersTable.dataTable({
-			scroller   : true,
-			buttons    : [
-				'colvis',
-				{
-					extend: 'colvisGroup',
-					text: i18n.dt.basic,
-					show: [ 0, 1, 2, 3, 4, 5, 6 ],
-					hide: [ 7, 8, 9, 10, 11, 12, 13 ]
-				},
-				{
-					extend: 'colvisGroup',
-					text: i18n.dt.actions,
-					show: [ 1, 7, 8, 9, 10, 11, 12, 13 ],
-					hide: [ 0, 2, 3, 4, 5, 6 ]
-				},
-				{
-					extend: 'colvisGroup',
-					text: i18n.dt.all,
-					show: ':hidden'
+			scroller  : true,
+			buttons   : ['colvis', {
+				extend: 'colvisGroup',
+				text  : i18n.dt.basic,
+				show  : [0, 1, 2, 3, 4, 5, 6],
+				hide  : [7, 8, 9, 10, 11, 12, 13]
+			}, {
+				extend: 'colvisGroup',
+				text  : i18n.dt.actions,
+				show  : [1, 7, 8, 9, 10, 11, 12, 13],
+				hide  : [0, 2, 3, 4, 5, 6]
+			}, {
+				extend: 'colvisGroup',
+				text  : i18n.dt.all,
+				show  : ':hidden'
+			}],
+			data      : stats,
+			columnDefs: [{
+				className: 'foo',
+				targets  : [0, 1]
+			}, {
+				targets   : [0, 1],
+				searchable: true
+			}, {
+				className : 'dataTable__cell_centered',
+				targets   : '_all',
+				searchable: false
+			}, {
+				visible: false,
+				targets: [8, 9, 10, 11, 12, 13]
+			}],
+			stateSave : true,
+			columns   : [{
+				title : i18n.role,
+				data  : `role`,
+				render: function (data) {
+					return i18n.roles[data] || data.capitalize();
 				}
-			],
-			data       : stats,
-			columnDefs: [
-				{ className: 'foo', targets: [0, 1] },
-				{ targets: [0, 1], searchable: true },
-				{ className: 'dataTable__cell_centered', targets: '_all', searchable: false },
-				{ visible: false, targets: [ 8, 9, 10, 11, 12, 13 ] }
-			],
-			stateSave  : true,
-			columns: [
-				{
-					title: i18n.role,
-					data: `role`,
-					render: function (data) {
-						return i18n.roles[data] || data.capitalize();
-					}
-				},
-				{
-					title: i18n.player,
-					data: 'player.nickname'
-				},
-				{ title: i18n.level, data: 'player.progress.level' },
-				{ title: i18n.kills, data: 'player.total.kills' },
-				{ title: i18n.dies, data: 'player.total.dies' },
-				{ title: i18n.kd, data: 'player.total.kd' },
-				{ title: i18n.wins, data: 'player.total.victories' },
-				{ title: i18n.headshots.full, data: 'player.total.headshots' },
-				{ title: i18n.grenadeKills.full, data: 'player.total.grenadeKills' },
-				{ title: i18n.meleeKills.full, data: 'player.total.meleeKills' },
-				{ title: i18n.artefactKills.full, data: 'player.total.artefactKills' },
-				{ title: i18n.artefactUses.full, data: 'player.total.artefactUses' },
-				{ title: i18n.pointCaptures.full, data: 'player.total.pointCaptures' },
-				{ title: i18n.boxesBringed.full, data: 'player.total.boxesBringed' }
-			]
+			}, {
+				title: i18n.player,
+				data : 'player.nickname'
+			}, {
+				title: i18n.level,
+				data : 'player.progress.level'
+			}, {
+				title: i18n.kills,
+				data : 'player.total.kills'
+			}, {
+				title: i18n.dies,
+				data : 'player.total.dies'
+			}, {
+				title: i18n.kd,
+				data : 'player.total.kd'
+			}, {
+				title: i18n.wins,
+				data : 'player.total.victories'
+			}, {
+				title: i18n.headshots.full,
+				data : 'player.total.headshots'
+			}, {
+				title: i18n.grenadeKills.full,
+				data : 'player.total.grenadeKills'
+			}, {
+				title: i18n.meleeKills.full,
+				data : 'player.total.meleeKills'
+			}, {
+				title: i18n.artefactKills.full,
+				data : 'player.total.artefactKills'
+			}, {
+				title: i18n.artefactUses.full,
+				data : 'player.total.artefactUses'
+			}, {
+				title: i18n.pointCaptures.full,
+				data : 'player.total.pointCaptures'
+			}, {
+				title: i18n.boxesBringed.full,
+				data : 'player.total.boxesBringed'
+			}]
 		});
 
 		var api = this.playersTableApi = playersTable.api();
@@ -298,7 +392,11 @@ module.exports = function (params) {
 				if (!data) {
 					return;
 				}
-				self.Pane.emit({ pane: 'player', event: 'load', value: api.row(this).data().player.nickname });
+				self.Pane.emit({
+					pane : 'player',
+					event: 'load',
+					value: api.row(this).data().player.nickname
+				});
 			});
 	};
 
@@ -311,8 +409,85 @@ module.exports = function (params) {
 		this._stats(data.stats);
 		var html = `<h3 class="clan__info-title">[${data.abbr}] ${data.name}</h3>
 					<dl class="def-list">
-						<dt class="def-list__term">${i18n.clanLevel}</dt>
+						<dt class="def-list__term">${i18n.level}</dt>
 						<dd class="def-list__desc">${data.level}</dd>
+					</dl>
+
+					<dl class="def-list">
+					  <dt class="def-list__term">${i18n.rating}</dt>
+					  <dd class="def-list__desc">${data.elo}</dd>
+					</dl>
+
+					<dl class="def-list">
+					  <dt class="def-list__term">${i18n.winrate}</dt>
+					  <dd class="def-list__desc">${(data.total.victories / data.total.matches * 100).toFixed(2)}%</dd>
+					</dl>
+
+					<dl class="def-list">
+					  <dt class="def-list__term">${i18n.totalMatches}</dt>
+					  <dd class="def-list__desc">${data.total.matches}</dd>
+					</dl>
+
+
+					<dl class="def-list">
+					  <dt class="def-list__term">${i18n.victories}</dt>
+					  <dd class="def-list__desc">${data.total.victories}</dd>
+					</dl>
+
+					<h4>${i18n.actions}</h4>
+					<dl class="def-list">
+					  <dt class="def-list__term">${i18n.kills}</dt>
+					  <dd class="def-list__desc">${data.total.kills}</dd>
+
+					</dl>
+
+					<dl class="def-list">
+					  <dt class="def-list__term">${i18n.dies}</dt>
+					  <dd class="def-list__desc">${data.total.dies}</dd>
+
+					</dl>
+
+					<dl class="def-list">
+					  <dt class="def-list__term">${i18n.kd}</dt>
+					  <dd class="def-list__desc">${utils.kd(data.total.kills, data.total.dies)}</dd>
+					</dl>
+
+					<h4>${i18n.details}</h4>
+					<dl class="def-list">
+					  <dt class="def-list__term">${i18n.headshots.full}</dt>
+					  <dd class="def-list__desc">${data.total.headshots}</dd>
+
+					</dl>
+
+					<dl class="def-list">
+					  <dt class="def-list__term">${i18n.grenadeKills.full}</dt>
+					  <dd class="def-list__desc">${data.total.grenadeKills}</dd>
+
+					</dl>
+
+					<dl class="def-list">
+					  <dt class="def-list__term">${i18n.meleeKills.full}</dt>
+					  <dd class="def-list__desc">${data.total.meleeKills}</dd>
+					</dl>
+
+					<dl class="def-list">
+					  <dt class="def-list__term">${i18n.artefactKills.full}</dt>
+					  <dd class="def-list__desc">${data.total.artefactKills}</dd>
+					</dl>
+
+					<dl class="def-list">
+					  <dt class="def-list__term">${i18n.pointCaptures.full}</dt>
+					  <dd class="def-list__desc">${data.total.pointCaptures}</dd>
+					</dl>
+
+					<dl class="def-list">
+					  <dt class="def-list__term">${i18n.boxesBringed.full}</dt>
+					  <dd class="def-list__desc">${data.total.boxesBringed}</dd>
+					</dl>
+
+					<dl class="def-list">
+					  <dt class="def-list__term">${i18n.artefactUses.full}</dt>
+					  <dd class="def-list__desc">${data.total.artefactUses}</dd>
 					</dl>`;
 		return this.info.html(html);
 	};

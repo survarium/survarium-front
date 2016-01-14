@@ -97,6 +97,7 @@ module.exports = function (params) {
 	};
 
 	Class.prototype._graphData = function (stats) {
+		var colors = Highcharts.getOptions().colors;
 		return stats.reverse().reduce(function (result, stat) {
 			var time = (new Date(stat.date)).getTime();
 			result[0].series[0].data.push([time, stat.score]);
@@ -106,11 +107,10 @@ module.exports = function (params) {
 			result[3].series[0].data.push([time, stat.kd]);
 			return result;
 		}, [
-			{ name: 'Score', navigator: { enabled: false }, scrollbar: { enabled: false }, series: [{ name: 'Score', type: 'spline', data: [] }],
-				color: Highcharts.getOptions().colors[0], fillOpacity: 0.3 },
-			{ name: 'Kills & Deaths', navigator: { enabled: false }, scrollbar: { enabled: false }, series: [
-				{ name: 'Kills', type: 'area', data: [],
-					color: Highcharts.getOptions().colors[1], fillOpacity: 0.3, fillColor : {
+			{ name: 'Score', navigator: { enabled: false }, scrollbar: { enabled: true }, series: [{ name: 'Score', type: 'spline', data: [], color: colors[1], fillOpacity: 0.3 }] },
+			{ name: 'Kills & Deaths', navigator: { enabled: false }, scrollbar: { enabled: true }, series: [
+				{ name: 'Kills', type: 'areaspline', data: [],
+					color: colors[0], fillOpacity: 0.3, fillColor : {
 					linearGradient : {
 						x1: 0,
 						y1: 0,
@@ -118,17 +118,17 @@ module.exports = function (params) {
 						y2: 1
 					},
 					stops : [
-						[0, Highcharts.getOptions().colors[1]],
-						[1, Highcharts.Color(Highcharts.getOptions().colors[1]).setOpacity(0).get('rgba')]
+						[0, colors[0]],
+						[1, Highcharts.Color(colors[0]).setOpacity(0).get('rgba')]
 					]
 				} },
 				{ name: 'Dies' , type: 'spline', data: [],
-					color: Highcharts.getOptions().colors[2], fillOpacity: 0.3 }
+					color: colors[2], fillOpacity: 0.3 }
 			] },
-			{ name: 'Level', navigator: { enabled: false }, scrollbar: { enabled: false }, series: [{ name: 'Level', type: 'spline', data: [],
-				color: Highcharts.getOptions().colors[3], fillOpacity: 0.3 }] },
-			{ name: 'KD', navigator: { enabled: false }, scrollbar: { enabled: false }, series: [{ name: 'KD', type: 'spline', data: [],
-				color: Highcharts.getOptions().colors[4], fillOpacity: 0.3 }] }
+			{ name: 'Level', navigator: { enabled: false }, scrollbar: { enabled: true }, series: [{ name: 'Level', type: 'spline', data: [],
+				color: colors[3], fillOpacity: 0.3 }] },
+			{ name: 'KD', navigator: { enabled: false }, scrollbar: { enabled: true }, series: [{ name: 'KD', type: 'spline', data: [],
+				color: colors[4], fillOpacity: 0.3 }] }
 		]);
 	};
 
@@ -239,6 +239,27 @@ module.exports = function (params) {
 					title: {
 						text: null
 					}
+				},
+				rangeSelector : {
+					buttons : [{
+						type : 'day',
+						count : 1,
+						text : '1D'
+					}, {
+						type : 'week',
+						count : 1,
+						text : '1W'
+					}, {
+						type : 'month',
+						count : 1,
+						text : '1M'
+					}, {
+						type : 'all',
+						count : 1,
+						text : 'All'
+					}],
+					selected : 1,
+					inputEnabled : false
 				},
 				tooltip: {
 					positioner: function () {
