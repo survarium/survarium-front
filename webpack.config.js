@@ -6,7 +6,15 @@ module.exports = {
 	entry: {
 		v0: "./src/v0/index.js",
 		v1: "./src/v1/index.js",
-		vendor: ['jquery', 'datatables.net', 'datatables.net-buttons', 'highcharts/highstock', 'highcharts/themes/dark-unica']
+		vendor: [
+			'jquery',
+			'datatables.net',
+			'datatables.net-buttons',
+			'highcharts/highstock',
+			'highcharts/themes/dark-unica',
+			'highcharts/highcharts-more',
+		    'highcharts/modules/solid-gauge'
+		]
 	},
 	output: {
 		path: path.join(__dirname, 'static'),

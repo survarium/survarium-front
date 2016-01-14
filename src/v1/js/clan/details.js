@@ -1,10 +1,12 @@
 require('../../styl/def-list.styl');
+require('../../styl/clan/details.styl');
 
 var Loader = require('../loader');
 var Error  = require('../error');
 var utils  = require('../utils');
 
 require('datatables.net');
+var Highcharts = require('../charts');
 
 module.exports = function (params) {
 	var $        = params.$;
@@ -136,8 +138,10 @@ module.exports = function (params) {
 		this._error = new (Error(params))();
 		this._error.elem.appendTo(this.elem);
 
-		this.info = $('<div>', { class: 'clan__details' })
-			.appendTo(this.elem);
+		this.elem.append([
+			this.title = $('<h3>', { class: 'clan__title' }),
+			this.info = $('<div>', { class: 'clan__details' })
+		]);
 	};
 
 	Class.prototype.load = function (abbr, opts) {
@@ -400,15 +404,126 @@ module.exports = function (params) {
 			});
 	};
 
+	Class.prototype._graphData = function (totals) {
+		return [
+			{
+				chart: {
+					type: 'solidgauge'
+				},
+
+				title: null,
+
+				pane: {
+					center: ['50%', '85%'],
+					size: '140%',
+					startAngle: -90,
+					endAngle: 90,
+					background: {
+						backgroundColor: (Highcharts.theme && Highcharts.theme.background2) || '#EEE',
+						innerRadius: '60%',
+						outerRadius: '100%',
+						shape: 'arc'
+					}
+				},
+
+				tooltip: {
+					enabled: false
+				},
+
+				// the value axis
+				yAxis: {
+					stops: [
+						[0.1, '#DF5353'], // red
+						[0.5, '#DDDF0D'], // yellow
+						[0.9, '#55BF3B']  // green
+
+					],
+					lineWidth: 0,
+					minorTickInterval: null,
+					tickPixelInterval: 400,
+					tickWidth: 0,
+					labels: {
+						y: 16
+					},
+					min: 0,
+					max: 100,
+					title: {
+						text: i18n.winrate,
+						y: -70
+					}
+				},
+
+				plotOptions: {
+					solidgauge: {
+						dataLabels: {
+							y: 5,
+							borderWidth: 0,
+							useHTML: true
+						}
+					}
+				},
+				credits: {
+					enabled: false
+				},
+				series: [{
+					name: i18n.winrate,
+					data: [+(totals.kd = totals.victories / totals.matches * 100).toFixed(2)],
+					dataLabels: {
+						format: '<div style="text-align:center"><span style="font-size:25px;color:' +
+						((Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black') + '">{y}</span><br/>' +
+						'<span style="font-size:12px;color:silver">%</span></div>'
+					},
+					tooltip: {
+						valueSuffix: ' %'
+					}
+				}]
+			}
+		];
+	};
+
+	Class.prototype._graph = function (totals) {
+		if (this.charts) {
+			return this._graphUpdate(totals);
+		}
+
+		var graph = this.graph;
+		if (!graph) {
+			graph = $('<div>', { class: 'clan__graph' });
+			graph.insertAfter(this.title);
+		}
+
+		this.charts = this._graphData(totals).map(function (dataset) {
+			var elem = $('<div>', { class: 'clan__stats-chart' }).appendTo(graph);
+			var chart = new Highcharts.Chart(Highcharts.merge({ chart: { renderTo: elem[0] } }, dataset));
+			chart.__elem = elem;
+			return chart;
+		});
+	};
+
+	Class.prototype._graphUpdate = function (totals) {
+		var charts = this.charts;
+		if (!charts || !charts.length) {
+			return;
+		}
+		var data = this._graphData(totals);
+		charts.forEach(function (chart, i) {
+			var series = data[i].series;
+			series.forEach(function (serie, j) {
+				chart.series[j].setData(serie.data, false);
+			});
+			chart.redraw(300);
+		});
+	};
+
 	Class.prototype.__attach = function (Pane) {
 		this.Pane = Pane;
 	};
 
 	Class.prototype._render = function (data) {
+		this._graph(data.total);
 		this._players(data.players);
 		this._stats(data.stats);
-		var html = `<h3 class="clan__info-title">[${data.abbr}] ${data.name}</h3>
-					<dl class="def-list">
+		var html = `<dl class="def-list">
 						<dt class="def-list__term">${i18n.level}</dt>
 						<dd class="def-list__desc">${data.level}</dd>
 					</dl>
@@ -420,7 +535,7 @@ module.exports = function (params) {
 
 					<dl class="def-list">
 					  <dt class="def-list__term">${i18n.winrate}</dt>
-					  <dd class="def-list__desc">${(data.total.victories / data.total.matches * 100).toFixed(2)}%</dd>
+					  <dd class="def-list__desc">${(data.total.kd).toFixed(2)}%</dd>
 					</dl>
 
 					<dl class="def-list">
@@ -489,6 +604,7 @@ module.exports = function (params) {
 					  <dt class="def-list__term">${i18n.artefactUses.full}</dt>
 					  <dd class="def-list__desc">${data.total.artefactUses}</dd>
 					</dl>`;
+		this.title.text(`[${data.abbr}] ${data.name}`);
 		return this.info.html(html);
 	};
 
