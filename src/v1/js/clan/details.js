@@ -127,6 +127,13 @@ module.exports = function (params) {
 		return i18n;
 	}, i18n);
 
+	var Ranks = {
+		commander: 0,
+		assistant: 1,
+		warlord  : 2,
+		soldier  : 3
+	};
+
 	var Class = function () {
 		this.elem = $('<div>', {
 			class: 'clan__info'
@@ -339,12 +346,19 @@ module.exports = function (params) {
 				visible: false,
 				targets: [8, 9, 10, 11, 12, 13]
 			}],
+			order: [[0, 'asc']],
 			stateSave : true,
 			columns   : [{
 				title : i18n.role,
 				data  : `role`,
-				render: function (data) {
-					return i18n.roles[data] || data.capitalize();
+				render: function (data, type, row) {
+					if (type === 'sort') {
+						return Ranks[data] === undefined ? i18n.roles[row.role] || row.role : Ranks[data];
+					}
+					if (type === 'type') {
+						return 'num';
+					}
+					return i18n.roles[row.role] || row.role.capitalize();
 				}
 			}, {
 				title: i18n.player,
