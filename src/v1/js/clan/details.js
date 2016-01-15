@@ -46,7 +46,7 @@ module.exports = function (params) {
 				commander: 'Командир',
 				warlord  : 'Сержант',
 				assistant: 'Зам. командира',
-				soldier  : 'Рядовой'
+				soldier  : 'Солдат'
 			}
 		},
 		english: {
@@ -424,9 +424,7 @@ module.exports = function (params) {
 				chart: {
 					type: 'solidgauge'
 				},
-
 				title: null,
-
 				pane: {
 					center: ['50%', '85%'],
 					size: '140%',
@@ -443,8 +441,6 @@ module.exports = function (params) {
 				tooltip: {
 					enabled: false
 				},
-
-				// the value axis
 				yAxis: {
 					stops: [
 						[0.1, '#DF5353'], // red
@@ -466,7 +462,6 @@ module.exports = function (params) {
 						y: -70
 					}
 				},
-
 				plotOptions: {
 					solidgauge: {
 						dataLabels: {
