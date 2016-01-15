@@ -31,7 +31,9 @@ module.exports = function (params) {
 			artefactKills: 'Убийства артефактами',
 			pointCaptures: 'Захватов точек',
 			boxesBringed: 'Принесено ящиков',
-			artefactUses: 'Использований артефактов'
+			artefactUses: 'Использований артефактов',
+			winrate: 'Винрейт',
+			scoreAvg: 'Средний счет'
 		},
 		english: {
 			progress: 'Progress',
@@ -55,7 +57,9 @@ module.exports = function (params) {
 			artefactKills: 'Artefacts kills',
 			pointCaptures: 'Point captured',
 			boxesBringed: 'Boxes bringed',
-			artefactUses: 'Artefacts used'
+			artefactUses: 'Artefacts used',
+			winrate: 'Winrate',
+			scoreAvg: 'Average score'
 		}
 	}[params.language];
 
@@ -169,6 +173,16 @@ module.exports = function (params) {
 					<dl class="def-list">
 					  <dt class="def-list__term">${i18n.totalMatches}</dt>
 					  <dd class="def-list__desc">${data.total.matches}</dd>
+					</dl>
+
+					<dl class="def-list">
+					  <dt class="def-list__term">${i18n.winrate}</dt>
+					  <dd class="def-list__desc">${(data.total.winRate).toFixed(2)} %</dd>
+					</dl>
+
+					<dl class="def-list">
+					  <dt class="def-list__term">${i18n.scoreAvg}</dt>
+					  <dd class="def-list__desc">${data.total.scoreAvg}</dd>
 					</dl>
 
 					<h4>${i18n.details}</h4>

@@ -162,7 +162,7 @@ module.exports = function (params) {
 			columnDefs: [
 				{ className: 'foo', targets: [2] },
 				{ className: 'dataTable__cell_centered', targets: '_all' },
-				{ visible: false, targets: [0, 1] },
+				{ visible: false, targets: [0, 1, 7, 8, 9, 10, 11, 12, 13] },
 				{ orderData: [1, 3], targets: [1, 3] },
 				{ orderData: [1, 2], targets: [2] }
 			],
