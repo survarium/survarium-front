@@ -180,7 +180,6 @@ module.exports = function (params) {
 					}
 				});
 			},
-			stateSave  : true,
 			columns: [
 				{
 					title: i18n.win,

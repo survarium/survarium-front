@@ -225,7 +225,6 @@ module.exports = function (params) {
 				visible: false,
 				targets: [8, 9, 10, 11, 12, 13, 14, 15]
 			}],
-			stateSave : true,
 			columns   : [{
 				title : i18n.date,
 				data  : 'date',
@@ -347,7 +346,6 @@ module.exports = function (params) {
 				targets: [8, 9, 10, 11, 12, 13]
 			}],
 			order: [[0, 'asc']],
-			stateSave : true,
 			columns   : [{
 				title : i18n.role,
 				data  : `role`,

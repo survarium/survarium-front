@@ -20,7 +20,7 @@ module.exports = function (config) {
 				});
 		},
 		match: function (id, slim) {
-			return $.ajax(config.apiPath + '/matches/' + id, {
+			return $.ajax(config.apiPath + '/matches/' + encodeURIComponent(id), {
 					data: {
 						slim: slim,
 						lang: config.language
@@ -29,7 +29,7 @@ module.exports = function (config) {
 		},
 		player: function (query, options) {
 			options = options || {};
-			return $.ajax(config.apiPath + '/players/' + query, {
+			return $.ajax(config.apiPath + '/players/' + encodeURIComponent(query), {
 				data: {
 					byName: options.byName,
 					fullStats: options.fullStats,
@@ -38,7 +38,7 @@ module.exports = function (config) {
 			});
 		},
 		clan: function (abbr) {
-			return $.ajax(config.apiPath + '/clans/' + abbr, {
+			return $.ajax(config.apiPath + '/clans/' + encodeURIComponent(abbr), {
 				data: {
 					lang: config.language
 				}
