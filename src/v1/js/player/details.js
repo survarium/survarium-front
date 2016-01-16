@@ -108,9 +108,7 @@ module.exports = function (params) {
 	};
 
 	Class.prototype._setCurrent = function (nick, opts) {
-		if (!opts.noStory) {
-			utils.setQuery({ player: nick }, { replace: true, title: nick });
-		} else utils.setTitle(nick);
+		utils.setQuery({ player: nick }, { replace: true, title: nick, noStory: opts.noStory });
 		counters.track('player', nick);
 		this._current = nick;
 		clearTimeout(this._currentUnset);

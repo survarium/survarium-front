@@ -27,8 +27,8 @@ var makeTitle = function (dyn) {
 };
 
 var setTitle = function (title) {
-	title = title ? makeTitle(title) : null;
-	title && $title.text(title);
+	title = title ? makeTitle(title) : _title;
+	$title.text(title);
 	return title;
 };
 
@@ -36,6 +36,7 @@ var setTitle = function (title) {
  * Обновить ?query
  * @param {Object}       params              список ключ-значение
  * @param {Object}       [options]
+ * @param {Boolean}      [options.noStory]   не добавлять объект истории
  * @param {Boolean}      [options.replace]   не объединять с текущим query
  * @param {String|Array} [options.title]     заголовок страницы
  */
@@ -60,7 +61,8 @@ var setQuery = function (params, options) {
 		return key + '=' + encodeURIComponent(value);
 	}).join('&');
 
-	window.history.pushState(params, setTitle(options.title), '?' + query);
+	!options.noStory && window.history.pushState.apply(window.history, [params, null, '?' + query]);
+	setTitle(options.title);
 };
 
 var leadZeros = function (num, rate) {
@@ -115,4 +117,3 @@ exports.leadZeros = leadZeros;
 exports.timeParse = timeParse;
 exports.kd = kdRatio;
 exports.updateTable = updateTable;
-exports.setTitle = setTitle;

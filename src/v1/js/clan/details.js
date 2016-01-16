@@ -174,9 +174,7 @@ module.exports = function (params) {
 	};
 
 	Class.prototype._setCurrent = function (abbr, opts) {
-		if (!opts.noStory) {
-			utils.setQuery({ clan: abbr }, { replace: true, title: [i18n.title, abbr] });
-		} else utils.setTitle([i18n.title, abbr]);
+		utils.setQuery({ clan: abbr }, { replace: true, title: [i18n.title, abbr], noStory: opts.noStory });
 		counters.track('clan', abbr);
 		this._current = abbr;
 		clearTimeout(this._currentUnset);

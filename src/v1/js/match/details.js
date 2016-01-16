@@ -109,9 +109,7 @@ module.exports = function (params) {
 	};
 
 	Class.prototype._setCurrent = function (id, opts) {
-		if (!opts.noStory) {
-			utils.setQuery({ match: id }, { replace: true, title: [i18n.title, id] });
-		} else utils.setTitle([i18n.title, id]);
+		utils.setQuery({ match: id }, { replace: true, title: [i18n.title, id], noStory: opts.noStory });
 		counters.track('match', id);
 		this._current = id;
 		clearTimeout(this._currentUnset);
