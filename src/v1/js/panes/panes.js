@@ -10,6 +10,18 @@ module.exports = function (params) {
 		}
 	}[params.language];
 
+	function historyNavigation(panes) {
+		window.onpopstate = function(event) {
+			var state = event.state;
+			if (!state) {
+				return;
+			}
+			Object.keys(state).forEach(function (pane) {
+				panes.emit({ pane: pane, event: 'load', value: state[pane], opts: { noStory: true } });
+			});
+		};
+	}
+
 	var Class = function () {
 		var self = this;
 		this.panes = {};
@@ -20,6 +32,7 @@ module.exports = function (params) {
 		this._body = $('<div>', { class: 'panes__pane' });
 
 		domElem.append([this._tabs, this._body]);
+		historyNavigation(this);
 
 		domElem.on('click', '.panes__tab', function (e, opts) {
 			e.preventDefault();
