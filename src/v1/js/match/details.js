@@ -164,10 +164,10 @@ module.exports = function (params) {
 			columnDefs: [
 				{ className: 'foo', targets: [2] },
 				{ className: 'dataTable__cell_centered', targets: '_all' },
-				{ visible: false, targets: [0, 1, 7, 8, 9, 10, 11, 12, 13] },
-				{ orderData: [1, 3], targets: [1, 3] },
-				{ orderData: [1, 2], targets: [2] }
+				{ visible: false, targets: [0, 1, 7, 8, 9, 10, 11, 12, 13] }
 			],
+			order: [[3, 'desc']],
+			orderFixed: [1, 'asc'],
 			drawCallback: function () {
 				var api  = this.api();
 				var rows = api.rows({ page:'current' }).nodes();
@@ -175,7 +175,7 @@ module.exports = function (params) {
 
 				api.column(1, { page:'current' }).data().each(function (group, i) {
 					if (last !== group) {
-						$(rows).eq( i ).before(
+						$(rows).eq(i).before(
 							`<tr class="dataTable__row_group"><td colspan="12">${i18n.team}: ` + (!group ? 'A': 'B') + `</td></tr>`
 						);
 						last = group;
@@ -247,9 +247,34 @@ module.exports = function (params) {
 			});
 	};
 
+	Class.prototype._clanWar = function (stats) {
+		var clanwar = {
+			clans: [null, null],
+			winner: true
+		};
+		stats.forEach(stat => {
+			if (!clanwar.winner) {
+				return;
+			}
+			let clan = stat.player.clan_meta;
+			if (!clan) {
+				return clanwar.winner = false;
+			}
+			if (clanwar.clans[stat.team] !== null && clanwar.clans[stat.team] !== clan.id ) {
+				return clanwar.winner = false;
+			}
+			if (stat.victory) {
+				clanwar.winner = clan.abbr;
+			}
+			return clanwar.clans[stat.team] = clan.id;
+		});
+		return clanwar;
+	};
+
 	Class.prototype._render = function (data) {
 		this._table(data.stats);
 		var map = data.map.lang[language];
+		var clanwar = this._clanWar(data.stats);
 		var html = `<h3 class="match__info-title">${i18n.id} ${data.id} / ${map.name} (${map.weather}) / ${map.mode}</h3>
 					<dl class="def-list">
 						<dt class="def-list__term">${i18n.time_start}</dt>
@@ -269,7 +294,7 @@ module.exports = function (params) {
 					+ (data.stats.length ?
 					`<dl class="def-list">
 						<dt class="def-list__term">${i18n.win}</dt>
-						<dd class="def-list__desc">${(data.stats[0].victory && !data.stats[0].team) ? 'A' : 'B' }</dd>
+						<dd class="def-list__desc">${clanwar.winner || ((data.stats[0].victory && !data.stats[0].team) ? 'A' : 'B') }</dd>
 					</dl>` : ``) +
 
 					`<div>
