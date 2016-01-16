@@ -34,7 +34,7 @@ module.exports = function (params) {
 			window.scrollTo(0, 0);
 			setTimeout(function () {
 				opts.cb && opts.cb();
-			}, 0);
+			}, 5);
 		});
 	};
 
@@ -77,7 +77,6 @@ module.exports = function (params) {
 	 */
 	Class.prototype._attachPaneInstance = function (paneInstance) {
 		var components = paneInstance.components;
-		var component;
 		Object.keys(components).forEach(function (componentName) {
 			components[componentName].Pane = this;
 		}, this);
