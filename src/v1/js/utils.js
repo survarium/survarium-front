@@ -61,7 +61,8 @@ var setQuery = function (params, options) {
 		return key + '=' + encodeURIComponent(value);
 	}).join('&');
 
-	!options.noStory && window.history.pushState.apply(window.history, [params, null, '?' + query]);
+	var state = [params, null, '?' + query];
+	window.history[(!options.noStory ? 'push' : 'replace') + 'State'].apply(window.history, state);
 	setTitle(options.title);
 };
 
