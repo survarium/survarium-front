@@ -30,21 +30,27 @@ var ga;
 	n.parentNode.insertBefore(s, n);
 })(window, document, 'script');
 
-ga('create', 'UA-72511738-1', 'auto');
-ga('require', 'linkid');
-ga('send', 'pageview');
+try {
+	ga('create', 'UA-72511738-1', 'auto');
+	ga('require', 'linkid');
+	ga('send', 'pageview');
+} catch (e) {}
 
 exports.track = function (page, value) {
-	ga('send', 'event', {
-		'eventCategory': page,
-		'eventAction': 'Track',
-		'eventValue': value
-	});
-	metrica && metrica.hit(`?${page}`, {
-		player  : value
-	});
+	try {
+		ga('send', 'event', {
+			'eventCategory': page,
+			'eventAction': 'Track',
+			'eventValue': value
+		});
+		metrica && metrica.hit(`?${page}`, {
+			player  : value
+		});
+	} catch (e) {}
 };
 
 exports.goal = function (id, opts) {
-	metrica && metrica.reachGoal(id, opts);
+	try {
+		metrica && metrica.reachGoal(id, opts);
+	} catch (e) {}
 };
