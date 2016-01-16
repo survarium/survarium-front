@@ -43,8 +43,9 @@ module.exports = function (params) {
 		},
 		events: {
 			load: function (value) {
-				this.setActive('clan');
-				clanDetails.load(value);
+				this.setActive('clan', function () {
+					clanDetails.load(value);
+				});
 			}
 		}
 	};

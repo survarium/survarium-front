@@ -39,13 +39,8 @@ module.exports = function (params) {
 				}
 
 				params.storage.set(storageKey, match);
-
-				self.matchDetails && self.matchDetails.load(match);
+				self.Pane.emit({ pane: 'match', event: 'load', value: match });
 			});
-	};
-
-	Class.prototype.attachDetails = function (instance) {
-		return this.matchDetails = instance;
 	};
 
 	return Class;

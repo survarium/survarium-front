@@ -87,10 +87,6 @@ module.exports = function (params) {
 			})
 	};
 
-	Class.prototype.__attach = function (Pane) {
-		this.Pane = Pane;
-	};
-
 	Class.prototype.load = function (nick, opts) {
 		if (this._current === nick) {
 			return;

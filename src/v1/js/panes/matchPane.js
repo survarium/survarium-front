@@ -22,9 +22,6 @@ module.exports = function (params) {
 	var matchLatest  = new (MatchLatest(params))();
 	var matchDetails = new (MatchDetails(params))();
 
-	matchFind.attachDetails(matchDetails);
-	matchLatest.attachDetails(matchDetails);
-
 	search.append($(matchFind.elem).add(matchLatest.elem).addClass('grid__cell'));
 
 	pane.append([
@@ -53,9 +50,10 @@ module.exports = function (params) {
 			details: matchDetails
 		},
 		events: {
-			load: function (value) {
-				this.setActive('match');
-				matchDetails.load(value);
+			load: function (value, opts) {
+				this.setActive('match', function () {
+					matchDetails.load(value, opts);
+				});
 			}
 		}
 	};

@@ -38,12 +38,8 @@ module.exports = function (params) {
 
 			params.storage.set(storageKey, nickname);
 
-			self.playerDetails && self.playerDetails.load(nickname);
+			self.Pane.emit({ pane: 'player', event: 'load', value: nickname });
 		});
-	};
-
-	Class.prototype.attachDetails = function (instance) {
-		return this.playerDetails = instance;
 	};
 
 	return Class;

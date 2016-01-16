@@ -44,9 +44,5 @@ module.exports = function (params) {
 			});
 	};
 
-	Class.prototype.__attach = function (Pane) {
-		this.Pane = Pane;
-	};
-
 	return Class;
 };

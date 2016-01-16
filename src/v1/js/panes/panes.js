@@ -21,16 +21,20 @@ module.exports = function (params) {
 
 		domElem.append([this._tabs, this._body]);
 
-		domElem.on('click', '.panes__tab', function (e) {
+		domElem.on('click', '.panes__tab', function (e, opts) {
 			e.preventDefault();
+			opts = opts || {};
 			var $this = $(this);
 			var pane = self.panes[$this.data('name')];
 			if (!pane || pane.name === self.active) {
-				return;
+				return opts.cb && opts.cb();
 			}
 			self._close();
 			self._open(pane);
 			window.scrollTo(0, 0);
+			setTimeout(function () {
+				opts.cb && opts.cb();
+			}, 0);
 		});
 	};
 
@@ -75,16 +79,12 @@ module.exports = function (params) {
 		var components = paneInstance.components;
 		var component;
 		Object.keys(components).forEach(function (componentName) {
-			component = components[componentName];
-			if (!component.__attach) {
-				return;
-			}
-			component.__attach(this);
+			components[componentName].Pane = this;
 		}, this);
 	};
 
 	Class.prototype.emit = function (params) {
-		this.panes[params.pane].events[params.event].call(this, params.value);
+		this.panes[params.pane].events[params.event].call(this, params.value, params.opts);
 	};
 
 	Class.prototype.ensureActive = function (name) {
@@ -94,11 +94,11 @@ module.exports = function (params) {
 		this.setActive(name);
 	};
 
-	Class.prototype.setActive = function (name) {
+	Class.prototype.setActive = function (name, cb) {
 		if (this.active === name || !this.panes[name]) {
-			return;
+			return cb();
 		}
-		this.panes[name].tab.click();
+		this.panes[name].tab.trigger('click', { cb: cb });
 	};
 
 	return Class;

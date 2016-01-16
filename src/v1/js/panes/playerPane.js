@@ -19,7 +19,6 @@ module.exports = function (params) {
 	var playerDetails = new (PlayerDetails(params))();
 	var playerStats   = new (PlayerStats(params))();
 
-	playerFind.attachDetails(playerDetails);
 	playerDetails.attachPlayerMatches(playerStats);
 
 	pane.append([
@@ -50,8 +49,9 @@ module.exports = function (params) {
 		},
 		events: {
 			load: function (value) {
-				this.setActive('player');
-				playerDetails.load(value);
+				this.setActive('player', function () {
+					playerDetails.load(value);
+				});
 			}
 		}
 	};

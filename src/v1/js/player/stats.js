@@ -79,10 +79,6 @@ module.exports = function (params) {
 		this._loader.elem.appendTo(this.elem);
 	};
 
-	Class.prototype.__attach = function (Pane) {
-		this.Pane = Pane;
-	};
-
 	Class.prototype.load = function (stats) {
 		if (!stats || !stats.length) {
 			return this._empty();

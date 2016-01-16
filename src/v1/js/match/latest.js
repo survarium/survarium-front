@@ -62,12 +62,8 @@ module.exports = function (params) {
 
 				params.storage.set(storageKey, level);
 
-				self.matchDetails && self.matchDetails.load('latest', { level });
+				self.Pane.emit({ pane: 'match', event: 'load', value: 'latest', opts: { level } });
 			});
-	};
-
-	Class.prototype.attachDetails = function (instance) {
-		return this.matchDetails = instance;
 	};
 
 	return Class;

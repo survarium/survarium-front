@@ -526,10 +526,6 @@ module.exports = function (params) {
 		});
 	};
 
-	Class.prototype.__attach = function (Pane) {
-		this.Pane = Pane;
-	};
-
 	Class.prototype._render = function (data) {
 		this._graph(data.total);
 		this._players(data.players);
