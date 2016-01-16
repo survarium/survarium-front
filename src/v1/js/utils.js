@@ -88,9 +88,15 @@ var kdRatio = function (kill, die) {
 		kill;
 };
 
+var updateTable = function (tableApi, data) {
+	tableApi.clear().rows.add(data).draw().scroller.measure(false);
+	tableApi.row(tableApi.rows({ order: 'applied', search: 'applied' }).indexes()).scrollTo(false);
+};
+
 exports.query = getQuery;
 exports.setQuery = setQuery;
 exports.duration = duration;
 exports.leadZeros = leadZeros;
 exports.timeParse = timeParse;
 exports.kd = kdRatio;
+exports.updateTable = updateTable;

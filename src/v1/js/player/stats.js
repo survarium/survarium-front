@@ -10,6 +10,7 @@ var Highcharts = require('../charts');
 module.exports = function (params) {
 	var $ = params.$;
 	var lang = params.language;
+	var counters = params.counters;
 
 	var i18n = {
 		russian: {
@@ -91,7 +92,7 @@ module.exports = function (params) {
 	};
 
 	Class.prototype._empty = function () {
-		this.table && this.tableApi.clear().draw();
+		this.table && utils.updateTable(this.tableApi, stats);
 		this._graphClear();
 		return this.elem.text(i18n.noStats);
 	};
@@ -349,7 +350,7 @@ module.exports = function (params) {
 	Class.prototype._table = function (stats) {
 		var table = this.table;
 		if (table) {
-			return this.tableApi.clear().rows.add(stats).draw();
+			return utils.updateTable(this.tableApi, stats);
 		}
 		table = this.table = $('<table>', {
 			id: 'player__stats'
@@ -418,46 +419,10 @@ module.exports = function (params) {
 		var api = this.tableApi = table.api();
 		var self = this;
 		table.on('click', 'tr', function () {
+			counters.goal('match:from:player');
 			self.Pane.emit({ pane: 'match', event: 'load', value: api.row(this).data().match.id });
 		});
 	};
-
-	/*Class.prototype._render = function (matches) {
-		var grid = matches.map(function (stat) {
-					return `<div class="player__stats__stat" data-id="${stat.match.id}">
-						<div class="grid grid_ta_center">
-							<div class="grid__cell">${utils.timeParse(stat.date)}</div>
-							<div class="grid__cell">${stat.map.lang[lang].name} – ${stat.map.lang[lang].mode}</div>
-							<div class="grid__cell">${stat.match.level}</div>
-							<div class="grid__cell">${stat.victory ? i18n.win : i18n.loose}</div>
-							<div class="grid__cell">${stat.kills}/${stat.dies} (${stat.kd})</div>
-							<div class="grid__cell">${stat.score}</div>
-						</div>
-						<div class="grid grid_ta_center player__stats__stat__actions">
-							<div class="grid__cell" title="${i18n.headshots.full}">${i18n.headshots.abbr}: ${stat.headshots}</div>
-							<div class="grid__cell" title="${i18n.grenadeKills.full}">${i18n.grenadeKills.abbr}: ${stat.grenadeKills}</div>
-							<div class="grid__cell" title="${i18n.meleeKills.full}">${i18n.meleeKills.abbr}: ${stat.meleeKills}</div>
-							<div class="grid__cell" title="${i18n.artefactKills.full} / ${i18n.artefactUses.full}">${i18n.artefactKills.abbr} / ${i18n.artefactUses.abbr}: ${stat.artefactKills} / ${stat.artefactUses}</div>
-							<div class="grid__cell" title="${i18n.pointCaptures.full}">${i18n.pointCaptures.abbr}: ${stat.pointCaptures}</div>
-							<div class="grid__cell" title="${i18n.boxesBringed.full}">${i18n.boxesBringed.abbr}: ${stat.boxesBringed}</div>
-						</div>
-					</div>`;
-				}).join('');
-
-		var html = `<h3 class="player__stats__title">${i18n.title}</h3>
-		<div class="player__stats__matches">
-			<div class="grid grid_ta_center player__stats__stat__descriptions">
-				<div class="grid__cell">${i18n.date}</div>
-				<div class="grid__cell">${i18n.map}</div>
-				<div class="grid__cell">${i18n.level}</div>
-				<div class="grid__cell">${i18n.win}</div>
-				<div class="grid__cell">${i18n.kdStat}</div>
-				<div class="grid__cell">${i18n.score}</div>
-			</div>
-			${grid}
-		</div>`;
-		return this.elem.html(html);
-	};*/
 
 	return Class;
 };

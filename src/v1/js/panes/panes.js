@@ -30,7 +30,7 @@ module.exports = function (params) {
 			}
 			self._close();
 			self._open(pane);
-			window.scrollTop = 0;
+			window.scrollTo(0);
 		});
 	};
 

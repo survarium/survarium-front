@@ -7,6 +7,7 @@ var utils  = require('../utils');
 module.exports = function (params) {
 	var $ = params.$;
 	var api = params.api;
+	var counters = params.counters;
 
 	var i18n = {
 		russian: {
@@ -80,6 +81,7 @@ module.exports = function (params) {
 			.appendTo(this.elem)
 			.on('click', '.player__clan', function (e) {
 				e.preventDefault();
+				counters.goal('clan:from:player');
 				self.Pane.emit({ pane: 'clan', event: 'load', value: $(e.target).data('abbr') });
 				return false;
 			})
@@ -113,6 +115,7 @@ module.exports = function (params) {
 		if (!opts.noStory) {
 			utils.setQuery({ player: nick }, { replace: true });
 		}
+		counters.track('player', nick);
 		this._current = nick;
 		clearTimeout(this._currentUnset);
 		this._currentUnset = setTimeout(function () {

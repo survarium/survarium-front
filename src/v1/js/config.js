@@ -1,4 +1,5 @@
 var $ = require('jquery');
+var counters = require('./counters');
 
 var config = {
 	apiPath: '/api/v1',
@@ -8,7 +9,8 @@ var config = {
 		get: localStorage.getItem.bind(localStorage),
 		set: localStorage.setItem.bind(localStorage)
 	},
-	$: $
+	$: $,
+	counters: counters
 };
 
 var language = config.storage.get(config.langStorageKey);

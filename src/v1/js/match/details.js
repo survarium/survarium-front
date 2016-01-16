@@ -10,6 +10,7 @@ module.exports = function (params) {
 	var $ = params.$;
 	var api = params.api;
 	var language = params.language;
+	var counters = params.counters;
 
 	var i18n = {
 		russian: {
@@ -109,6 +110,7 @@ module.exports = function (params) {
 		if (!opts.noStory) {
 			utils.setQuery({ match: id }, { replace: true });
 		}
+		counters.track('match', id);
 		this._current = id;
 		clearTimeout(this._currentUnset);
 		this._currentUnset = setTimeout(function () {
@@ -123,7 +125,7 @@ module.exports = function (params) {
 	Class.prototype._table = function (stats) {
 		var table = this.table;
 		if (table) {
-			this.tableApi.clear().rows.add(stats).draw();
+			utils.updateTable(this.tableApi, stats);
 			return;
 		}
 		table = this.table = $('<table>', {
@@ -220,6 +222,7 @@ module.exports = function (params) {
 		table
 			.on('click', '.player__clan', function (e) {
 				e.preventDefault();
+				counters.goal('clan:from:match');
 				self.Pane.emit({ pane: 'clan', event: 'load', value: $(e.target).data('abbr') });
 				return false;
 			})
@@ -239,6 +242,7 @@ module.exports = function (params) {
 				if (!data) {
 					return;
 				}
+				counters.goal('player:from:match');
 				self.Pane.emit({ pane: 'player', event: 'load', value: api.row(this).data().player.nickname });
 			});
 	};

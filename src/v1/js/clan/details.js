@@ -12,6 +12,7 @@ module.exports = function (params) {
 	var $        = params.$;
 	var api      = params.api;
 	var language = params.language;
+	var counters = params.counters;
 
 	var i18n = {
 		russian: {
@@ -170,11 +171,12 @@ module.exports = function (params) {
 			.always(self._loader.hide.bind(self._loader));
 	};
 
-	Class.prototype._setCurrent = function (id, opts) {
+	Class.prototype._setCurrent = function (abbr, opts) {
 		if (!opts.noStory) {
-			utils.setQuery({ clan: id }, { replace: true });
+			utils.setQuery({ clan: abbr }, { replace: true });
 		}
-		this._current = id;
+		counters.track('clan', abbr);
+		this._current = abbr;
 		clearTimeout(this._currentUnset);
 		this._currentUnset = setTimeout(function () {
 			this._current = null;
@@ -184,7 +186,7 @@ module.exports = function (params) {
 	Class.prototype._stats = function (stats) {
 		var statsTable = this.statsTable;
 		if (statsTable) {
-			this.statsTableApi.clear().rows.add(stats).draw();
+			utils.updateTable(this.statsTableApi, stats);
 			return;
 		}
 		var wrap   = $(`<div class="clan__players-wrap"><h3>${i18n.matches}</h3></div>`);
@@ -223,7 +225,7 @@ module.exports = function (params) {
 				searchable: false
 			}, {
 				visible: false,
-				targets: [8, 9, 10, 11, 12, 13, 14, 15]
+				targets: [10, 11, 12, 13, 14, 15, 16]
 			}],
 			columns   : [{
 				title : i18n.date,
@@ -293,6 +295,7 @@ module.exports = function (params) {
 				if (!data) {
 					return;
 				}
+				counters.goal('match:from:clan');
 				self.Pane.emit({
 					pane : 'match',
 					event: 'load',
@@ -304,7 +307,7 @@ module.exports = function (params) {
 	Class.prototype._players = function (stats) {
 		var playersTable = this.playersTable;
 		if (playersTable) {
-			this.playersTableApi.clear().rows.add(stats).draw();
+			utils.updateTable(this.playersTableApi, stats);
 			return;
 		}
 		var wrap     = $(`<div class="clan__players-wrap"><h3>${i18n.members}</h3></div>`);
@@ -343,7 +346,7 @@ module.exports = function (params) {
 				searchable: false
 			}, {
 				visible: false,
-				targets: [8, 9, 10, 11, 12, 13]
+				targets: [7, 8, 9, 10, 11, 12, 13]
 			}],
 			order: [[0, 'asc']],
 			columns   : [{
@@ -408,6 +411,7 @@ module.exports = function (params) {
 				if (!data) {
 					return;
 				}
+				counters.goal('player:from:clan');
 				self.Pane.emit({
 					pane : 'player',
 					event: 'load',
