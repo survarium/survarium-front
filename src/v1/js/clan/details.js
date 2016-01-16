@@ -16,6 +16,7 @@ module.exports = function (params) {
 
 	var i18n = {
 		russian: {
+			title       : 'Клан',
 			id          : 'ID',
 			date        : 'Дата',
 			level       : 'Уровень',
@@ -51,6 +52,7 @@ module.exports = function (params) {
 			}
 		},
 		english: {
+			title       : 'Clan',
 			id          : 'ID',
 			data        : 'Date',
 			win         : 'Win',
@@ -164,7 +166,7 @@ module.exports = function (params) {
 
 		return api.clan(abbr)
 			.then(function (clan) {
-				self._setCurrent(abbr, opts);
+				self._setCurrent(clan.abbr, opts);
 				self._render(clan);
 			})
 			.fail(self._error.show.bind(self._error))
@@ -173,8 +175,8 @@ module.exports = function (params) {
 
 	Class.prototype._setCurrent = function (abbr, opts) {
 		if (!opts.noStory) {
-			utils.setQuery({ clan: abbr }, { replace: true });
-		}
+			utils.setQuery({ clan: abbr }, { replace: true, title: [i18n.title, abbr] });
+		} else utils.setTitle([i18n.title, abbr]);
 		counters.track('clan', abbr);
 		this._current = abbr;
 		clearTimeout(this._currentUnset);

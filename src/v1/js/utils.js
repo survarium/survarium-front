@@ -1,3 +1,7 @@
+var config = require('./config');
+var $title = config.$('title');
+var _title = $title.text();
+
 var getQuery = function () {
 	return window.location.search ?
 		window.location.search.slice(1).split('&').reduce(function (result, pair) {
@@ -18,11 +22,22 @@ var getQuery = function () {
 		}, {}) : null;
 };
 
+var makeTitle = function (dyn) {
+	return [_title].concat(dyn instanceof Array ? dyn : [dyn]).join(' | ');
+};
+
+var setTitle = function (title) {
+	title = title ? makeTitle(title) : null;
+	title && $title.text(title);
+	return title;
+};
+
 /**
  * Обновить ?query
- * @param {Object}  params              список ключ-значение
- * @param {Object}  [options]
- * @param {Boolean} [options.replace]   не объединять с текущим query
+ * @param {Object}       params              список ключ-значение
+ * @param {Object}       [options]
+ * @param {Boolean}      [options.replace]   не объединять с текущим query
+ * @param {String|Array} [options.title]     заголовок страницы
  */
 var setQuery = function (params, options) {
 	if (!params || !(params instanceof Object)) {
@@ -45,7 +60,7 @@ var setQuery = function (params, options) {
 		return key + '=' + encodeURIComponent(value);
 	}).join('&');
 
-	window.history.pushState(params, null, '?' + query);
+	window.history.pushState(params, setTitle(options.title), '?' + query);
 };
 
 var leadZeros = function (num, rate) {
@@ -100,3 +115,4 @@ exports.leadZeros = leadZeros;
 exports.timeParse = timeParse;
 exports.kd = kdRatio;
 exports.updateTable = updateTable;
+exports.setTitle = setTitle;

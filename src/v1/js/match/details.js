@@ -14,6 +14,7 @@ module.exports = function (params) {
 
 	var i18n = {
 		russian: {
+			title: 'Матч',
 			id: 'ID',
 			replay: 'Скачать реплей',
 			level  : 'Уровень',
@@ -34,6 +35,7 @@ module.exports = function (params) {
 			}
 		},
 		english: {
+			title: 'Match',
 			id: 'ID',
 			replay: 'Download replay',
 			time_start: 'Time of start',
@@ -99,7 +101,7 @@ module.exports = function (params) {
 			api.latestMatch(opts.level) :
 			api.match(id))
 			.then(function (match) {
-				self._setCurrent(id, opts);
+				self._setCurrent(match.id, opts);
 				self._render(match);
 			})
 			.fail(self._error.show.bind(self._error))
@@ -108,8 +110,8 @@ module.exports = function (params) {
 
 	Class.prototype._setCurrent = function (id, opts) {
 		if (!opts.noStory) {
-			utils.setQuery({ match: id }, { replace: true });
-		}
+			utils.setQuery({ match: id }, { replace: true, title: [i18n.title, id] });
+		} else utils.setTitle([i18n.title, id]);
 		counters.track('match', id);
 		this._current = id;
 		clearTimeout(this._currentUnset);

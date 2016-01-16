@@ -99,7 +99,7 @@ module.exports = function (params) {
 		return api
 			.player(nick, { fullStats: true, byName: true })
 			.then(function (player) {
-				self._setCurrent(nick, opts);
+				self._setCurrent(player.nickname, opts);
 				self._render(player);
 				self.playerMatches && (self.playerMatches.load(player.stats));
 			})
@@ -109,8 +109,8 @@ module.exports = function (params) {
 
 	Class.prototype._setCurrent = function (nick, opts) {
 		if (!opts.noStory) {
-			utils.setQuery({ player: nick }, { replace: true });
-		}
+			utils.setQuery({ player: nick }, { replace: true, title: nick });
+		} else utils.setTitle(nick);
 		counters.track('player', nick);
 		this._current = nick;
 		clearTimeout(this._currentUnset);
