@@ -28,8 +28,8 @@ module.exports = function (params) {
 		this.active = null;
 
 		var domElem = this.elem = $('<div>', { class: 'panes' });
-		this._tabs = $('<div>', { class: 'panes__tabs' });
-		this._body = $('<div>', { class: 'panes__pane' });
+		this._tabs = $('<header>', { class: 'panes__tabs pad' });
+		this._body = $('<div>', { class: 'panes__pane pad' });
 
 		domElem.append([this._tabs, this._body]);
 		historyNavigation(this);
@@ -71,7 +71,7 @@ module.exports = function (params) {
 		if (this.panes[paneInstance.name]) {
 			return;
 		}
-		paneInstance.tab = $(`<div data-name="${paneInstance.name}" class="panes__tab">${paneInstance.title}</div>`);
+		paneInstance.tab = $(`<div data-name="${paneInstance.name}" class="panes__tab"><a class="panes__tab_link" href="?${paneInstance.name}">${paneInstance.title}</a></div>`);
 		paneInstance.events = paneInstance.events || {};
 		this.panes[paneInstance.name] = paneInstance;
 		this._tabs.append(paneInstance.tab);

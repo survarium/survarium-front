@@ -1,4 +1,5 @@
 require('../../styl/def-list.styl');
+require('../../styl/match/details.styl');
 
 var Loader = require('../loader');
 var Error  = require('../error');
@@ -16,7 +17,8 @@ module.exports = function (params) {
 		russian: {
 			title: 'Матч',
 			id: 'ID',
-			replay: 'Скачать реплей',
+			replay: 'Реплей',
+			download: 'Скачать',
 			level  : 'Уровень',
 			time_start: 'Время начала',
 			duration: 'Продолжительность',
@@ -37,7 +39,8 @@ module.exports = function (params) {
 		english: {
 			title: 'Match',
 			id: 'ID',
-			replay: 'Download replay',
+			replay: 'Replay',
+			download: 'Download',
 			time_start: 'Time of start',
 			duration: 'Duration',
 			win    : 'Win',
@@ -119,7 +122,7 @@ module.exports = function (params) {
 	};
 
 	Class.prototype._replay = function (link) {
-		return link ? `<a href="http://${decodeURIComponent(link)}" target="_blank">${i18n.replay}</a>` : '';
+		return link ? `<a href="http://${decodeURIComponent(link)}" target="_blank">${i18n.download}</a>` : '';
 	};
 
 	Class.prototype._table = function (stats) {
@@ -275,7 +278,8 @@ module.exports = function (params) {
 		this._table(data.stats);
 		var map = data.map.lang[language];
 		var clanwar = this._clanWar(data.stats);
-		var html = `<h3 class="match__info-title">${i18n.id} ${data.id} / ${map.name} (${map.weather}) / ${map.mode}</h3>
+		var html = `<h3 class="match__info-title title">${i18n.id} ${data.id} / ${map.name} (${map.weather}) / ${map.mode}</h3>
+				<div class="def-list__values">
 					<dl class="def-list">
 						<dt class="def-list__term">${i18n.time_start}</dt>
 						<dd class="def-list__desc">${utils.timeParse(data.date)}</dd>
@@ -297,9 +301,11 @@ module.exports = function (params) {
 						<dd class="def-list__desc">${clanwar.winner || ((data.stats[0].victory && !data.stats[0].team) ? 'A' : 'B') }</dd>
 					</dl>` : ``) +
 
-					`<div>
-						${this._replay(data.replay)}
-					</div>`;
+					`<dl class="def-list">
+						<dt class="def-list__term">${i18n.replay}</dt>
+						<dd class="def-list__desc">${this._replay(data.replay)}</dd>
+					</dl>
+				</div>`;
 		return this.info.html(html);
 	};
 

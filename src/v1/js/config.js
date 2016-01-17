@@ -1,3 +1,5 @@
+require('./font');
+
 var $ = require('jquery');
 var counters = require('./counters');
 

@@ -39,6 +39,7 @@ module.exports = function (params) {
 			totalMatches: 'Всего матчей',
 			actions     : 'Действия',
 			details     : 'Детали',
+			progress    : 'Прогресс',
 			dt          : {
 				basic  : 'Общее',
 				actions: 'Действия',
@@ -75,6 +76,7 @@ module.exports = function (params) {
 			totalMatches: 'Total matches',
 			details     : 'Details',
 			actions     : 'Actions',
+			progress    : 'Progress',
 			dt          : {
 				basic  : 'Basic',
 				actions: 'Actions',
@@ -148,10 +150,7 @@ module.exports = function (params) {
 		this._error = new (Error(params))();
 		this._error.elem.appendTo(this.elem);
 
-		this.elem.append([
-			this.title = $('<h3>', { class: 'clan__title' }),
-			this.info = $('<div>', { class: 'clan__details' })
-		]);
+		this.elem.append([this.title = $('<h3>', { class: 'clan__title title' }), this.info = $('<div>', { class: 'clan__details' })]);
 	};
 
 	Class.prototype.load = function (abbr, opts) {
@@ -174,7 +173,11 @@ module.exports = function (params) {
 	};
 
 	Class.prototype._setCurrent = function (abbr, opts) {
-		utils.setQuery({ clan: abbr }, { replace: true, title: [i18n.title, abbr], noStory: opts.noStory });
+		utils.setQuery({ clan: abbr }, {
+			replace: true,
+			title  : [i18n.title, abbr],
+			noStory: opts.noStory
+		});
 		counters.track('clan', abbr);
 		this._current = abbr;
 		clearTimeout(this._currentUnset);
@@ -348,7 +351,7 @@ module.exports = function (params) {
 				visible: false,
 				targets: [7, 8, 9, 10, 11, 12, 13]
 			}],
-			order: [[0, 'asc']],
+			order     : [[0, 'asc']],
 			columns   : [{
 				title : i18n.role,
 				data  : `role`,
@@ -421,75 +424,71 @@ module.exports = function (params) {
 	};
 
 	Class.prototype._graphData = function (totals) {
-		return [
-			{
-				chart: {
-					type: 'solidgauge'
-				},
-				title: null,
-				pane: {
-					center: ['50%', '85%'],
-					size: '140%',
-					startAngle: -90,
-					endAngle: 90,
-					background: {
-						backgroundColor: (Highcharts.theme && Highcharts.theme.background2) || '#EEE',
-						innerRadius: '60%',
-						outerRadius: '100%',
-						shape: 'arc'
-					}
-				},
+		return [{
+			chart: {
+				type           : 'solidgauge',
+				backgroundColor: 'transparent'
+			},
+			title: null,
+			pane : {
+				center    : ['50%', '85%'],
+				size      : '140%',
+				startAngle: -90,
+				endAngle  : 90,
+				background: {
+					backgroundColor: (Highcharts.theme && Highcharts.theme.background2) || '#EEE',
+					innerRadius    : '60%',
+					outerRadius    : '100%',
+					shape          : 'arc'
+				}
+			},
 
-				tooltip: {
-					enabled: false
-				},
-				yAxis: {
-					stops: [
-						[0.1, '#DF5353'], // red
-						[0.5, '#DDDF0D'], // yellow
-						[0.9, '#55BF3B']  // green
+			tooltip    : {
+				enabled: false
+			},
+			yAxis      : {
+				stops            : [[0.1, '#DF5353'], // red
+				                    [0.5, '#DDDF0D'], // yellow
+				                    [0.9, '#55BF3B']  // green
 
-					],
-					lineWidth: 0,
-					minorTickInterval: null,
-					tickPixelInterval: 400,
-					tickWidth: 0,
-					labels: {
-						y: 16
-					},
-					min: 0,
-					max: 100,
-					title: {
-						text: i18n.winrate,
-						y: -70
-					}
+				],
+				lineWidth        : 0,
+				minorTickInterval: null,
+				tickPixelInterval: 400,
+				tickWidth        : 0,
+				labels           : {
+					y: 16
 				},
-				plotOptions: {
-					solidgauge: {
-						dataLabels: {
-							y: 5,
-							borderWidth: 0,
-							useHTML: true
-						}
-					}
-				},
-				credits: {
-					enabled: false
-				},
-				series: [{
-					name: i18n.winrate,
-					data: [+(totals.kd = totals.victories / totals.matches * 100).toFixed(2)],
+				min              : 0,
+				max              : 100,
+				title            : {
+					text: i18n.winrate,
+					y   : -70
+				}
+			},
+			plotOptions: {
+				solidgauge: {
 					dataLabels: {
-						format: '<div style="text-align:center"><span style="font-size:25px;color:' +
-						((Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black') + '">{y}</span><br/>' +
-						'<span style="font-size:12px;color:silver">%</span></div>'
-					},
-					tooltip: {
-						valueSuffix: ' %'
+						y          : 5,
+						borderWidth: 0,
+						useHTML    : true
 					}
-				}]
-			}
-		];
+				}
+			},
+			credits    : {
+				enabled: false
+			},
+			series     : [{
+				name      : i18n.winrate,
+				data      : [+(totals.kd = totals.victories / totals.matches * 100).toFixed(2)],
+				dataLabels: {
+					format: '<div style="text-align:center"><span style="font-size:25px;color:' + ((Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black') + '">{y}</span><br/>' + '<span style="font-size:12px;color:silver">%</span></div>'
+				},
+				tooltip   : {
+					valueSuffix: ' %'
+				}
+			}]
+		}];
 	};
 
 	Class.prototype._graph = function (totals) {
@@ -504,8 +503,8 @@ module.exports = function (params) {
 		}
 
 		this.charts = this._graphData(totals).map(function (dataset) {
-			var elem = $('<div>', { class: 'clan__stats-chart' }).appendTo(graph);
-			var chart = new Highcharts.Chart(Highcharts.merge({ chart: { renderTo: elem[0] } }, dataset));
+			var elem     = $('<div>', { class: 'clan__stats-chart' }).appendTo(graph);
+			var chart    = new Highcharts.Chart(Highcharts.merge({ chart: { renderTo: elem[0] } }, dataset));
 			chart.__elem = elem;
 			return chart;
 		});
@@ -530,87 +529,94 @@ module.exports = function (params) {
 		this._graph(data.total);
 		this._players(data.players);
 		this._stats(data.stats);
-		var html = `<dl class="def-list">
-						<dt class="def-list__term">${i18n.level}</dt>
-						<dd class="def-list__desc">${data.level}</dd>
-					</dl>
+		var html = `<h4 class="def-list__title">${i18n.progress}</h4>
+			<div class="def-list__values">
+				<dl class="def-list">
+					<dt class="def-list__term">${i18n.level}</dt>
+					<dd class="def-list__desc">${data.level}</dd>
+				</dl>
 
-					<dl class="def-list">
-					  <dt class="def-list__term">${i18n.rating}</dt>
-					  <dd class="def-list__desc">${data.elo}</dd>
-					</dl>
+				<dl class="def-list">
+				  <dt class="def-list__term">${i18n.rating}</dt>
+				  <dd class="def-list__desc">${data.elo}</dd>
+				</dl>
 
-					<dl class="def-list">
-					  <dt class="def-list__term">${i18n.winrate}</dt>
-					  <dd class="def-list__desc">${(data.total.kd).toFixed(2)}%</dd>
-					</dl>
+				<dl class="def-list">
+				  <dt class="def-list__term">${i18n.winrate}</dt>
+				  <dd class="def-list__desc">${(data.total.kd).toFixed(2)}%</dd>
+				</dl>
 
-					<dl class="def-list">
-					  <dt class="def-list__term">${i18n.totalMatches}</dt>
-					  <dd class="def-list__desc">${data.total.matches}</dd>
-					</dl>
+				<dl class="def-list">
+				  <dt class="def-list__term">${i18n.totalMatches}</dt>
+				  <dd class="def-list__desc">${data.total.matches}</dd>
+				</dl>
 
 
-					<dl class="def-list">
-					  <dt class="def-list__term">${i18n.victories}</dt>
-					  <dd class="def-list__desc">${data.total.victories}</dd>
-					</dl>
+				<dl class="def-list">
+				  <dt class="def-list__term">${i18n.victories}</dt>
+				  <dd class="def-list__desc">${data.total.victories}</dd>
+				</dl>
+			</div>
 
-					<h4>${i18n.actions}</h4>
-					<dl class="def-list">
-					  <dt class="def-list__term">${i18n.kills}</dt>
-					  <dd class="def-list__desc">${data.total.kills}</dd>
+			<h4 class="def-list__title">${i18n.actions}</h4>
+			<div class="def-list__values">
+				<dl class="def-list">
+				  <dt class="def-list__term">${i18n.kills}</dt>
+				  <dd class="def-list__desc">${data.total.kills}</dd>
 
-					</dl>
+				</dl>
 
-					<dl class="def-list">
-					  <dt class="def-list__term">${i18n.dies}</dt>
-					  <dd class="def-list__desc">${data.total.dies}</dd>
+				<dl class="def-list">
+				  <dt class="def-list__term">${i18n.dies}</dt>
+				  <dd class="def-list__desc">${data.total.dies}</dd>
 
-					</dl>
+				</dl>
 
-					<dl class="def-list">
-					  <dt class="def-list__term">${i18n.kd}</dt>
-					  <dd class="def-list__desc">${utils.kd(data.total.kills, data.total.dies)}</dd>
-					</dl>
+				<dl class="def-list">
+				  <dt class="def-list__term">${i18n.kd}</dt>
+				  <dd class="def-list__desc">${utils.kd(data.total.kills, data.total.dies)}</dd>
+				</dl>
+			</div>
 
-					<h4>${i18n.details}</h4>
-					<dl class="def-list">
-					  <dt class="def-list__term">${i18n.headshots.full}</dt>
-					  <dd class="def-list__desc">${data.total.headshots}</dd>
+			<h4 class="def-list__title">${i18n.details}</h4>
+			<div class="def-list__values">
+				<dl class="def-list">
+				  <dt class="def-list__term">${i18n.headshots.full}</dt>
+				  <dd class="def-list__desc">${data.total.headshots}</dd>
 
-					</dl>
+				</dl>
 
-					<dl class="def-list">
-					  <dt class="def-list__term">${i18n.grenadeKills.full}</dt>
-					  <dd class="def-list__desc">${data.total.grenadeKills}</dd>
+				<dl class="def-list">
+				  <dt class="def-list__term">${i18n.grenadeKills.full}</dt>
+				  <dd class="def-list__desc">${data.total.grenadeKills}</dd>
 
-					</dl>
+				</dl>
 
-					<dl class="def-list">
-					  <dt class="def-list__term">${i18n.meleeKills.full}</dt>
-					  <dd class="def-list__desc">${data.total.meleeKills}</dd>
-					</dl>
+				<dl class="def-list">
+				  <dt class="def-list__term">${i18n.meleeKills.full}</dt>
+				  <dd class="def-list__desc">${data.total.meleeKills}</dd>
+				</dl>
 
-					<dl class="def-list">
-					  <dt class="def-list__term">${i18n.artefactKills.full}</dt>
-					  <dd class="def-list__desc">${data.total.artefactKills}</dd>
-					</dl>
+				<dl class="def-list">
+				  <dt class="def-list__term">${i18n.artefactKills.full}</dt>
+				  <dd class="def-list__desc">${data.total.artefactKills}</dd>
+				</dl>
 
-					<dl class="def-list">
-					  <dt class="def-list__term">${i18n.pointCaptures.full}</dt>
-					  <dd class="def-list__desc">${data.total.pointCaptures}</dd>
-					</dl>
+				<dl class="def-list">
+				  <dt class="def-list__term">${i18n.pointCaptures.full}</dt>
+				  <dd class="def-list__desc">${data.total.pointCaptures}</dd>
+				</dl>
 
-					<dl class="def-list">
-					  <dt class="def-list__term">${i18n.boxesBringed.full}</dt>
-					  <dd class="def-list__desc">${data.total.boxesBringed}</dd>
-					</dl>
+				<dl class="def-list">
+				  <dt class="def-list__term">${i18n.boxesBringed.full}</dt>
+				  <dd class="def-list__desc">${data.total.boxesBringed}</dd>
+				</dl>
 
-					<dl class="def-list">
-					  <dt class="def-list__term">${i18n.artefactUses.full}</dt>
-					  <dd class="def-list__desc">${data.total.artefactUses}</dd>
-					</dl>`;
+				<dl class="def-list">
+				  <dt class="def-list__term">${i18n.artefactUses.full}</dt>
+				  <dd class="def-list__desc">${data.total.artefactUses}</dd>
+				</dl>
+			</div>`;
 		this.title.text(`[${data.abbr}] ${data.name}`);
 		return this.info.html(html);
 	};

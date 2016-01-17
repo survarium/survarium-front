@@ -123,104 +123,108 @@ module.exports = function (params) {
 
 	Class.prototype._render = function (data) {
 		var clan = data.clan ? `<a class="player__clan" href="#" title="${data.clan.name}" data-abbr="${data.clan.abbr}">[${data.clan.abbr}]</a> `: '';
-		var totals = `<h4>${i18n.progress}</h4>
-					<dl class="def-list">
-					  <dt class="def-list__term">${i18n.level}</dt>
-					  <dd class="def-list__desc">${data.progress.level}</dd>
-					</dl>
+		var totals = `<h4 class="def-list__title">${i18n.progress}</h4>
+					<div class="def-list__values">
+						<dl class="def-list">
+						  <dt class="def-list__term">${i18n.level}</dt>
+						  <dd class="def-list__desc">${data.progress.level}</dd>
+						</dl>
 
-					<dl class="def-list">
-					  <dt class="def-list__term">${i18n.rating}</dt>
-					  <dd class="def-list__desc">${data.progress.elo}</dd>
-					</dl>
+						<dl class="def-list">
+						  <dt class="def-list__term">${i18n.rating}</dt>
+						  <dd class="def-list__desc">${data.progress.elo}</dd>
+						</dl>
 
-					<dl class="def-list">
-					  <dt class="def-list__term">${i18n.exp}</dt>
-					  <dd class="def-list__desc">${data.progress.experience}</dd>
-					</dl>
+						<dl class="def-list">
+						  <dt class="def-list__term">${i18n.exp}</dt>
+						  <dd class="def-list__desc">${data.progress.experience}</dd>
+						</dl>
+					</div>
 
-					<h4>${i18n.actions}</h4>
-					<dl class="def-list">
-					  <dt class="def-list__term">${i18n.kills}</dt>
-					  <dd class="def-list__desc">${data.total.kills}</dd>
+					<h4 class="def-list__title">${i18n.actions}</h4>
+					<div class="def-list__values">
+						<dl class="def-list">
+						  <dt class="def-list__term">${i18n.kills}</dt>
+						  <dd class="def-list__desc">${data.total.kills}</dd>
 
-					</dl>
+						</dl>
 
-					<dl class="def-list">
-					  <dt class="def-list__term">${i18n.deaths}</dt>
-					  <dd class="def-list__desc">${data.total.dies}</dd>
+						<dl class="def-list">
+						  <dt class="def-list__term">${i18n.deaths}</dt>
+						  <dd class="def-list__desc">${data.total.dies}</dd>
 
-					</dl>
+						</dl>
 
-					<dl class="def-list">
-					  <dt class="def-list__term">${i18n.kdRatio}</dt>
-					  <dd class="def-list__desc">${data.total.kd}</dd>
-					</dl>
+						<dl class="def-list">
+						  <dt class="def-list__term">${i18n.kdRatio}</dt>
+						  <dd class="def-list__desc">${data.total.kd}</dd>
+						</dl>
 
-					<dl class="def-list">
-					  <dt class="def-list__term">${i18n.victories}</dt>
-					  <dd class="def-list__desc">${data.total.victories}</dd>
-					</dl>
+						<dl class="def-list">
+						  <dt class="def-list__term">${i18n.victories}</dt>
+						  <dd class="def-list__desc">${data.total.victories}</dd>
+						</dl>
 
-					<dl class="def-list">
-					  <dt class="def-list__term">${i18n.looses}</dt>
-					  <dd class="def-list__desc">${data.total.matches - data.total.victories}</dd>
-					</dl>
+						<dl class="def-list">
+						  <dt class="def-list__term">${i18n.looses}</dt>
+						  <dd class="def-list__desc">${data.total.matches - data.total.victories}</dd>
+						</dl>
 
-					<dl class="def-list">
-					  <dt class="def-list__term">${i18n.totalMatches}</dt>
-					  <dd class="def-list__desc">${data.total.matches}</dd>
-					</dl>
+						<dl class="def-list">
+						  <dt class="def-list__term">${i18n.totalMatches}</dt>
+						  <dd class="def-list__desc">${data.total.matches}</dd>
+						</dl>
 
-					<dl class="def-list">
-					  <dt class="def-list__term">${i18n.winrate}</dt>
-					  <dd class="def-list__desc">${(data.total.winRate).toFixed(2)} %</dd>
-					</dl>
+						<dl class="def-list">
+						  <dt class="def-list__term">${i18n.winrate}</dt>
+						  <dd class="def-list__desc">${(data.total.winRate).toFixed(2)} %</dd>
+						</dl>
 
-					<dl class="def-list">
-					  <dt class="def-list__term">${i18n.scoreAvg}</dt>
-					  <dd class="def-list__desc">${data.total.scoreAvg}</dd>
-					</dl>
+						<dl class="def-list">
+						  <dt class="def-list__term">${i18n.scoreAvg}</dt>
+						  <dd class="def-list__desc">${data.total.scoreAvg}</dd>
+						</dl>
+					</div>
 
-					<h4>${i18n.details}</h4>
-					<dl class="def-list">
-					  <dt class="def-list__term">${i18n.headshots}</dt>
-					  <dd class="def-list__desc">${data.total.headshots}</dd>
+					<h4 class="def-list__title">${i18n.details}</h4>
+					<div class="def-list__values">
+						<dl class="def-list">
+						  <dt class="def-list__term">${i18n.headshots}</dt>
+						  <dd class="def-list__desc">${data.total.headshots}</dd>
+						</dl>
 
-					</dl>
+						<dl class="def-list">
+						  <dt class="def-list__term">${i18n.boxesBringed}</dt>
+						  <dd class="def-list__desc">${data.total.boxesBringed}</dd>
+						</dl>
 
-					<dl class="def-list">
-					  <dt class="def-list__term">${i18n.grenadeKills}</dt>
-					  <dd class="def-list__desc">${data.total.grenadeKills}</dd>
+						<dl class="def-list">
+						  <dt class="def-list__term">${i18n.pointCaptures}</dt>
+						  <dd class="def-list__desc">${data.total.pointCaptures}</dd>
+						</dl>
 
-					</dl>
+						<dl class="def-list">
+						  <dt class="def-list__term">${i18n.grenadeKills}</dt>
+						  <dd class="def-list__desc">${data.total.grenadeKills}</dd>
+						</dl>
 
-					<dl class="def-list">
-					  <dt class="def-list__term">${i18n.meleeKills}</dt>
-					  <dd class="def-list__desc">${data.total.meleeKills}</dd>
-					</dl>
+						<dl class="def-list">
+						  <dt class="def-list__term">${i18n.meleeKills}</dt>
+						  <dd class="def-list__desc">${data.total.meleeKills}</dd>
+						</dl>
 
-					<dl class="def-list">
-					  <dt class="def-list__term">${i18n.artefactKills}</dt>
-					  <dd class="def-list__desc">${data.total.artefactKills}</dd>
-					</dl>
+						<dl class="def-list">
+						  <dt class="def-list__term">${i18n.artefactKills}</dt>
+						  <dd class="def-list__desc">${data.total.artefactKills}</dd>
+						</dl>
 
-					<dl class="def-list">
-					  <dt class="def-list__term">${i18n.pointCaptures}</dt>
-					  <dd class="def-list__desc">${data.total.pointCaptures}</dd>
-					</dl>
+						<dl class="def-list">
+						  <dt class="def-list__term">${i18n.artefactUses}</dt>
+						  <dd class="def-list__desc">${data.total.artefactUses}</dd>
+						</dl>
+					</div>`;
 
-					<dl class="def-list">
-					  <dt class="def-list__term">${i18n.boxesBringed}</dt>
-					  <dd class="def-list__desc">${data.total.boxesBringed}</dd>
-					</dl>
-
-					<dl class="def-list">
-					  <dt class="def-list__term">${i18n.artefactUses}</dt>
-					  <dd class="def-list__desc">${data.total.artefactUses}</dd>
-					</dl>`;
-
-		var html = `<h3 class="player__name">${clan}<span class="player__nick">${data.nickname}</span></h3>
+		var html = `<h3 class="player__name title">${clan}<span class="player__nick">${data.nickname}</span></h3>
 		<div class="player__totals">${totals}</div>`;
 		return this.info.html(html);
 	};

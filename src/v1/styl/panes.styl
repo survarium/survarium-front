@@ -1,31 +1,57 @@
 .panes
+  &__tabs
+    position fixed
+    display block
+    top 0
+    left 0
+    width 100%
+    height 60px
+    background #2A333E
+    z-index 999
+    box-shadow 0 0 10px rgba(0, 0, 0, 0.5)
+
+  &__pane
+    margin-top 60px
+    padding-top 20px
+
   &__tab
-    &::before, &::after
-      content ''
-      position absolute
-      left 0
-      top 0
-      right 0
-      bottom 0
+    position relative
+    display inline-block
+    height 60px
+    color rgba(245, 245, 245, 0.5)
+    transition color 0.25s, background 0.25s
+    line-height 60px
+    font-size 13px
+    font-weight 500
+    min-width 50px
+    text-transform uppercase
+    vertical-align top
+
+    &_link
+      display block
+      height 100%
+      width 100%
+      padding 0 1.8vw
+      color rgba(245, 245, 245, 0.5)
+      text-align center
+      box-sizing border-box
+      text-decoration none
 
     &::after
-      content ''
-      background-color rgba(0, 0, 0, .1)
-      border 1px solid rgba(0, 0, 0, .75)
-      opacity .3
-      transition opacity ease-in-out .2s
+      content ""
+      position absolute
+      bottom 0
+      left 50%
+      width 0
+      height 3px
+      background rgba(245, 245, 245, 0)
+      transition 0.25s
 
-    display inline-block
-    position relative
-    cursor pointer
-    padding .8em 1em
-    text-align center
-    margin .5em .5em .5em 0
+    &_active, &:hover
+      .panes__tab_link
+        color rgba(245, 245, 245, 1)
 
-    &_active
       &::after
-        opacity .95
-
-    &:hover
-      &::after
-        opacity 1
+        left 0
+        width 100%
+        background rgb(255, 206, 31)

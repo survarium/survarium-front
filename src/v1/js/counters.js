@@ -12,7 +12,7 @@ var metrica;
 		m.parentNode.insertBefore(a, m)
 	})(win, doc, tagname, '//www.google-analytics.com/analytics.js', 'ga');
 
-	ga('create', 'UA-72511738-1', 'auto');
+	ga('create', 'UA-72532245-1', 'auto');
 	ga('send', 'pageview');
 
 	(win['yandex_metrika_callbacks'] = win['yandex_metrika_callbacks'] || []).push(function () {

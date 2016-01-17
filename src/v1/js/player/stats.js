@@ -192,7 +192,9 @@ module.exports = function (params) {
 			var elem = $('<div>', { class: 'player__stats-chart' }).appendTo(graph);
 			var chart = new Highcharts.StockChart({
 				chart: {
-					marginLeft: 40, // Keep all charts left aligned
+					backgroundColor: 'rgba(255, 255, 255, 0.04)',
+					marginLeft: 10, // Keep all charts left aligned
+					marginRight: 10, // Keep all charts left aligned
 					spacingTop: 20,
 					spacingBottom: 20,
 					zoomType: 'x',
