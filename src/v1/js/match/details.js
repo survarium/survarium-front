@@ -88,7 +88,7 @@ module.exports = function (params) {
 	};
 
 	Class.prototype.load = function (id, opts) {
-		if (this._current === id) {
+		if (this._current === id || !id) {
 			return;
 		}
 		var self = this;

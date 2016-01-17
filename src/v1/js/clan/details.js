@@ -155,7 +155,7 @@ module.exports = function (params) {
 	};
 
 	Class.prototype.load = function (abbr, opts) {
-		if (this._current === abbr) {
+		if (this._current === abbr || !abbr) {
 			return;
 		}
 		var self = this;
