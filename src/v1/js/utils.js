@@ -29,6 +29,7 @@ var makeTitle = function (dyn) {
 
 var setTitle = function (title) {
 	title = title ? makeTitle(title) : _title;
+	document.title = title;
 	$title.text(title);
 	return title;
 };
@@ -64,8 +65,7 @@ var setQuery = function (params, options) {
 
 	var state = [params, null, '/?' + query];
 	window.history[(!options.noStory ? 'push' : 'replace') + 'State'].apply(window.history, state);
-	counters.track(state[state.length - 1]);
-	setTitle(options.title);
+	counters.track(state[state.length - 1], setTitle(options.title));
 };
 
 var leadZeros = function (num, rate) {

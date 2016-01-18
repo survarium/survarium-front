@@ -21,10 +21,16 @@ var metrica;
 	n.parentNode.insertBefore(s, n);
 })(window, document, 'script');
 
-exports.track = function (page) {
+exports.track = function (page, title) {
 	try {
-		ga('send', 'pageview', page);
-		metrica && metrica.hit(page);
+		ga('send', {
+			hitType: 'pageview',
+			page: page,
+			title: title
+		});
+		metrica && metrica.hit(page, {
+			title: title
+		});
 	} catch (e) {
 	}
 };
