@@ -77,11 +77,13 @@ module.exports = function (params) {
 		this._error = new (Error(params))();
 		this._error.elem.appendTo(this.elem);
 
+		self._data = {};
+
 		this.info = $('<div>', { class: 'player__details' })
 			.appendTo(this.elem)
 			.on('click', '.player__clan', function (e) {
 				e.preventDefault();
-				counters.goal('clan:from:player');
+				counters.goal('Clan', { action: 'from:player', value: self._data.nickname });
 				self.Pane.emit({ pane: 'clan', event: 'load', value: $(e.target).data('abbr') });
 				return false;
 			})
@@ -96,12 +98,14 @@ module.exports = function (params) {
 
 		self._loader.show();
 		self._error.hide();
+
 		return api
 			.player(nick, { fullStats: true, byName: true })
 			.then(function (player) {
+				self._data = player;
 				self._setCurrent(player.nickname, opts);
 				self._render(player);
-				self.playerMatches && (self.playerMatches.load(player.stats));
+				self.playerMatches && (self.playerMatches.load(player));
 			})
 			.fail(self._error.show.bind(self._error))
 			.always(self._loader.hide.bind(self._loader));
@@ -109,7 +113,6 @@ module.exports = function (params) {
 
 	Class.prototype._setCurrent = function (nick, opts) {
 		utils.setQuery({ player: nick }, { replace: true, title: nick, noStory: opts.noStory });
-		counters.track('player', nick);
 		this._current = nick;
 		clearTimeout(this._currentUnset);
 		this._currentUnset = setTimeout(function () {

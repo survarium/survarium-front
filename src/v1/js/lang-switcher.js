@@ -31,7 +31,7 @@ module.exports = function (params) {
 		};
 
 		if (window.location.hash && window.location.hash.match(/#!\/(lang\=)?(english|russian)/)) {
-			counters.track('lang',RegExp.$2);
+			counters.track(`/#!/lang=${RegExp.$2}`);
 			setLang(RegExp.$2);
 		}
 
@@ -39,7 +39,7 @@ module.exports = function (params) {
 			e.preventDefault();
 			var $this = $(this);
 			var lang  = $this.data('lang');
-			counters.goal('lang:click', { lang: lang });
+			counters.goal('Lang', { action: 'switch', value: lang });
 			setLang(lang);
 		});
 	};

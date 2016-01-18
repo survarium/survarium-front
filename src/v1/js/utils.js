@@ -1,6 +1,7 @@
-var config = require('./config');
-var $title = config.$('title');
-var _title = $title.text();
+var config   = require('./config');
+var counters = config.counters;
+var $title   = config.$('title');
+var _title   = $title.text();
 
 var getQuery = function () {
 	return window.location.search ?
@@ -61,8 +62,9 @@ var setQuery = function (params, options) {
 		return key + '=' + encodeURIComponent(value);
 	}).join('&');
 
-	var state = [params, null, '?' + query];
+	var state = [params, null, '/?' + query];
 	window.history[(!options.noStory ? 'push' : 'replace') + 'State'].apply(window.history, state);
+	counters.track(state[state.length - 1]);
 	setTitle(options.title);
 };
 

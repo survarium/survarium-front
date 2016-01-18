@@ -77,14 +77,17 @@ module.exports = function (params) {
 
 		this._loader = new (Loader(params))();
 		this._loader.elem.appendTo(this.elem);
+
+		this._data = {};
 	};
 
-	Class.prototype.load = function (stats) {
-		if (!stats || !stats.length) {
+	Class.prototype.load = function (player) {
+		if (!player || !player.stats || !player.stats.length) {
 			return this._empty();
 		}
-		this._graph(stats);
-		return this._table(stats);
+		this._data = player;
+		this._graph(player.stats);
+		return this._table(player.stats);
 	};
 
 	Class.prototype._empty = function () {
@@ -417,7 +420,7 @@ module.exports = function (params) {
 		var api = this.tableApi = table.api();
 		var self = this;
 		table.on('click', 'tr', function () {
-			counters.goal('match:from:player');
+			counters.goal('Match', { action: 'from:player', value: self._data.nickname });
 			self.Pane.emit({ pane: 'match', event: 'load', value: api.row(this).data().match.id });
 		});
 	};

@@ -162,9 +162,11 @@ module.exports = function (params) {
 
 		self._loader.show();
 		self._error.hide();
+		self._data = {};
 
 		return api.clan(abbr)
 			.then(function (clan) {
+				self._data = clan;
 				self._setCurrent(clan.abbr, opts);
 				self._render(clan);
 			})
@@ -178,7 +180,6 @@ module.exports = function (params) {
 			title  : [i18n.title, abbr],
 			noStory: opts.noStory
 		});
-		counters.track('clan', abbr);
 		this._current = abbr;
 		clearTimeout(this._currentUnset);
 		this._currentUnset = setTimeout(function () {
@@ -298,7 +299,7 @@ module.exports = function (params) {
 				if (!data) {
 					return;
 				}
-				counters.goal('match:from:clan');
+				counters.goal('Match', { action: 'from:clan', value: self._data.abbr });
 				self.Pane.emit({
 					pane : 'match',
 					event: 'load',
@@ -414,7 +415,7 @@ module.exports = function (params) {
 				if (!data) {
 					return;
 				}
-				counters.goal('player:from:clan');
+				counters.goal('Player', { action: 'from:clan', value: self._data.abbr });
 				self.Pane.emit({
 					pane : 'player',
 					event: 'load',

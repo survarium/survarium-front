@@ -1,20 +1,6 @@
 var metrica;
 
 (function (win, doc, tagname) {
-	(function (i, s, o, g, r, a, m) {
-		i['GoogleAnalyticsObject'] = r;
-		i[r] = i[r] || function () {
-				(i[r].q = i[r].q || []).push(arguments)
-			}, i[r].l = 1 * new Date();
-		a = s.createElement(o), m = s.getElementsByTagName(o)[0];
-		a.async = 1;
-		a.src = g;
-		m.parentNode.insertBefore(a, m)
-	})(win, doc, tagname, '//www.google-analytics.com/analytics.js', 'ga');
-
-	ga('create', 'UA-72532245-1', 'auto');
-	ga('send', 'pageview');
-
 	(win['yandex_metrika_callbacks'] = win['yandex_metrika_callbacks'] || []).push(function () {
 		try {
 			metrica = new Ya.Metrika({
@@ -35,23 +21,30 @@ var metrica;
 	n.parentNode.insertBefore(s, n);
 })(window, document, 'script');
 
-exports.track = function (page, value) {
+exports.track = function (page) {
 	try {
-		ga('send', 'event', {
-			'eventCategory': page,
-			'eventAction'  : 'Track',
-			'eventValue'   : value
-		});
-		metrica && metrica.hit(`?${page}`, {
-			player: value
-		});
+		ga('send', 'pageview', page);
+		metrica && metrica.hit(page);
 	} catch (e) {
 	}
 };
 
-exports.goal = function (id, opts) {
+/**
+ * Goals
+ * @param {String} title       event title
+ * @param {Object} opts
+ * @param {String} opts.action event name
+ * @param {*} opts.value  event value
+ */
+exports.goal = function (title, opts) {
 	try {
-		metrica && metrica.reachGoal(id, opts);
+		metrica && metrica.reachGoal([title, opts.action].join(':'), opts.value);
+		ga('send', {
+			hitType      : opts.type || 'event',
+			eventCategory: title,
+			eventAction  : opts.action,
+			eventValue   : opts.value
+		});
 	} catch (e) {
 	}
 };
