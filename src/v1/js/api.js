@@ -37,6 +37,15 @@ module.exports = function (config) {
 				}
 			});
 		},
+		players: function (query, options) {
+			options = options || {};
+			query = query || {};
+			query.lang = config.language;
+			return $.ajax({
+				url: config.apiPath + '/players/',
+				data: query
+			});
+		},
 		clan: function (abbr) {
 			return $.ajax(config.apiPath + '/clans/' + encodeURIComponent(abbr), {
 				data: {

@@ -54,6 +54,7 @@ module.exports = function (params) {
 	Class.prototype._open = function (pane) {
 		pane.tab.addClass('panes__tab_active');
 		pane.pane.appendTo(this._body);
+		pane.events && pane.events.onOpen && pane.events.onOpen();
 		this.active = pane.name;
 	};
 

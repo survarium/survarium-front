@@ -8,7 +8,12 @@ var getQuery = function () {
 		window.location.search.slice(1).split('&').reduce(function (result, pair) {
 			var keyVal = pair.split('=');
 			var key = keyVal[0];
-			var val = keyVal[1] ? decodeURIComponent(keyVal[1]) : undefined;
+			var val;
+			try {
+				val = keyVal[1] ? decodeURIComponent(keyVal[1]) : undefined;
+			} catch (e) {
+				console.error(e);
+			}
 			if (!result[key]) {
 				result[key] = val;
 			} else if (result[key] instanceof Array) {

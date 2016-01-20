@@ -20,7 +20,8 @@ module.exports = function (config) {
 				previous: 'Назад'
 			},
 			emptyTable: 'Нет данных для отображения',
-			zeroRecords: 'Данные не найдены'
+			zeroRecords: 'Данные не найдены',
+			processing: 'Загрузка...'
 		},
 		english: {
 			buttons: {
