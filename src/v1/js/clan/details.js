@@ -196,17 +196,19 @@ module.exports = function (params) {
 			stat.clanwar.clans.forEach(function (result) {
 				if (result.clan.id === id) {
 					stat.clanwar.victory = result.win;
+					stat.clanwar.clan    = result;
 				} else {
-					stat.clanwar.opponent = result.clan;
+					stat.clanwar.opponent = result;
 				}
 			});
-
+			stat.clanwar.score = [stat.clanwar.clan.total.score, stat.clanwar.opponent.total.score];
+			stat.clanwar.kills = [stat.clanwar.clan.total.kills, stat.clanwar.opponent.total.kills];
 			return stat;
 		});
 	};
 
 	Class.prototype._stats = function (data) {
-		var stats      = this._prepareStats(data);
+		var stats = this._prepareStats(data);
 		var statsTable = this.statsTable;
 		if (statsTable) {
 			utils.updateTable(this.statsTableApi, stats);
@@ -223,6 +225,7 @@ module.exports = function (params) {
 			scroller  : true,
 			buttons   : false,
 			data      : stats,
+			responsive: true,
 			columnDefs: [{
 				className: 'foo',
 				targets  : [2]
@@ -248,7 +251,19 @@ module.exports = function (params) {
 				}
 			}, {
 				title: i18n.opponent,
-				data : 'clanwar.opponent.abbr'
+				data : 'clanwar.opponent.clan.abbr'
+			}, {
+				title : i18n.score,
+				data  : 'clanwar.score',
+				render: function (data) {
+					return data.join(' : ');
+				}
+			}, {
+				title : i18n.kills,
+				data  : 'clanwar.kills',
+				render: function (data) {
+					return data.join(' : ');
+				}
 			}, {
 				title: i18n.level,
 				data : `level`
@@ -298,8 +313,8 @@ module.exports = function (params) {
 			buttons   : ['colvis', {
 				extend: 'colvisGroup',
 				text  : i18n.dt.basic,
-				show  : [0, 1, 2, 3, 4, 5, 6],
-				hide  : [7, 8, 9, 10, 11, 12, 13]
+				show  : [0, 1, 2, 3, 5, 6],
+				hide  : [4, 7, 8, 9, 10, 11, 12, 13]
 			}, {
 				extend: 'colvisGroup',
 				text  : i18n.dt.actions,
@@ -323,7 +338,7 @@ module.exports = function (params) {
 				searchable: false
 			}, {
 				visible: false,
-				targets: [7, 8, 9, 10, 11, 12, 13]
+				targets: [4, 7, 8, 9, 10, 11, 12, 13]
 			}],
 			order     : [[0, 'asc']],
 			columns   : [{
