@@ -191,7 +191,7 @@ module.exports = function (params) {
 
 	Class.prototype._prepareStats = function (data) {
 		var id      = data.id;
-		var matches = data.matches;
+		var matches = data.matches || [];
 		return matches.map(function (stat) {
 			stat.clanwar.clans.forEach(function (result) {
 				if (result.clan.id === id) {
