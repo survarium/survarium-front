@@ -31,7 +31,8 @@ module.exports = function (params) {
 			kd          : 'У/С',
 			player      : 'Имя',
 			members     : 'Участники',
-			matches     : 'Матчи',
+			CWmatches   : 'Клановые матчи',
+			opponent    : 'Противники',
 			role        : 'Роль',
 			rating      : 'Рейтинг',
 			winrate     : 'Винрейт',
@@ -68,7 +69,8 @@ module.exports = function (params) {
 			kd          : 'K/D',
 			player      : 'Name',
 			members     : 'Members',
-			matches     : 'Matches',
+			CWmatches   : 'Clan matches',
+			opponent    : 'Opponents',
 			role        : 'Role',
 			rating      : 'Rating',
 			winrate     : 'Winrate',
@@ -187,49 +189,50 @@ module.exports = function (params) {
 		}.bind(this), 5000);
 	};
 
-	Class.prototype._stats = function (stats) {
+	Class.prototype._prepareStats = function (data) {
+		var id      = data.id;
+		var matches = data.matches;
+		return matches.map(function (stat) {
+			stat.clanwar.clans.forEach(function (result) {
+				if (result.clan.id === id) {
+					stat.clanwar.victory = result.win;
+				} else {
+					stat.clanwar.opponent = result.clan;
+				}
+			});
+
+			return stat;
+		});
+	};
+
+	Class.prototype._stats = function (data) {
+		var stats      = this._prepareStats(data);
 		var statsTable = this.statsTable;
 		if (statsTable) {
 			utils.updateTable(this.statsTableApi, stats);
 			return;
 		}
-		var wrap   = $(`<div class="clan__players-wrap"><h3>${i18n.matches}</h3></div>`);
+		var wrap   = $(`<div class="clan__players-wrap"><h3>${i18n.CWmatches}</h3></div>`);
 		statsTable = this.statsTable = $('<table>', {
-			id: 'clan__stats'
+			id: 'clan__cw'
 		});
 		statsTable.appendTo(wrap);
 		wrap.appendTo(this.elem);
 		statsTable.dataTable({
+			dom       : 'frtip',
 			scroller  : true,
-			buttons   : ['colvis', {
-				extend: 'colvisGroup',
-				text  : i18n.dt.basic,
-				show  : [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
-				hide  : [10, 11, 12, 13, 14, 15, 16]
-			}, {
-				extend: 'colvisGroup',
-				text  : i18n.dt.actions,
-				show  : [5, 10, 11, 12, 13, 14, 15, 16],
-				hide  : [0, 1, 2, 3, 4, 6, 7, 8, 9]
-			}, {
-				extend: 'colvisGroup',
-				text  : i18n.dt.all,
-				show  : ':hidden'
-			}],
+			buttons   : false,
 			data      : stats,
 			columnDefs: [{
 				className: 'foo',
 				targets  : [2]
 			}, {
-				targets   : [2, 3, 4],
+				targets   : [2],
 				searchable: true
 			}, {
 				className : 'dataTable__cell_centered',
 				targets   : '_all',
 				searchable: false
-			}, {
-				visible: false,
-				targets: [10, 11, 12, 13, 14, 15, 16]
 			}],
 			columns   : [{
 				title : i18n.date,
@@ -239,55 +242,22 @@ module.exports = function (params) {
 				}
 			}, {
 				title : i18n.win,
-				data  : 'victory',
+				data  : 'clanwar.victory',
 				render: function (data) {
 					return data ? i18n.win : i18n.loose;
 				}
+			}, {
+				title: i18n.opponent,
+				data : 'clanwar.opponent.abbr'
+			}, {
+				title: i18n.level,
+				data : `level`
 			}, {
 				title: i18n.map,
 				data : `map.lang.${language}.name`
 			}, {
 				title: i18n.mode,
 				data : `map.lang.${language}.mode`
-			}, {
-				title: i18n.level,
-				data : `match.level`
-			}, {
-				title: i18n.player,
-				data : 'player.nickname'
-			}, {
-				title: i18n.score,
-				data : 'score'
-			}, {
-				title: i18n.kills,
-				data : 'kills'
-			}, {
-				title: i18n.dies,
-				data : 'dies'
-			}, {
-				title: i18n.kd,
-				data : 'kd'
-			}, {
-				title: i18n.headshots.full,
-				data : 'headshots'
-			}, {
-				title: i18n.grenadeKills.full,
-				data : 'grenadeKills'
-			}, {
-				title: i18n.meleeKills.full,
-				data : 'meleeKills'
-			}, {
-				title: i18n.artefactKills.full,
-				data : 'artefactKills'
-			}, {
-				title: i18n.artefactUses.full,
-				data : 'artefactUses'
-			}, {
-				title: i18n.pointCaptures.full,
-				data : 'pointCaptures'
-			}, {
-				title: i18n.boxesBringed.full,
-				data : 'boxesBringed'
 			}]
 		});
 
@@ -299,11 +269,14 @@ module.exports = function (params) {
 				if (!data) {
 					return;
 				}
-				counters.goal('Match', { action: 'from:clan', value: self._data.abbr });
+				counters.goal('Match', {
+					action: 'from:clan',
+					value : self._data.abbr
+				});
 				self.Pane.emit({
 					pane : 'match',
 					event: 'load',
-					value: api.row(this).data().match.id
+					value: api.row(this).data().id
 				});
 			});
 	};
@@ -415,7 +388,10 @@ module.exports = function (params) {
 				if (!data) {
 					return;
 				}
-				counters.goal('Player', { action: 'from:clan', value: self._data.abbr });
+				counters.goal('Player', {
+					action: 'from:clan',
+					value : self._data.abbr
+				});
 				self.Pane.emit({
 					pane : 'player',
 					event: 'load',
@@ -527,9 +503,10 @@ module.exports = function (params) {
 	};
 
 	Class.prototype._render = function (data) {
-		this._graph(data.total);
+		data.total && this._graph(data.total);
+		data.total = data.total || {};
 		this._players(data.players);
-		this._stats(data.stats);
+		this._stats(data);
 		var html = `<h4 class="def-list__title">${i18n.progress}</h4>
 			<div class="def-list__values">
 				<dl class="def-list">
@@ -544,18 +521,18 @@ module.exports = function (params) {
 
 				<dl class="def-list">
 				  <dt class="def-list__term">${i18n.winrate}</dt>
-				  <dd class="def-list__desc">${(data.total.kd).toFixed(2)}%</dd>
+				  <dd class="def-list__desc">${(data.total.kd || 0).toFixed(2)}%</dd>
 				</dl>
 
 				<dl class="def-list">
 				  <dt class="def-list__term">${i18n.totalMatches}</dt>
-				  <dd class="def-list__desc">${data.total.matches}</dd>
+				  <dd class="def-list__desc">${data.total.matches || 0}</dd>
 				</dl>
 
 
 				<dl class="def-list">
 				  <dt class="def-list__term">${i18n.victories}</dt>
-				  <dd class="def-list__desc">${data.total.victories}</dd>
+				  <dd class="def-list__desc">${data.total.victories || 0}</dd>
 				</dl>
 			</div>
 
@@ -563,19 +540,19 @@ module.exports = function (params) {
 			<div class="def-list__values">
 				<dl class="def-list">
 				  <dt class="def-list__term">${i18n.kills}</dt>
-				  <dd class="def-list__desc">${data.total.kills}</dd>
+				  <dd class="def-list__desc">${data.total.kills || 0}</dd>
 
 				</dl>
 
 				<dl class="def-list">
 				  <dt class="def-list__term">${i18n.dies}</dt>
-				  <dd class="def-list__desc">${data.total.dies}</dd>
+				  <dd class="def-list__desc">${data.total.dies || 0}</dd>
 
 				</dl>
 
 				<dl class="def-list">
 				  <dt class="def-list__term">${i18n.kd}</dt>
-				  <dd class="def-list__desc">${utils.kd(data.total.kills, data.total.dies)}</dd>
+				  <dd class="def-list__desc">${utils.kd(data.total.kills || 0, data.total.dies || 0)}</dd>
 				</dl>
 			</div>
 
@@ -583,39 +560,39 @@ module.exports = function (params) {
 			<div class="def-list__values">
 				<dl class="def-list">
 				  <dt class="def-list__term">${i18n.headshots.full}</dt>
-				  <dd class="def-list__desc">${data.total.headshots}</dd>
+				  <dd class="def-list__desc">${data.total.headshots || 0}</dd>
 
 				</dl>
 
 				<dl class="def-list">
 				  <dt class="def-list__term">${i18n.grenadeKills.full}</dt>
-				  <dd class="def-list__desc">${data.total.grenadeKills}</dd>
+				  <dd class="def-list__desc">${data.total.grenadeKills || 0}</dd>
 
 				</dl>
 
 				<dl class="def-list">
 				  <dt class="def-list__term">${i18n.meleeKills.full}</dt>
-				  <dd class="def-list__desc">${data.total.meleeKills}</dd>
+				  <dd class="def-list__desc">${data.total.meleeKills || 0}</dd>
 				</dl>
 
 				<dl class="def-list">
 				  <dt class="def-list__term">${i18n.artefactKills.full}</dt>
-				  <dd class="def-list__desc">${data.total.artefactKills}</dd>
+				  <dd class="def-list__desc">${data.total.artefactKills || 0}</dd>
 				</dl>
 
 				<dl class="def-list">
 				  <dt class="def-list__term">${i18n.pointCaptures.full}</dt>
-				  <dd class="def-list__desc">${data.total.pointCaptures}</dd>
+				  <dd class="def-list__desc">${data.total.pointCaptures || 0}</dd>
 				</dl>
 
 				<dl class="def-list">
 				  <dt class="def-list__term">${i18n.boxesBringed.full}</dt>
-				  <dd class="def-list__desc">${data.total.boxesBringed}</dd>
+				  <dd class="def-list__desc">${data.total.boxesBringed || 0}</dd>
 				</dl>
 
 				<dl class="def-list">
 				  <dt class="def-list__term">${i18n.artefactUses.full}</dt>
-				  <dd class="def-list__desc">${data.total.artefactUses}</dd>
+				  <dd class="def-list__desc">${data.total.artefactUses || 0}</dd>
 				</dl>
 			</div>`;
 		this.title.text(`[${data.abbr}] ${data.name}`);
