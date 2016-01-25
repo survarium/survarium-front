@@ -71,7 +71,8 @@ module.exports = function (params) {
 				var search    = data.search.value;
 				var order     = data.order[0];
 				data.search   = undefined;
-				data.nickname = ~[undefined, null, ''].indexOf(search) ? undefined : search.length > 1 ? search : undefined;
+				data.nickname = ~[undefined, null, ''].indexOf(search) ? undefined : search.length > 1 ?
+					search.trim ? search.trim() : search : undefined;
 				data.stats    = 0;
 				data.noUrls   = true;
 				data.meta     = true;
