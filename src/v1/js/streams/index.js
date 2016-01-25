@@ -59,7 +59,7 @@ module.exports = function (params) {
 		var videos = yt.items.map(function (video) {
 			type = video.snippet.liveBroadcastContent === 'none' ? 'completed' : 'live';
 			return `<div class="streams__item">
-					<iframe width="560" height="315" src="https://www.youtube.com/embed/${video.id.videoId}" frameborder="0" allowfullscreen></iframe>
+					<iframe width="470" height="265" src="https://www.youtube.com/embed/${video.id.videoId}" frameborder="0" allowfullscreen></iframe>
 					<a target="_blank" href="https://www.youtube.com/watch?v=${video.id.videoId}" class="streams__info">
 						<h4 class="streams__title">${video.snippet.title}</h4>
 						<small>${utils.timeParse(video.snippet.publishedAt)}</small>

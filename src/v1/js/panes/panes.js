@@ -28,10 +28,13 @@ module.exports = function (params) {
 		this.active = null;
 
 		var domElem = this.elem = $('<div>', { class: 'panes' });
-		this._tabs = $('<header>', { class: 'panes__tabs pad' });
+		this._tabs = $('<div>', { class: 'pad' });
 		this._body = $('<div>', { class: 'panes__pane pad' });
 
 		domElem.append([this._tabs, this._body]);
+
+		this._tabs.wrap('<header class="panes__tabs"></header>');
+
 		historyNavigation(this);
 
 		domElem.on('click', '.panes__tab', function (e, opts) {
