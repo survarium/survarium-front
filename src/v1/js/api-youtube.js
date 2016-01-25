@@ -1,6 +1,6 @@
 module.exports = function (config) {
-	var $ = config.$;
-	var key = 'AIzaSyACWiZhJnrmKyr4ox1coOH7JsHJr_0NBQA';
+	var $       = config.$;
+	var key     = 'AIzaSyACWiZhJnrmKyr4ox1coOH7JsHJr_0NBQA';
 	var apiHost = 'https://www.googleapis.com/youtube/v3';
 
 	//https://developers.google.com/youtube/v3/docs/search/list
@@ -10,17 +10,17 @@ module.exports = function (config) {
 			options = options || {};
 			return $.ajax(apiHost + '/search', {
 				data: {
-					key: key,
-					q: 'survarium',
-					eventType: options.live ? 'live' : 'completed',
-					type: 'video',
-					order: 'date',
-					videoDefinition: options.live ? 'any' : 'high',
-					videoDuration: options.live ? 'any' : 'long',
+					maxResults     : 4,
+					key            : key,
+					q              : 'survarium',
+					type           : 'video',
+					order          : 'date',
+					part           : 'snippet',
 					videoEmbeddable: true,
 					videoSyndicated: true,
-					maxResults: 4,
-					part: 'snippet'
+					videoDefinition: options.live ? 'any' : 'high',
+					videoDuration  : options.live ? 'any' : 'long',
+					eventType      : options.live ? 'live' : 'completed'
 				}
 			});
 		}
