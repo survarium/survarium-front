@@ -23,6 +23,7 @@ var metrica;
 
 exports.track = function (page, title) {
 	try {
+		ga.set('page', page);
 		ga('send', {
 			hitType: 'pageview',
 			page: page,
@@ -49,7 +50,7 @@ exports.goal = function (title, opts) {
 			hitType      : opts.type || 'event',
 			eventCategory: title,
 			eventAction  : opts.action,
-			eventValue   : opts.value
+			eventLabel   : `${title}:${opts.action}:${opts.value}`
 		});
 	} catch (e) {
 	}

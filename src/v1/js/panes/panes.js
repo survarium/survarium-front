@@ -65,6 +65,7 @@ module.exports = function (params) {
 		var active = this.panes[this.active];
 		active.tab.removeClass('panes__tab_active');
 		active.pane.detach();
+		active.pane.events && active.pane.events.onClose && active.pane.events.onClose();
 		this.active = null;
 	};
 
