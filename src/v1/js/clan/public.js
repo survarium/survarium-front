@@ -51,7 +51,7 @@ module.exports = function (params) {
 		english: {
 			title       : 'Clan',
 			id          : 'ID',
-			data        : 'Date',
+			date        : 'Date',
 			win         : 'Win',
 			wins        : 'Wins',
 			map         : 'Map',
