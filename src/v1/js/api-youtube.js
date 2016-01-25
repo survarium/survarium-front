@@ -15,7 +15,7 @@ module.exports = function (config) {
 					eventType: options.live ? 'live' : 'completed',
 					type: 'video',
 					order: 'date',
-					videoDefinition: 'high',
+					videoDefinition: options.live ? 'any' : 'high',
 					videoDuration: options.live ? 'any' : 'long',
 					videoEmbeddable: true,
 					videoSyndicated: true,
