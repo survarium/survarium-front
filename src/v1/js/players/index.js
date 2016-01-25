@@ -86,7 +86,7 @@ module.exports = function (params) {
 					cb(data);
 				});
 			},
-			pageLength : 10,
+			pageLength : 20,
 			searchDelay: 400,
 			scrollY    : 'auto',
 			stateSave  : true,

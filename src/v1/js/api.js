@@ -37,8 +37,7 @@ module.exports = function (config) {
 				}
 			});
 		},
-		players: function (query, options) {
-			options = options || {};
+		players: function (query) {
 			query = query || {};
 			query.lang = config.language;
 			return $.ajax({
@@ -46,11 +45,33 @@ module.exports = function (config) {
 				data: query
 			});
 		},
-		clan: function (abbr) {
+		/**
+		 * Получить информацию о клане
+		 * @param   {String}  abbr                    аббревиатура клана
+		 * @param   {Object}  [options]
+		 * @param   {Boolean} [options.publicStats]   аггрегация итогов паблик-матчей вместо клановых
+		 * @returns {Promise}
+		 */
+		clan: function (abbr, options) {
+			options = options || {};
 			return $.ajax(config.apiPath + '/clans/' + encodeURIComponent(abbr.trim ? abbr.trim() : abbr), {
 				data: {
-					lang: config.language
+					lang: config.language,
+					publicStats: options.publicStats
 				}
+			});
+		},
+		/**
+		 * Получить статистику паблик-матчей клана
+		 * @param   {Object}  query        запрос
+		 * @param   {String}  query.abbr   аббревиатура клана
+		 * @returns {Promise}
+		 */
+		clanPublicStats: function (query) {
+			var abbr = query.abbr;
+			query.abbr = undefined;
+			return $.ajax(config.apiPath + '/clans/' + encodeURIComponent(abbr.trim ? abbr.trim() : abbr) + '/stats', {
+				data: query
 			});
 		}
 	};

@@ -166,7 +166,7 @@ module.exports = function (params) {
 		self._error.hide();
 		self._data = {};
 
-		return api.clan(abbr)
+		return api.clan(abbr, { publicStats: true })
 			.then(function (clan) {
 				self._data = clan;
 				self._setCurrent(clan.abbr, opts);
@@ -208,7 +208,7 @@ module.exports = function (params) {
 	};
 
 	Class.prototype._stats = function (data) {
-		var stats = this._prepareStats(data);
+		var stats      = this._prepareStats(data);
 		var statsTable = this.statsTable;
 		if (statsTable) {
 			utils.updateTable(this.statsTableApi, stats);
@@ -309,7 +309,8 @@ module.exports = function (params) {
 		playersTable.appendTo(wrap);
 		wrap.appendTo(this.elem);
 		playersTable.dataTable({
-			scroller  : true,
+			scroller  : false,
+			paging    : false,
 			buttons   : ['colvis', {
 				extend: 'colvisGroup',
 				text  : i18n.dt.basic,
@@ -521,7 +522,12 @@ module.exports = function (params) {
 		data.total && this._graph(data.total);
 		data.total = data.total || {};
 		this._players(data.players);
-		this._stats(data);
+		//this._stats(data); // FIXME: wait for proper data
+		this.Pane.emit({
+			pane : 'clan',
+			event: 'public',
+			value: data.abbr
+		});
 		var html = `<h4 class="def-list__title">${i18n.progress}</h4>
 			<div class="def-list__values">
 				<dl class="def-list">
