@@ -41,6 +41,7 @@ module.exports = function (params) {
 			actions     : 'Действия',
 			details     : 'Детали',
 			progress    : 'Прогресс',
+			established : 'Основан',
 			dt          : {
 				basic  : 'Общее',
 				actions: 'Действия',
@@ -79,6 +80,7 @@ module.exports = function (params) {
 			details     : 'Details',
 			actions     : 'Actions',
 			progress    : 'Progress',
+			established : 'Established',
 			dt          : {
 				basic  : 'Basic',
 				actions: 'Actions',
@@ -530,6 +532,11 @@ module.exports = function (params) {
 		});
 		var html = `<h4 class="def-list__title">${i18n.progress}</h4>
 			<div class="def-list__values">
+				<dl class="def-list">
+					<dt class="def-list__term">${i18n.established}</dt>
+					<dd class="def-list__desc">${utils.timeParse(data.foundation)}</dd>
+				</dl>
+
 				<dl class="def-list">
 					<dt class="def-list__term">${i18n.level}</dt>
 					<dd class="def-list__desc">${data.level}</dd>
