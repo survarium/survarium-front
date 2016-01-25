@@ -16,7 +16,7 @@ module.exports = function (params) {
 		},
 		english: {
 			title: 'Streams',
-			past : 'Ended stream'
+			past : 'Finished streams'
 		}
 	}[language];
 
