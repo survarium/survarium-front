@@ -87,7 +87,7 @@ module.exports = function (params) {
 				});
 			},
 			pageLength : 20,
-			searchDelay: 400,
+			searchDelay: 1000,
 			scrollY    : 'auto',
 			stateSave  : true,
 			colReorder : false,
@@ -104,7 +104,8 @@ module.exports = function (params) {
 				searchable: true
 			}, {
 				targets   : '_all',
-				searchable: false
+				searchable: false,
+				orderSequence: [ 'desc', 'asc' ]
 			}],
 			columns    : [{
 				title    : i18n.player,
@@ -118,11 +119,11 @@ module.exports = function (params) {
 				title: i18n.level,
 				data : 'progress.level',
 				name : 'exp'
-			}, /* {
+			},  {
 			 title: i18n.avgScore,
 			 data : 'total.scoreAvg',
 			 name : 'scoreAvg'
-			 }, */{
+			 }, {
 				title: i18n.kills,
 				data : 'total.kills',
 				name : 'kill'
@@ -142,6 +143,13 @@ module.exports = function (params) {
 				title: i18n.matches,
 				data : 'total.matches',
 				name : 'match'
+			}, {
+				title: i18n.winrate,
+				data : 'total.winRate',
+				name : 'winrate',
+				render: function (data) {
+					return data.toFixed(2) + '%';
+				}
 			}]
 		});
 
