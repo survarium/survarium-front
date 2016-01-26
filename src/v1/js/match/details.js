@@ -115,7 +115,8 @@ module.exports = function (params) {
 				targets  : [2]
 			}, {
 				className: 'dataTable__cell_centered',
-				targets  : '_all'
+				targets  : '_all',
+				orderSequence: ['desc', 'asc']
 			}, {
 				visible: false,
 				targets: [0, 1, 7, 8, 9, 10, 11, 12, 13]

@@ -38,12 +38,9 @@ module.exports = function (params) {
 
 	Class.prototype._ajax = function (data, cb) {
 		var abbr     = this._abbr;
-		var order    = data.order[0];
 		data.meta    = true;
 		data.skip    = data.start;
 		data.limit   = data.length;
-		data.sortBy  = data.columns[+order.column].name;
-		data.sort    = order.dir;
 		data.abbr    = abbr;
 		data.lang    = language;
 		data.columns = undefined;
@@ -90,7 +87,8 @@ module.exports = function (params) {
 			stateSave  : true,
 			colReorder : false,
 			scroller   : false,
-			order      : [[0, 'desc']],
+			ordering   : false,
+			order      : [],
 			columnDefs : [{
 				className: 'foo',
 				targets  : [2]

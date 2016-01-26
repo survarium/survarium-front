@@ -25,10 +25,10 @@ module.exports = function (params) {
 	});
 
 	var Ranks = {
-		commander: 0,
-		assistant: 1,
-		warlord  : 2,
-		soldier  : 3
+		commander: 99,
+		assistant: 80,
+		warlord  : 50,
+		soldier  : 10
 	};
 
 	var Class = function () {
@@ -125,7 +125,8 @@ module.exports = function (params) {
 			}, {
 				className : 'dataTable__cell_centered',
 				targets   : '_all',
-				searchable: false
+				searchable: false,
+				orderSequence: ['desc', 'asc']
 			}],
 			columns   : [{
 				title : i18n.date,
@@ -226,18 +227,19 @@ module.exports = function (params) {
 			}, {
 				className : 'dataTable__cell_centered',
 				targets   : '_all',
-				searchable: false
+				searchable: false,
+				orderSequence: ['desc', 'asc']
 			}, {
 				visible: false,
 				targets: [4, 7, 8, 9, 10, 11, 12, 13]
 			}],
-			order     : [[0, 'asc']],
+			order     : [[0, 'desc']],
 			columns   : [{
 				title : i18n.role,
 				data  : `role`,
 				render: function (data, type, row) {
 					if (type === 'sort') {
-						return Ranks[data] === undefined ? i18n.roles[row.role] || row.role : Ranks[data];
+						return Ranks[data] === undefined ? '0' + (i18n.roles[row.role] || row.role) : Ranks[data];
 					}
 					if (type === 'type') {
 						return 'num';
