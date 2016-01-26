@@ -4,6 +4,7 @@ require('../../styl/clan/details.styl');
 var Loader = require('../loader');
 var Error  = require('../error');
 var utils  = require('../utils');
+var I18N   = require('../i18n');
 
 require('datatables.net');
 var Highcharts = require('../charts');
@@ -14,127 +15,14 @@ module.exports = function (params) {
 	var language = params.language;
 	var counters = params.counters;
 
-	var i18n = {
+	var i18n = I18N.load(language, {
 		russian: {
-			title       : 'Клан',
-			id          : 'ID',
-			date        : 'Дата',
-			level       : 'Уровень',
-			win         : 'Победа',
-			wins        : 'Побед',
-			map         : 'Карта',
-			mode        : 'Режим',
-			loose       : 'Проигрыш',
-			score       : 'Счет',
-			kills       : 'Убийств',
-			dies        : 'Смертей',
-			kd          : 'У/С',
-			player      : 'Имя',
-			members     : 'Участники',
-			CWmatches   : 'Клановые матчи',
-			opponent    : 'Противники',
-			role        : 'Роль',
-			rating      : 'Рейтинг',
-			winrate     : 'Винрейт',
-			victories   : 'Побед',
-			totalMatches: 'Всего матчей',
-			actions     : 'Действия',
-			details     : 'Детали',
-			progress    : 'Прогресс',
-			established : 'Основан',
-			dt          : {
-				basic  : 'Общее',
-				actions: 'Действия',
-				all    : 'Показать все'
-			},
-			roles       : {
-				commander: 'Командир',
-				warlord  : 'Сержант',
-				assistant: 'Зам. командира',
-				soldier  : 'Солдат'
-			}
+			title: 'Клан'
 		},
 		english: {
-			title       : 'Clan',
-			id          : 'ID',
-			data        : 'Date',
-			win         : 'Win',
-			wins        : 'Wins',
-			map         : 'Map',
-			mode        : 'Mode',
-			loose       : 'Loose',
-			level       : 'Level',
-			score       : 'Score',
-			kills       : 'Kills',
-			dies        : 'Dies',
-			kd          : 'K/D',
-			player      : 'Name',
-			members     : 'Members',
-			CWmatches   : 'Clan matches',
-			opponent    : 'Opponents',
-			role        : 'Role',
-			rating      : 'Rating',
-			winrate     : 'Winrate',
-			victories   : 'Victories',
-			totalMatches: 'Total matches',
-			details     : 'Details',
-			actions     : 'Actions',
-			progress    : 'Progress',
-			established : 'Established',
-			dt          : {
-				basic  : 'Basic',
-				actions: 'Actions',
-				all    : 'Show all'
-			},
-			roles       : {}
+			title: 'Clan'
 		}
-	}[language];
-
-	var _actionsI18N = {
-		headshots    : {
-			russian: 'Хедшоты',
-			english: 'Headshots',
-			abbr   : 'HS'
-		},
-		grenadeKills : {
-			russian: 'Убийств гранатами',
-			english: 'Grenade kills',
-			abbr   : 'G'
-		},
-		meleeKills   : {
-			russian: 'Убийств прикладом',
-			english: 'Melee kills',
-			abbr   : 'M'
-		},
-		artefactKills: {
-			russian: 'Убийств артефактами',
-			english: 'Artefacts kills',
-			abbr   : 'AK'
-		},
-		pointCaptures: {
-			russian: 'Захватов точек',
-			english: 'Point captures',
-			abbr   : 'CAP'
-		},
-		boxesBringed : {
-			russian: 'Принесено ящиков',
-			english: 'Boxes bringed',
-			abbr   : 'BB'
-		},
-		artefactUses : {
-			russian: 'Использований артефактов',
-			english: 'Artifacts usages',
-			abbr   : 'AU'
-		}
-	};
-
-	Object.keys(_actionsI18N).reduce(function (i18n, action) {
-		i18n[action] = {
-			full: _actionsI18N[action][language],
-			abbr: _actionsI18N[action].abbr
-		};
-		return i18n;
-	}, i18n);
+	});
 
 	var Ranks = {
 		commander: 0,
@@ -538,7 +426,7 @@ module.exports = function (params) {
 					<dd class="def-list__desc">${utils.timeParse(data.foundation)}</dd>
 				</dl>` : ``) +
 
-				`<dl class="def-list">
+			`<dl class="def-list">
 					<dt class="def-list__term">${i18n.level}</dt>
 					<dd class="def-list__desc">${data.level}</dd>
 				</dl>

@@ -1,22 +1,17 @@
 var Select = require('../select');
+var I18N   = require('../i18n');
 
 module.exports = function (params) {
 	var $ = params.$;
 
-	var i18n = {
+	var i18n = I18N.load(params.language, {
 		russian: {
-			title: 'Последний матч',
-			level: 'Уровень',
-			any: 'Любой',
-			find: 'Найти'
+			title: 'Последний матч'
 		},
 		english: {
-			title: 'Match search',
-			level: 'Level',
-			any: 'Any',
-			find: 'Find'
+			title: 'Latest match'
 		}
-	}[params.language];
+	});
 
 	var storageKey = 'match:latest';
 
@@ -25,29 +20,14 @@ module.exports = function (params) {
 
 		this.elem = $('<form>', {
 			class: 'match__latest',
-			html: `<h3>${i18n.title}</h3>`
+			html : `<h3>${i18n.title}</h3>`
 		});
 
-		this.elem.append([
-			Select($, {
-				current: params.storage.get(storageKey),
-				name: 'level',
-				data: [
-					{ title: i18n.level },
-					{ value: 1 },
-					{ value: 2 },
-					{ value: 3 },
-					{ value: 4 },
-					{ value: 5 },
-					{ value: 6 },
-					{ value: 7 },
-					{ value: 8 },
-					{ value: 9 },
-					{ value: 10 }
-				]
-			}),
-		    `<input type="submit" value="${i18n.find}">`
-		]);
+		this.elem.append([Select($, {
+			current: params.storage.get(storageKey),
+			name   : 'level',
+			data   : [{ title: i18n.level }, { value: 1 }, { value: 2 }, { value: 3 }, { value: 4 }, { value: 5 }, { value: 6 }, { value: 7 }, { value: 8 }, { value: 9 }, { value: 10 }]
+		}), `<input type="submit" value="${i18n.find}">`]);
 
 		this
 			.elem
@@ -62,7 +42,12 @@ module.exports = function (params) {
 
 				params.storage.set(storageKey, level);
 
-				self.Pane.emit({ pane: 'match', event: 'load', value: 'latest', opts: { level } });
+				self.Pane.emit({
+					pane: 'match',
+					event: 'load',
+					value: 'latest',
+					opts: { level }
+				});
 			});
 	};
 

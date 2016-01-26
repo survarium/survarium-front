@@ -1,4 +1,5 @@
 var utils = require('../utils');
+var I18N  = require('../i18n');
 
 require('datatables.net');
 
@@ -8,32 +9,14 @@ module.exports = function (params) {
 	var language = params.language;
 	var counters = params.counters;
 
-	var i18n = {
+	var i18n = I18N.load(language, {
 		russian: {
-			title   : 'Игроки',
-			wins    : 'Побед',
-			level   : 'Уровень',
-			kills   : 'Убийств',
-			dies    : 'Смертей',
-			kd      : 'У/С',
-			player  : 'Имя',
-			matches : 'Матчи',
-			winrate : 'Винрейт',
-			avgScore: 'Ср.счет'
+			title: 'Игроки'
 		},
 		english: {
-			title   : 'Players',
-			wins    : 'Wins',
-			level   : 'Level',
-			kills   : 'Kills',
-			dies    : 'Dies',
-			kd      : 'K/D',
-			player  : 'Name',
-			matches : 'Matches',
-			winrate : 'Winrate',
-			avgScore: 'Avg.Score'
+			title: 'Players'
 		}
-	}[language];
+	});
 
 	var Class = function () {
 		this.elem = $('<div>', {
@@ -65,14 +48,13 @@ module.exports = function (params) {
 		playersTable.appendTo(wrap);
 		wrap.appendTo(this.elem);
 		playersTable.dataTable({
-			dom        : 'frtip',
+			dom        : 'Bfrtip',
 			serverSide : true,
 			ajax       : function (data, cb) {
 				var search    = data.search.value;
 				var order     = data.order[0];
 				data.search   = undefined;
-				data.nickname = ~[undefined, null, ''].indexOf(search) ? undefined : search.length > 1 ?
-					search.trim ? search.trim() : search : undefined;
+				data.nickname = ~[undefined, null, ''].indexOf(search) ? undefined : search.length > 1 ? search.trim ? search.trim() : search : undefined;
 				data.stats    = 0;
 				data.noUrls   = true;
 				data.meta     = true;
@@ -93,6 +75,21 @@ module.exports = function (params) {
 			colReorder : false,
 			scroller   : false,
 			order      : [[1, 'desc']],
+			buttons    : ['colvis', {
+				extend: 'colvisGroup',
+				text  : i18n.dt.basic,
+				show  : [0, 1, 2, 3, 4, 5, 6, 7, 8],
+				hide  : [9, 10, 11, 12, 13, 14, 15]
+			}, {
+				extend: 'colvisGroup',
+				text  : i18n.dt.actions,
+				show  : [0, 9, 10, 11, 12, 13, 14, 15],
+				hide  : [1, 2, 3, 4, 5, 6, 7, 8]
+			}, {
+				extend: 'colvisGroup',
+				text  : i18n.dt.all,
+				show  : ':hidden'
+			}],
 			columnDefs : [{
 				className: 'foo',
 				targets  : 0
@@ -103,9 +100,12 @@ module.exports = function (params) {
 				targets   : [0],
 				searchable: true
 			}, {
-				targets   : '_all',
-				searchable: false,
-				orderSequence: [ 'desc', 'asc' ]
+				targets      : '_all',
+				searchable   : false,
+				orderSequence: ['desc', 'asc']
+			}, {
+				targets: [9, 10, 11, 12, 13, 14, 15],
+				visible: false
 			}],
 			columns    : [{
 				title    : i18n.player,
@@ -119,11 +119,11 @@ module.exports = function (params) {
 				title: i18n.level,
 				data : 'progress.level',
 				name : 'exp'
-			},  {
-			 title: i18n.avgScore,
-			 data : 'total.scoreAvg',
-			 name : 'scoreAvg'
-			 }, {
+			}, {
+				title: i18n.avgScore,
+				data : 'total.scoreAvg',
+				name : 'scoreAvg'
+			}, {
 				title: i18n.kills,
 				data : 'total.kills',
 				name : 'kill'
@@ -144,12 +144,40 @@ module.exports = function (params) {
 				data : 'total.matches',
 				name : 'match'
 			}, {
-				title: i18n.winrate,
-				data : 'total.winRate',
-				name : 'winrate',
+				title : i18n.winrate,
+				data  : 'total.winRate',
+				name  : 'winrate',
 				render: function (data) {
 					return data.toFixed(2) + '%';
 				}
+			}, {
+				title: i18n.headshots.full,
+				name : 'hs',
+				data : 'total.headshots'
+			}, {
+				title: i18n.grenadeKills.full,
+				name : 'gk',
+				data : 'total.grenadeKills'
+			}, {
+				title: i18n.meleeKills.full,
+				name : 'mk',
+				data : 'total.meleeKills'
+			}, {
+				title: i18n.artefactKills.full,
+				name : 'ak',
+				data : 'total.artefactKills'
+			}, {
+				title: i18n.artefactUses.full,
+				name : 'au',
+				data : 'total.artefactUses'
+			}, {
+				title: i18n.pointCaptures.full,
+				name : 'cap',
+				data : 'total.pointCaptures'
+			}, {
+				title: i18n.boxesBringed.full,
+				name : 'box',
+				data : 'total.boxesBringed'
 			}]
 		});
 

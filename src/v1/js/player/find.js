@@ -1,18 +1,16 @@
+var I18N = require('../i18n');
+
 module.exports = function (params) {
 	var $ = params.$;
 
-	var i18n = {
+	var i18n = I18N.load(params.language, {
 		russian: {
-			title: 'Поиск игрока',
-			nick: 'Никнейм',
-			find: 'Найти'
+			title: 'Поиск игрока'
 		},
 		english: {
-			title: 'Player search',
-			nick: 'Nickname',
-			find: 'Find'
+			title: 'Player search'
 		}
-	}[params.language];
+	});
 
 	var storageKey = 'player:find';
 
@@ -21,9 +19,9 @@ module.exports = function (params) {
 
 		this.elem = $('<form>', {
 			class: 'player__find',
-			html: `
+			html : `
 			<h3>${i18n.title}</h3>
-			<input type="text" name="nickname" placeholder="${i18n.nick}" value="${params.storage.get(storageKey) || ''}" />
+			<input type="text" name="nickname" placeholder="${i18n.nickname}" value="${params.storage.get(storageKey) || ''}" />
 			<input type="submit" value="${i18n.find}">`
 		});
 
@@ -38,7 +36,11 @@ module.exports = function (params) {
 
 			params.storage.set(storageKey, nickname);
 
-			self.Pane.emit({ pane: 'player', event: 'load', value: nickname });
+			self.Pane.emit({
+				pane : 'player',
+				event: 'load',
+				value: nickname
+			});
 		});
 	};
 

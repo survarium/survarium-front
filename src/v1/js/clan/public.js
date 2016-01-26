@@ -1,6 +1,7 @@
 require('../../styl/clan/details.styl');
 
 var utils = require('../utils');
+var I18N  = require('../i18n');
 
 require('datatables.net');
 
@@ -10,123 +11,14 @@ module.exports = function (params) {
 	var language = params.language;
 	var counters = params.counters;
 
-	var i18n = {
+	var i18n = I18N.load(language, {
 		russian: {
-			title       : 'Клан',
-			id          : 'ID',
-			date        : 'Дата',
-			level       : 'Уровень',
-			win         : 'Победа',
-			wins        : 'Побед',
-			map         : 'Карта',
-			mode        : 'Режим',
-			loose       : 'Проигрыш',
-			score       : 'Счет',
-			kills       : 'Убийств',
-			dies        : 'Смертей',
-			kd          : 'У/С',
-			player      : 'Имя',
-			members     : 'Участники',
-			matches     : 'Матчи в паблике',
-			role        : 'Роль',
-			rating      : 'Рейтинг',
-			winrate     : 'Винрейт',
-			victories   : 'Побед',
-			totalMatches: 'Всего матчей',
-			actions     : 'Действия',
-			details     : 'Детали',
-			progress    : 'Прогресс',
-			dt          : {
-				basic  : 'Общее',
-				actions: 'Действия',
-				all    : 'Показать все'
-			},
-			roles       : {
-				commander: 'Командир',
-				warlord  : 'Сержант',
-				assistant: 'Зам. командира',
-				soldier  : 'Солдат'
-			}
+			title: 'Матчи в паблике'
 		},
 		english: {
-			title       : 'Clan',
-			id          : 'ID',
-			date        : 'Date',
-			win         : 'Win',
-			wins        : 'Wins',
-			map         : 'Map',
-			mode        : 'Mode',
-			loose       : 'Loose',
-			level       : 'Level',
-			score       : 'Score',
-			kills       : 'Kills',
-			dies        : 'Dies',
-			kd          : 'K/D',
-			player      : 'Name',
-			members     : 'Members',
-			matches     : 'Matches in public',
-			role        : 'Role',
-			rating      : 'Rating',
-			winrate     : 'Winrate',
-			victories   : 'Victories',
-			totalMatches: 'Total matches',
-			details     : 'Details',
-			actions     : 'Actions',
-			progress    : 'Progress',
-			dt          : {
-				basic  : 'Basic',
-				actions: 'Actions',
-				all    : 'Show all'
-			},
-			roles       : {}
+			title: 'Public matches'
 		}
-	}[language];
-
-	var _actionsI18N = {
-		headshots    : {
-			russian: 'Хедшоты',
-			english: 'Headshots',
-			abbr   : 'HS'
-		},
-		grenadeKills : {
-			russian: 'Убийств гранатами',
-			english: 'Grenade kills',
-			abbr   : 'G'
-		},
-		meleeKills   : {
-			russian: 'Убийств прикладом',
-			english: 'Melee kills',
-			abbr   : 'M'
-		},
-		artefactKills: {
-			russian: 'Убийств артефактами',
-			english: 'Artefacts kills',
-			abbr   : 'AK'
-		},
-		pointCaptures: {
-			russian: 'Захватов точек',
-			english: 'Point captures',
-			abbr   : 'CAP'
-		},
-		boxesBringed : {
-			russian: 'Принесено ящиков',
-			english: 'Boxes bringed',
-			abbr   : 'BB'
-		},
-		artefactUses : {
-			russian: 'Использований артефактов',
-			english: 'Artifacts usages',
-			abbr   : 'AU'
-		}
-	};
-
-	Object.keys(_actionsI18N).reduce(function (i18n, action) {
-		i18n[action] = {
-			full: _actionsI18N[action][language],
-			abbr: _actionsI18N[action].abbr
-		};
-		return i18n;
-	}, i18n);
+	});
 
 	var Class = function () {
 		this.api = api;
@@ -172,7 +64,7 @@ module.exports = function (params) {
 			this.tableApi.page(0);
 			return;
 		}
-		this.elem.prepend(`<h3>${i18n.matches}</h3>`);
+		this.elem.prepend(`<h3>${i18n.title}</h3>`);
 		this.table.dataTable({
 			buttons    : ['colvis', {
 				extend: 'colvisGroup',

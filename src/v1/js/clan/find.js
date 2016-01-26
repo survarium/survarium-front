@@ -1,18 +1,16 @@
+var I18N = require('../i18n');
+
 module.exports = function (params) {
 	var $ = params.$;
 
-	var i18n = {
+	var i18n = I18N.load(params.language, {
 		russian: {
-			title: 'Поиск клана',
-			abbr: 'Тег клана',
-			find: 'Найти'
+			title: 'Поиск клана'
 		},
 		english: {
-			title: 'Clan search',
-			abbr: 'Clan tag',
-			find: 'Find'
+			title: 'Clan search'
 		}
-	}[params.language];
+	});
 
 	var storageKey = 'clan:find';
 

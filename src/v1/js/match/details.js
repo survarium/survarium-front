@@ -4,6 +4,7 @@ require('../../styl/match/details.styl');
 var Loader = require('../loader');
 var Error  = require('../error');
 var utils  = require('../utils');
+var I18N   = require('../i18n');
 
 require('datatables.net');
 
@@ -13,100 +14,14 @@ module.exports = function (params) {
 	var language = params.language;
 	var counters = params.counters;
 
-	var i18n = {
+	var i18n = I18N.load(language, {
 		russian: {
-			title     : 'Матч',
-			id        : 'ID',
-			replay    : 'Реплей',
-			download  : 'Скачать',
-			level     : 'Уровень',
-			time_start: 'Время начала',
-			duration  : 'Продолжительность',
-			win       : 'Победа',
-			loose     : 'Проигрыш',
-			score     : 'Счет',
-			kills     : 'Убийств',
-			dies      : 'Смертей',
-			draw      : 'Ничья',
-			kd    : 'У/С',
-			player: 'Имя',
-			team  : 'Команда',
-			dt    : {
-				basic  : 'Общее',
-				actions: 'Действия',
-				all    : 'Показать все'
-			}
+			title: 'Матч'
 		},
 		english: {
-			title     : 'Match',
-			id        : 'ID',
-			replay    : 'Replay',
-			download  : 'Download',
-			time_start: 'Time of start',
-			duration  : 'Duration',
-			win       : 'Win',
-			loose     : 'Loose',
-			draw      : 'Draw',
-			level     : 'Level',
-			score     : 'Score',
-			kills     : 'Kills',
-			dies      : 'Dies',
-			kd        : 'K/D',
-			player    : 'Name',
-			team      : 'Team',
-			dt        : {
-				basic  : 'Basic',
-				actions: 'Actions',
-				all    : 'Show all'
-			}
+			title: 'Match'
 		}
-	}[language];
-
-	var _actionsI18N = {
-		headshots    : {
-			russian: 'Хедшоты',
-			english: 'Headshots',
-			abbr   : 'HS'
-		},
-		grenadeKills : {
-			russian: 'Убийств гранатами',
-			english: 'Grenade kills',
-			abbr   : 'G'
-		},
-		meleeKills   : {
-			russian: 'Убийств прикладом',
-			english: 'Melee kills',
-			abbr   : 'M'
-		},
-		artefactKills: {
-			russian: 'Убийств артефактами',
-			english: 'Artefacts kills',
-			abbr   : 'AK'
-		},
-		pointCaptures: {
-			russian: 'Захватов точек',
-			english: 'Point captures',
-			abbr   : 'CAP'
-		},
-		boxesBringed : {
-			russian: 'Принесено ящиков',
-			english: 'Boxes bringed',
-			abbr   : 'BB'
-		},
-		artefactUses : {
-			russian: 'Использований артефактов',
-			english: 'Artifacts usages',
-			abbr   : 'AU'
-		}
-	};
-
-	Object.keys(_actionsI18N).reduce(function (i18n, action) {
-		i18n[action] = {
-			full: _actionsI18N[action][language],
-			abbr: _actionsI18N[action].abbr
-		};
-		return i18n;
-	}, i18n);
+	});
 
 	var Class = function () {
 		this.elem = $('<div>', {
@@ -276,9 +191,12 @@ module.exports = function (params) {
 		table
 			.on('click', '.player__clan', function (e) {
 				e.preventDefault();
-				counters.goal('Clan', { action: 'from:match', value: self._data.id });
+				counters.goal('Clan', {
+					action: 'from:match',
+					value : self._data.id
+				});
 				self.Pane.emit({
-					pane: 'clan',
+					pane : 'clan',
 					event: 'load',
 					value: $(e.target).data('abbr')
 				});
@@ -300,9 +218,12 @@ module.exports = function (params) {
 				if (!data) {
 					return;
 				}
-				counters.goal('Player', { action: 'from:match', value: self._data.id });
+				counters.goal('Player', {
+					action: 'from:match',
+					value : self._data.id
+				});
 				self.Pane.emit({
-					pane: 'player',
+					pane : 'player',
 					event: 'load',
 					value: api.row(this).data().player.nickname
 				});

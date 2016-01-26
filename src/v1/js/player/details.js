@@ -3,66 +3,14 @@ require('../../styl/def-list.styl');
 var Loader = require('../loader');
 var Error  = require('../error');
 var utils  = require('../utils');
+var I18N   = require('../i18n');
 
 module.exports = function (params) {
 	var $ = params.$;
 	var api = params.api;
 	var counters = params.counters;
 
-	var i18n = {
-		russian: {
-			progress: 'Прогресс',
-			level: 'Уровень',
-			rating: 'Рейтинг',
-			exp: 'Опыт',
-			actions: 'Действия',
-			kills: 'Убийств',
-			deaths: 'Смертей',
-			kdRatio: 'K/D',
-			victories: 'Побед',
-			looses: 'Поражений',
-			totalMatches: 'Всего матчей',
-			profile: 'Профиль',
-			ammunition: 'Аммуниция',
-			active: 'Активный',
-			details: 'Детали',
-			headshots: 'Хэдшоты',
-			grenadeKills: 'Убийства гранатами',
-			meleeKills: 'Убийства врукопашку',
-			artefactKills: 'Убийства артефактами',
-			pointCaptures: 'Захватов точек',
-			boxesBringed: 'Принесено ящиков',
-			artefactUses: 'Использований артефактов',
-			winrate: 'Винрейт',
-			scoreAvg: 'Средний счет'
-		},
-		english: {
-			progress: 'Progress',
-			level: 'Level',
-			rating: 'Rating',
-			exp: 'Experience',
-			actions: 'Actions',
-			kills: 'Kills',
-			deaths: 'Deaths',
-			kdRatio: 'K/D',
-			victories: 'Victories',
-			looses: 'Looses',
-			totalMatches: 'Total matches',
-			profile: 'Profile',
-			ammunition: 'Ammunition',
-			active: 'Active',
-			details: 'Details',
-			headshots: 'Headshots',
-			grenadeKills: 'Grenade kills',
-			meleeKills: 'Melee kills',
-			artefactKills: 'Artefacts kills',
-			pointCaptures: 'Point captured',
-			boxesBringed: 'Boxes bringed',
-			artefactUses: 'Artefacts used',
-			winrate: 'Winrate',
-			scoreAvg: 'Average score'
-		}
-	}[params.language];
+	var i18n = I18N.load(params.language);
 
 	var Class = function () {
 		var self = this;
@@ -153,13 +101,13 @@ module.exports = function (params) {
 						</dl>
 
 						<dl class="def-list">
-						  <dt class="def-list__term">${i18n.deaths}</dt>
+						  <dt class="def-list__term">${i18n.dies}</dt>
 						  <dd class="def-list__desc">${data.total.dies}</dd>
 
 						</dl>
 
 						<dl class="def-list">
-						  <dt class="def-list__term">${i18n.kdRatio}</dt>
+						  <dt class="def-list__term">${i18n.kd}</dt>
 						  <dd class="def-list__desc">${data.total.kd}</dd>
 						</dl>
 
@@ -184,7 +132,7 @@ module.exports = function (params) {
 						</dl>
 
 						<dl class="def-list">
-						  <dt class="def-list__term">${i18n.scoreAvg}</dt>
+						  <dt class="def-list__term">${i18n.avgScore}</dt>
 						  <dd class="def-list__desc">${data.total.scoreAvg}</dd>
 						</dl>
 					</div>
@@ -192,37 +140,37 @@ module.exports = function (params) {
 					<h4 class="def-list__title">${i18n.details}</h4>
 					<div class="def-list__values">
 						<dl class="def-list">
-						  <dt class="def-list__term">${i18n.headshots}</dt>
+						  <dt class="def-list__term">${i18n.headshots.full}</dt>
 						  <dd class="def-list__desc">${data.total.headshots}</dd>
 						</dl>
 
 						<dl class="def-list">
-						  <dt class="def-list__term">${i18n.boxesBringed}</dt>
+						  <dt class="def-list__term">${i18n.boxesBringed.full}</dt>
 						  <dd class="def-list__desc">${data.total.boxesBringed}</dd>
 						</dl>
 
 						<dl class="def-list">
-						  <dt class="def-list__term">${i18n.pointCaptures}</dt>
+						  <dt class="def-list__term">${i18n.pointCaptures.full}</dt>
 						  <dd class="def-list__desc">${data.total.pointCaptures}</dd>
 						</dl>
 
 						<dl class="def-list">
-						  <dt class="def-list__term">${i18n.grenadeKills}</dt>
+						  <dt class="def-list__term">${i18n.grenadeKills.full}</dt>
 						  <dd class="def-list__desc">${data.total.grenadeKills}</dd>
 						</dl>
 
 						<dl class="def-list">
-						  <dt class="def-list__term">${i18n.meleeKills}</dt>
+						  <dt class="def-list__term">${i18n.meleeKills.full}</dt>
 						  <dd class="def-list__desc">${data.total.meleeKills}</dd>
 						</dl>
 
 						<dl class="def-list">
-						  <dt class="def-list__term">${i18n.artefactKills}</dt>
+						  <dt class="def-list__term">${i18n.artefactKills.full}</dt>
 						  <dd class="def-list__desc">${data.total.artefactKills}</dd>
 						</dl>
 
 						<dl class="def-list">
-						  <dt class="def-list__term">${i18n.artefactUses}</dt>
+						  <dt class="def-list__term">${i18n.artefactUses.full}</dt>
 						  <dd class="def-list__desc">${data.total.artefactUses}</dd>
 						</dl>
 					</div>`;

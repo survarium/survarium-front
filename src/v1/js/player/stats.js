@@ -3,72 +3,26 @@ require('../../styl/player/stats.styl');
 
 var Loader = require('../loader');
 var utils  = require('../utils');
+var I18N   = require('../i18n');
 
 require('datatables.net');
 var Highcharts = require('../charts');
 
 module.exports = function (params) {
-	var $ = params.$;
-	var lang = params.language;
+	var $        = params.$;
+	var lang     = params.language;
 	var counters = params.counters;
 
-	var i18n = {
+	var i18n = I18N.load(lang, {
 		russian: {
 			title  : 'Матчи игрока',
-			noStats: 'Матчи не найдены',
-			win    : 'Победа',
-			loose  : 'Проигрыш',
-			date   : 'Дата',
-			map    : 'Карта',
-			mode   : 'Режим',
-			level  : 'Уровень',
-			kdStat : 'У/С (KD)',
-			score  : 'Счет',
-			kills  : 'Убийств',
-			dies   : 'Смертей',
-			kd     : 'У/С',
-			dt     : {
-				basic: 'Общее',
-				actions: 'Действия',
-				all: 'Показать все'
-			}
+			noStats: 'Матчи не найдены'
 		},
 		english: {
 			title  : 'Player stats',
-			noStats: 'Stats not found',
-			win    : 'Win',
-			loose  : 'Loose',
-			date   : 'Date',
-			map    : 'Map',
-			mode   : 'Mode',
-			level  : 'Level',
-			kdStat : 'K/D (KD)',
-			score  : 'Score',
-			kills  : 'Kills',
-			dies   : 'Dies',
-			kd     : 'K/D',
-			dt     : {
-				basic: 'Basic',
-				actions: 'Actions',
-				all: 'Show all'
-			}
+			noStats: 'Stats not found'
 		}
-	}[lang];
-
-	var _actionsI18N = {
-		headshots: { russian: 'Хедшоты', english: 'Headshots', abbr: 'HS' },
-		grenadeKills: { russian: 'Убийств гранатами', english: 'Grenade kills', abbr: 'G' },
-		meleeKills: { russian: 'Убийств прикладом', english: 'Melee kills', abbr: 'M' },
-		artefactKills: { russian: 'Убийств артефактами', english: 'Artefacts kills', abbr: 'AK' },
-		pointCaptures: { russian: 'Захватов точек', english: 'Point captures', abbr: 'CAP' },
-		boxesBringed: { russian: 'Принесено ящиков', english: 'Boxes bringed', abbr: 'BB' },
-		artefactUses: { russian: 'Использований артефактов', english: 'Artifacts usages', abbr: 'AU' }
-	};
-
-	Object.keys(_actionsI18N).reduce(function (i18n, action) {
-		i18n[action] = { full: _actionsI18N[action][lang], abbr: _actionsI18N[action].abbr };
-		return i18n;
-	}, i18n);
+	});
 
 	var Class = function () {
 		this.elem = $('<div>', {
@@ -106,30 +60,66 @@ module.exports = function (params) {
 			result[2].series[0].data.push([time, stat.match.level]);
 			result[3].series[0].data.push([time, stat.kd]);
 			return result;
-		}, [
-			{ name: 'Score', navigator: { enabled: false }, scrollbar: { enabled: true }, series: [{ name: 'Score', type: 'spline', data: [], color: colors[1], fillOpacity: 0.3 }] },
-			{ name: 'Kills & Deaths', navigator: { enabled: false }, scrollbar: { enabled: true }, series: [
-				{ name: 'Kills', type: 'areaspline', data: [],
-					color: colors[0], fillOpacity: 0.3, fillColor : {
-					linearGradient : {
+		}, [{
+			name     : 'Score',
+			navigator: { enabled: false },
+			scrollbar: { enabled: true },
+			series   : [{
+				name       : 'Score',
+				type       : 'spline',
+				data       : [],
+				color      : colors[1],
+				fillOpacity: 0.3
+			}]
+		}, {
+			name     : 'Kills & Deaths',
+			navigator: { enabled: false },
+			scrollbar: { enabled: true },
+			series   : [{
+				name       : 'Kills',
+				type       : 'areaspline',
+				data       : [],
+				color      : colors[0],
+				fillOpacity: 0.3,
+				fillColor  : {
+					linearGradient: {
 						x1: 0,
 						y1: 0,
 						x2: 0,
 						y2: 1
 					},
-					stops : [
-						[0, colors[0]],
-						[1, Highcharts.Color(colors[0]).setOpacity(0).get('rgba')]
-					]
-				} },
-				{ name: 'Dies' , type: 'spline', data: [],
-					color: colors[2], fillOpacity: 0.3 }
-			] },
-			{ name: 'Level', navigator: { enabled: false }, scrollbar: { enabled: true }, series: [{ name: 'Level', type: 'spline', data: [],
-				color: colors[3], fillOpacity: 0.3 }] },
-			{ name: 'KD', navigator: { enabled: false }, scrollbar: { enabled: true }, series: [{ name: 'KD', type: 'spline', data: [],
-				color: colors[4], fillOpacity: 0.3 }] }
-		]);
+					stops         : [[0, colors[0]], [1, Highcharts.Color(colors[0]).setOpacity(0).get('rgba')]]
+				}
+			}, {
+				name       : 'Dies',
+				type       : 'spline',
+				data       : [],
+				color      : colors[2],
+				fillOpacity: 0.3
+			}]
+		}, {
+			name     : 'Level',
+			navigator: { enabled: false },
+			scrollbar: { enabled: true },
+			series   : [{
+				name       : 'Level',
+				type       : 'spline',
+				data       : [],
+				color      : colors[3],
+				fillOpacity: 0.3
+			}]
+		}, {
+			name     : 'KD',
+			navigator: { enabled: false },
+			scrollbar: { enabled: true },
+			series   : [{
+				name       : 'KD',
+				type       : 'spline',
+				data       : [],
+				color      : colors[4],
+				fillOpacity: 0.3
+			}]
+		}]);
 	};
 
 	Class.prototype._graphUpdate = function (stats) {
@@ -181,105 +171,106 @@ module.exports = function (params) {
 				if (chart.__elem) {
 					chart.__pos = chart.__elem.offset();
 					chart.__dim = {
-						left: chart.__pos.left,
-						right: chart.__pos.left + chart.__elem.width(),
-						top: chart.__pos.top,
+						left  : chart.__pos.left,
+						right : chart.__pos.left + chart.__elem.width(),
+						top   : chart.__pos.top,
 						bottom: chart.__pos.top + chart.__elem.height()
 					};
 				}
 			}
 		}
+
 		var resizeDebounce;
 
 		charts = this._graphData(stats).map(function (dataset) {
-			var elem = $('<div>', { class: 'player__stats-chart' }).appendTo(graph);
-			var chart = new Highcharts.StockChart({
-				chart: {
+			var elem     = $('<div>', { class: 'player__stats-chart' }).appendTo(graph);
+			var chart    = new Highcharts.StockChart({
+				chart        : {
 					backgroundColor: 'rgba(255, 255, 255, 0.04)',
-					marginLeft: 10, // Keep all charts left aligned
-					marginRight: 10, // Keep all charts left aligned
-					spacingTop: 20,
-					spacingBottom: 20,
-					zoomType: 'x',
-					renderTo: elem[0],
-					events: {
+					marginLeft     : 10, // Keep all charts left aligned
+					marginRight    : 10, // Keep all charts left aligned
+					spacingTop     : 20,
+					spacingBottom  : 20,
+					zoomType       : 'x',
+					renderTo       : elem[0],
+					events         : {
 						redraw: function () {
 							clearTimeout(resizeDebounce);
 							resizeDebounce = setTimeout(resize, 300);
 						}
 					}
 				},
-				scrollbar: dataset.scrollbar || {},
-				navigator: dataset.navigator || {},
-				title: {
-					text: dataset.name,
-					align: 'left',
+				scrollbar    : dataset.scrollbar || {},
+				navigator    : dataset.navigator || {},
+				title        : {
+					text  : dataset.name,
+					align : 'left',
 					margin: 0,
-					x: 30
+					x     : 30
 				},
-				credits: {
+				credits      : {
 					enabled: false
 				},
-				legend: {
+				legend       : {
 					enabled: false
 				},
-				xAxis: {
-					crosshair: true,
-					events: {
+				xAxis        : {
+					crosshair           : true,
+					events              : {
 						setExtremes: syncExtremes
 					},
-					type: 'datetime',
+					type                : 'datetime',
 					dateTimeLabelFormats: { // don't display the dummy year
 						month: '%e. %b',
-						year: '%b'
+						year : '%b'
 					},
-					title: {
+					title               : {
 						text: 'Date'
 					}
 				},
-				yAxis: {
+				yAxis        : {
 					title: {
 						text: null
 					}
 				},
-				rangeSelector : {
-					buttons : [{
+				rangeSelector: {
+					buttons     : [{
 						type : 'day',
-						count : 1,
+						count: 1,
 						text : '1D'
 					}, {
 						type : 'week',
-						count : 1,
+						count: 1,
 						text : '1W'
 					}, {
 						type : 'month',
-						count : 1,
+						count: 1,
 						text : '1M'
 					}, {
 						type : 'all',
-						count : 1,
+						count: 1,
 						text : 'All'
 					}],
-					selected : 1,
-					inputEnabled : false
+					selected    : 1,
+					inputEnabled: false
 				},
-				tooltip: {
-					positioner: function () {
+				tooltip      : {
+					positioner     : function () {
 						return {
 							x: this.chart.chartWidth - this.label.width, // right aligned
 							y: -1 // align to title
 						};
 					},
-					borderWidth: 0,
+					borderWidth    : 0,
 					backgroundColor: 'none',
-					headerFormat: '',
-					shadow: false,
-					style: {
+					headerFormat   : '',
+					shadow         : false,
+					style          : {
 						fontSize: '18px'
 					},
-					valueDecimals: 1
+					valueDecimals  : 1
 				},
-				series: dataset.series
+				series       : dataset.series
 			});
 			chart.__elem = elem;
 			return chart;
@@ -293,12 +284,7 @@ module.exports = function (params) {
 	};
 
 	Class.prototype._graphInBounds = function (pos) {
-		var charts = this.charts,
-			left = pos.pageX,
-		    top = pos.pageY,
-		    i = 0,
-		    dim,
-		    len = charts.length;
+		var charts = this.charts, left = pos.pageX, top = pos.pageY, i = 0, dim, len = charts.length;
 		for (i; i < len; i++) {
 			dim = charts[i].__dim;
 			if (dim.left <= left && dim.right >= left && dim.top <= top && dim.bottom >= top) {
@@ -312,9 +298,9 @@ module.exports = function (params) {
 		if (trigger === undefined) {
 			return;
 		}
-		var charts = this.charts;
+		var charts       = this.charts;
 		var triggerChart = charts[trigger];
-		var pos = {
+		var pos          = {
 			chartX: e.pageX - triggerChart.__dim.left,
 			chartY: e.pageY - triggerChart.__dim.top
 		};
@@ -358,70 +344,105 @@ module.exports = function (params) {
 		});
 		table.appendTo(this.elem);
 		table.dataTable({
-			scroller   : true,
-			buttons    : [
-				'colvis',
-				{
-					extend: 'colvisGroup',
-					text: i18n.dt.basic,
-					show: [ 0, 1, 2, 3, 4, 5, 6, 7, 8 ],
-					hide: [ 9, 10, 11, 12, 13, 14, 15 ]
-				},
-				{
-					extend: 'colvisGroup',
-					text: i18n.dt.actions,
-					show: [ 1, 9, 10, 11, 12, 13, 14, 15 ],
-					hide: [ 0, 2, 3, 4, 5, 6, 7, 8 ]
-				},
-				{
-					extend: 'colvisGroup',
-					text: i18n.dt.all,
-					show: ':hidden'
+			scroller  : true,
+			buttons   : ['colvis', {
+				extend: 'colvisGroup',
+				text  : i18n.dt.basic,
+				show  : [0, 1, 2, 3, 4, 5, 6, 7, 8],
+				hide  : [9, 10, 11, 12, 13, 14, 15]
+			}, {
+				extend: 'colvisGroup',
+				text  : i18n.dt.actions,
+				show  : [1, 9, 10, 11, 12, 13, 14, 15],
+				hide  : [0, 2, 3, 4, 5, 6, 7, 8]
+			}, {
+				extend: 'colvisGroup',
+				text  : i18n.dt.all,
+				show  : ':hidden'
+			}],
+			data      : stats,
+			columnDefs: [{
+				className: 'dataTable__cell_centered',
+				targets  : [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
+			}, {
+				targets   : [1, 2],
+				searchable: true
+			}, {
+				targets   : '_all',
+				searchable: false,
+				orderSequence: ['desc', 'asc']
+			}, {
+				targets: [9, 10, 11, 12, 13, 14, 15],
+				visible: false
+			}],
+			columns   : [{
+				title : i18n.date,
+				data  : 'date',
+				render: function (data) {
+					return utils.timeParse(data);
 				}
-			],
-			data       : stats,
-			columnDefs: [
-				{ className: 'dataTable__cell_centered', targets: [ 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 ] },
-				{ targets: [1, 2], searchable: true },
-				{ targets: '_all', searchable: false },
-				{ targets: [9, 10, 11, 12, 13, 14, 15], visible: false }
-			],
-			columns: [
-				{
-					title: i18n.date,
-					data: 'date',
-					render: function (data) {
-						return utils.timeParse(data);
-					}
-				},
-				{ title: i18n.map, data: `map.lang.${lang}.name` },
-				{ title: i18n.mode, data: `map.lang.${lang}.mode` },
-				{ title: i18n.level, data: 'match.level' },
-				{
-					title: i18n.win,
-					data: 'victory',
-					render: function (data) {
-						return data ? i18n.win : i18n.loose;
-					}
-				},
-				{ title: i18n.kills, data: 'kills' },
-				{ title: i18n.dies, data: 'dies' },
-				{ title: i18n.kd, data: 'kd' },
-				{ title: i18n.score, data: 'score' },
-				{ title: i18n.headshots.full, data: 'headshots' },
-				{ title: i18n.grenadeKills.full, data: 'grenadeKills' },
-				{ title: i18n.meleeKills.full, data: 'meleeKills' },
-				{ title: i18n.artefactKills.full, data: 'artefactKills' },
-				{ title: i18n.artefactUses.full, data: 'artefactUses' },
-				{ title: i18n.pointCaptures.full, data: 'pointCaptures' },
-				{ title: i18n.boxesBringed.full, data: 'boxesBringed' }
-			]
+			}, {
+				title: i18n.map,
+				data : `map.lang.${lang}.name`
+			}, {
+				title: i18n.mode,
+				data : `map.lang.${lang}.mode`
+			}, {
+				title: i18n.level,
+				data : 'match.level'
+			}, {
+				title : i18n.win,
+				data  : 'victory',
+				render: function (data) {
+					return data ? i18n.win : i18n.loose;
+				}
+			}, {
+				title: i18n.kills,
+				data : 'kills'
+			}, {
+				title: i18n.dies,
+				data : 'dies'
+			}, {
+				title: i18n.kd,
+				data : 'kd'
+			}, {
+				title: i18n.score,
+				data : 'score'
+			}, {
+				title: i18n.headshots.full,
+				data : 'headshots'
+			}, {
+				title: i18n.grenadeKills.full,
+				data : 'grenadeKills'
+			}, {
+				title: i18n.meleeKills.full,
+				data : 'meleeKills'
+			}, {
+				title: i18n.artefactKills.full,
+				data : 'artefactKills'
+			}, {
+				title: i18n.artefactUses.full,
+				data : 'artefactUses'
+			}, {
+				title: i18n.pointCaptures.full,
+				data : 'pointCaptures'
+			}, {
+				title: i18n.boxesBringed.full,
+				data : 'boxesBringed'
+			}]
 		});
 		var api = this.tableApi = table.api();
 		var self = this;
 		table.on('click', 'tr', function () {
-			counters.goal('Match', { action: 'from:player', value: self._data.nickname });
-			self.Pane.emit({ pane: 'match', event: 'load', value: api.row(this).data().match.id });
+			counters.goal('Match', {
+				action: 'from:player',
+				value : self._data.nickname
+			});
+			self.Pane.emit({
+				pane : 'match',
+				event: 'load',
+				value: api.row(this).data().match.id
+			});
 		});
 	};
 

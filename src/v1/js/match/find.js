@@ -1,18 +1,18 @@
+var I18N  = require('../i18n');
+
 module.exports = function (params) {
 	var $ = params.$;
 
-	var i18n = {
+	var i18n = I18N.load(params.language, {
 		russian: {
 			title: 'Поиск матча',
-			match: 'Номер матча',
-			find: 'Найти'
+			match: 'Номер матча'
 		},
 		english: {
 			title: 'Match search',
-			match: 'Match number',
-			find: 'Find'
+			match: 'Match number'
 		}
-	}[params.language];
+	});
 
 	var storageKey = 'match:find';
 

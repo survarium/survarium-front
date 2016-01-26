@@ -25,7 +25,7 @@ module.exports = function (config) {
 		},
 		english: {
 			buttons: {
-				colvis: 'Change columns'
+				colvis: 'Choose columns'
 			},
 			info: 'Showing _START_ to _END_ of _TOTAL_ entries',
 			lengthMenu: 'Show _MENU_ entries',
