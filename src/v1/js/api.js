@@ -39,7 +39,7 @@ module.exports = function (config) {
 		},
 		players: function (query) {
 			query = query || {};
-			query.lang = config.language;
+			query.lang = query.lang || config.language;
 			return $.ajax({
 				url: config.apiPath + '/players/',
 				data: query
