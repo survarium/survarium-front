@@ -15,24 +15,39 @@ var metrica;
 		}
 	});
 
-	var s   = doc.createElement(tagname), n = doc.getElementsByTagName(tagname)[0];
-	s.async = true;
-	s.src   = 'https://mc.yandex.ru/metrika/watch.js';
-	n.parentNode.insertBefore(s, n);
+	var metrikaScript   = doc.createElement(tagname), n = doc.getElementsByTagName(tagname)[0];
+	metrikaScript.async = true;
+	metrikaScript.src   = 'https://mc.yandex.ru/metrika/watch.js';
+	n.parentNode.insertBefore(metrikaScript, n);
+
+	(function (gaSrc, gaName, n, gaScript) {
+		win['GoogleAnalyticsObject'] = gaName;
+		win[gaName] = win[gaName] || function () {
+				(win[gaName].q = win[gaName].q || []).push(arguments)
+			}, win[gaName].l = 1 * new Date();
+		gaScript = doc.createElement(tagname), n = doc.getElementsByTagName(tagname)[0];
+		gaScript.async = 1;
+		gaScript.src   = gaSrc;
+		n.parentNode.insertBefore(gaScript, n);
+	})('//www.google-analytics.com/analytics.js', 'ga', n);
+
+	ga('create', 'UA-72532245-1', 'auto');
+	ga('send', 'pageview');
 })(window, document, 'script');
 
 exports.track = function (page, title) {
 	try {
-		ga.set('page', page);
+		ga('set', 'page', page);
 		ga('send', {
 			hitType: 'pageview',
-			page: page,
-			title: title
+			page   : page,
+			title  : title
 		});
 		metrica && metrica.hit(page, {
 			title: title
 		});
 	} catch (e) {
+		console.log('track error', e);
 	}
 };
 
@@ -50,7 +65,7 @@ exports.goal = function (title, opts) {
 			hitType      : opts.type || 'event',
 			eventCategory: title,
 			eventAction  : opts.action,
-			eventLabel   : `${title}:${opts.action}:${opts.value}`
+			eventLabel   : [title, opts.action, opts.value].filter(Boolean).join(':')
 		});
 	} catch (e) {
 	}
