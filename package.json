@@ -4,7 +4,7 @@
   "description": "survarium frontend",
   "scripts": {
     "build": "webpack -p",
-    "dev": "webpack-dev-server"
+    "dev": "API_HOST='http://survarium.dev' webpack-dev-server"
   },
   "repository": {
     "type": "git",

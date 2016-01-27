@@ -4,10 +4,10 @@ const poststylus = require('poststylus');
 
 module.exports = {
 	entry: {
-		v0: "./src/v0/index.js",
-		v1: "./src/v1/index.js",
+		//v0: './src/v0/index.js',
+		v1: './src/v1/index.js',
+		'widgets/players': './src/widgets/players.js',
 		vendor: [
-			'jquery',
 			'datatables.net',
 			'datatables.net-buttons',
 			'highcharts/highstock',
@@ -18,17 +18,25 @@ module.exports = {
 	},
 	output: {
 		path: path.join(__dirname, 'static'),
-		filename: "[name].entry.chunk.js"
+		filename: "[name].js"
 	},
 	plugins: [
+		new webpack.DefinePlugin({
+			apiHost: JSON.stringify(process.env.API_HOST || 'https://survarium.pro')
+		}),
 		new webpack.ProvidePlugin({
 			$: 'jquery',
 			jQuery: 'jquery',
 			'window.jQuery': 'jquery',
 			Highcharts: 'highcharts/highstock'
-		}),
-		new webpack.optimize.CommonsChunkPlugin("commons.bundle.js", ["index"]),
-		new webpack.optimize.CommonsChunkPlugin("vendor", "vendor.bundle.js")
+		}),/*
+		// commonized JQUERY for v1 and widgets,
+		new webpack.optimize.CommonsChunkPlugin({ name: 'commons', filename: 'shared.js', chunks: ['v1', 'widgets/players'] }),
+		new webpack.optimize.CommonsChunkPlugin({ name: 'vendor',  filename: 'vendor.js',  chunks: ['v1', 'widgets/players'] }),
+		new webpack.optimize.CommonsChunkPlugin({ name: 'commons', filename: 'common.js',  chunks: ['vendor'] })*/
+
+		new webpack.optimize.CommonsChunkPlugin({ name: 'commons', filename: 'common.js',  chunks: ['v1'] }),
+		new webpack.optimize.CommonsChunkPlugin({ name: 'vendor',  filename: 'vendor.js',  chunks: ['v1'] })
 	],
 	module: {
 		loaders: [

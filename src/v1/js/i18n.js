@@ -126,7 +126,7 @@ var _actionsI18N = {
 		abbr   : 'AK'
 	},
 	pointCaptures: {
-		russian: 'Захватов точек',
+		russian: 'Точек захвачено',
 		english: 'Captured points',
 		abbr   : 'CAP'
 	},

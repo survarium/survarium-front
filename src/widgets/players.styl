@@ -1,0 +1,45 @@
+.wf-exo2-n4-active
+  font-family 'Exo 2', sans-serif
+
+.SurvariumPlayers
+  text-rendering optimizeLegibility
+  background-color #1e222b
+  font-size 12px
+
+  &,
+  &__clan
+  &__match
+    color rgba(245, 245, 245, 0.65)
+
+  &__nickname
+    display block
+    color #ffce1f
+    text-decoration none
+
+  &__match
+    display block
+    text-decoration none
+    margin 1em auto
+
+    &-name
+      font-size 1.4em
+      padding .5em 0
+
+    .def-list__values
+      padding-top 1em
+      padding-bottom 1em
+
+  &__clan
+    float left
+    text-decoration none
+
+    &::before
+      content '['
+
+    &::after
+      content ']'
+
+    margin-right .2em
+
+  &__suggest_empty
+    display none

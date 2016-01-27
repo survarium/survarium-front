@@ -1,6 +1,9 @@
 require('./styl/global.styl');
 
 var config       = require('./js/config');
+config.counters  = require('./js/counters');
+require('./js/config-dt')(config);
+
 var LangSwitcher = require('./js/lang-switcher');
 var Panes        = require('./js/panes/panes');
 var PlayerPane   = require('./js/panes/playerPane');

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Survarium stats | Players</title>
+    <style>
+        body {
+            color: rgba(245, 245, 245, 0.65);
+            background-color: #1e222b;
+        }
+    </style>
+    <script src="/widgets/players.js" async></script>
+</head>
+<body>
+
+    <script>
+        var dataset = window.frameElement.dataset;
+        window['SurvariumPlayersReady'] = function (Widget) {
+            new Widget({
+                target: document.body,
+                search: dataset.search,
+                player: dataset.player,
+                byPID:  dataset.bypid,
+                language: dataset.language
+            });
+        }
+    </script>
+</body>
+</html>
