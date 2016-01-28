@@ -231,6 +231,10 @@ Widget.prototype.search = function (search, options) {
 
 	this.__search = search;
 
+	if (options.pid && !/^(\d{5,}\,?)+$/g.test(this.__search)) {
+		return false;
+	}
+
 	api
 		.players({
 			nickname : !options.pid ? this.__search : undefined,
