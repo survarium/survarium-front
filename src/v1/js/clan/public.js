@@ -55,12 +55,20 @@ module.exports = function (params) {
 			});
 	};
 
+	Class.prototype._hrefMatch = function (data, type, row) {
+		if (type !== 'display') {
+			return data;
+		}
+		return `<a href="/?match=${row.match.id}" onclick="return false" class="no-underline">${data}</a>`;
+	};
+
 	Class.prototype._stats = function () {
 		if (this.tableApi) {
 			this.tableApi.ajax.reload();
 			this.tableApi.page(0);
 			return;
 		}
+		var self = this;
 		this.elem.prepend(`<h3>${i18n.title}</h3>`);
 		this.table.dataTable({
 			buttons    : ['colvis', {
@@ -118,10 +126,12 @@ module.exports = function (params) {
 				}
 			}, {
 				title: i18n.map,
-				data : `map.lang.${language}.name`
+				data : `map.lang.${language}.name`,
+				render: self._hrefMatch
 			}, {
 				title: i18n.mode,
-				data : `map.lang.${language}.mode`
+				data : `map.lang.${language}.mode`,
+				render: self._hrefMatch
 			}, {
 				title: i18n.level,
 				data : `match.level`
@@ -165,7 +175,6 @@ module.exports = function (params) {
 		});
 
 		var tableApi = this.tableApi = this.table.api();
-		var self = this;
 		this.table
 			.on('click', 'tr', function () {
 				var data = tableApi.row(this).data();

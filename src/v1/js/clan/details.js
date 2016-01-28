@@ -142,7 +142,13 @@ module.exports = function (params) {
 				}
 			}, {
 				title: i18n.opponent,
-				data : 'clanwar.opponent.clan.abbr'
+				data : 'clanwar.opponent.clan.abbr',
+				render: function (data, type) {
+					if (type !== 'display') {
+						return data;
+					}
+					return `<a href="/?clan=${data}" class="no-underline opponent">${data}</a>`;
+				}
 			}, {
 				title : i18n.score,
 				data  : 'clanwar.score',
@@ -248,7 +254,13 @@ module.exports = function (params) {
 				}
 			}, {
 				title: i18n.player,
-				data : 'player.nickname'
+				data : 'player.nickname',
+				render: function (data, type) {
+					if (type !== 'display') {
+						return data;
+					}
+					return `<a href="/?player=${data}" class="no-underline" onclick="return false">${data}</a>`;
+				}
 			}, {
 				title: i18n.level,
 				data : 'player.progress.level'

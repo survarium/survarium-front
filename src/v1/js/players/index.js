@@ -113,7 +113,8 @@ module.exports = function (params) {
 				data     : 'nickname',
 				render   : function (data, type, row) {
 					var clan = row.clan;
-					return (clan ? `<a href="?clan=${clan.abbr}" class="player__clan" data-abbr="${clan.abbr}">[${clan.abbr}]</a> ` : '') + data;
+					return (clan ? `<a href="/?clan=${clan.abbr}" class="player__clan" data-abbr="${clan.abbr}">[${clan.abbr}]</a> ` : ``) +
+						`<a class="no-underline" onclick="return false;" href="/?player=${data}">${data}</a>`;
 				}
 			}, {
 				title: i18n.level,

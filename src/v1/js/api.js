@@ -32,7 +32,8 @@ module.exports = function (config) {
 			return $.ajax(config.apiPath + '/players/' + encodeURIComponent(query.trim ? query.trim() : query), {
 				data: {
 					byName: options.byName,
-					fullStats: options.fullStats,
+					fullStats: options.fullStats || undefined,
+					stats: options.stats || undefined,
 					lang: config.language
 				}
 			});

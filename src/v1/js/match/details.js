@@ -73,7 +73,7 @@ module.exports = function (params) {
 	};
 
 	Class.prototype._replay = function (link) {
-		return link ? `<a href="http://${decodeURIComponent(link)}" target="_blank">${i18n.download}</a>` : '';
+		return link ? `<a href="http://${decodeURIComponent(link)}" target="_blank" rel="nofollow">${i18n.download}</a>` : '';
 	};
 
 	Class.prototype._table = function (stats) {
@@ -149,7 +149,8 @@ module.exports = function (params) {
 				data  : 'player.nickname',
 				render: function (data, type, row) {
 					var clan = row.player.clan_meta;
-					return (clan ? `<a href="#" class="player__clan" data-abbr="${clan.abbr}">[${clan.abbr}]</a> ` : '') + data;
+					return (clan ? `<a href="/?clan=${clan.abbr}" class="player__clan" data-abbr="${clan.abbr}">[${clan.abbr}]</a> ` : '') +
+						`<a class="no-underline" onclick="return false;" href="/?player=${data}">${data}</a>`;
 				}
 			}, {
 				title: i18n.score,

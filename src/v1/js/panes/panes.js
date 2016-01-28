@@ -76,7 +76,7 @@ module.exports = function (params) {
 		if (this.panes[paneInstance.name]) {
 			return;
 		}
-		paneInstance.tab = $(`<div data-name="${paneInstance.name}" class="panes__tab"><a class="panes__tab_link" href="?${paneInstance.name}">${paneInstance.title}</a></div>`);
+		paneInstance.tab = $(`<div data-name="${paneInstance.name}" class="panes__tab"><a class="panes__tab_link" href="/?${paneInstance.name}">${paneInstance.title}</a></div>`);
 		paneInstance.events = paneInstance.events || {};
 		this.panes[paneInstance.name] = paneInstance;
 		this._tabs.append(paneInstance.tab);

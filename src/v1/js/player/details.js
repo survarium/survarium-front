@@ -48,7 +48,7 @@ module.exports = function (params) {
 		self._error.hide();
 
 		return api
-			.player(nick, { fullStats: true, byName: true })
+			.player(nick, { fullStats: false, byName: true, stats: 100 })
 			.then(function (player) {
 				self._data = player;
 				self._setCurrent(player.nickname, opts);
@@ -73,7 +73,7 @@ module.exports = function (params) {
 	};
 
 	Class.prototype._render = function (data) {
-		var clan = data.clan ? `<a class="player__clan" href="#" title="${data.clan.name}" data-abbr="${data.clan.abbr}">[${data.clan.abbr}]</a> `: '';
+		var clan = data.clan ? `<a class="player__clan" href="/?clan=${data.clan.abbr}" title="${data.clan.name}" data-abbr="${data.clan.abbr}">[${data.clan.abbr}]</a> `: '';
 		var totals = `<h4 class="def-list__title">${i18n.progress}</h4>
 					<div class="def-list__values">
 						<dl class="def-list">

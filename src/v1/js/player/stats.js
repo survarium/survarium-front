@@ -334,11 +334,19 @@ module.exports = function (params) {
 		this.graph.off('mousemove touchmove');
 	};
 
+	Class.prototype._hrefMatch = function (data, type, row) {
+		if (type !== 'display') {
+			return data;
+		}
+		return `<a href="/?match=${row.match.id}" onclick="return false" class="no-underline">${data}</a>`;
+	};
+
 	Class.prototype._table = function (stats) {
 		var table = this.table;
 		if (table) {
 			return utils.updateTable(this.tableApi, stats);
 		}
+		var self = this;
 		table = this.table = $('<table>', {
 			id: 'player__stats'
 		});
@@ -378,15 +386,17 @@ module.exports = function (params) {
 			columns   : [{
 				title : i18n.date,
 				data  : 'date',
-				render: function (data) {
-					return utils.timeParse(data);
+				render: function (data, type, row) {
+					return self._hrefMatch(utils.timeParse(data), type, row);
 				}
 			}, {
 				title: i18n.map,
-				data : `map.lang.${lang}.name`
+				data : `map.lang.${lang}.name`,
+				render: self._hrefMatch
 			}, {
 				title: i18n.mode,
-				data : `map.lang.${lang}.mode`
+				data : `map.lang.${lang}.mode`,
+				render: self._hrefMatch
 			}, {
 				title: i18n.level,
 				data : 'match.level'
