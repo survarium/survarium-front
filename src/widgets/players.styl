@@ -6,6 +6,26 @@
   background-color #1e222b
   font-size 12px
 
+  &__elem
+    cursor pointer
+    padding .5em 1em
+    position relative
+    &::before
+      position absolute
+      backface-visibility hidden
+      content ''
+      top 0
+      left 0
+      bottom 0
+      right 0
+      background-color rgb(245, 245, 245)
+      opacity 0
+      transition opacity .3s ease-in-out
+      transform translate3D(0, 0, 0)
+    &:hover
+      &::before
+        opacity 0.02
+
   &,
   &__clan
   &__match

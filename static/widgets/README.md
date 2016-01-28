@@ -15,7 +15,7 @@
 
 <!-- OR -->
 
-<iframe src="https://survarium.pro/widgets/players.html" allowfullscreen width="100%" height="400px" frameborder="0" data-player="15238791817735151910" data-bypid="true"></iframe>
+<iframe src="https://survarium.pro/widgets/players.html" allowfullscreen width="100%" height="400px" frameborder="0" data-player="15238791817735151910,4901257044251315838" data-bypid="true" data-theme="mini"></iframe>
 ```
 
 ## Подключение | javascript
@@ -60,7 +60,9 @@ new SurvariumPlayers({ target: '#main' })
  * @param {String|*} params.target              DOM элемент или селектор для вставки виджета
  * @param {String}   [params.language=russian]  Язык (russian, english)
  * @param {Function} [params.handleError]       Кастомных обработчик ошибок
+ * @param {Function} [params.handleData]        Кастомных обработчик результатов поиска
  * @param {String}   [params.search]            Фраза в поиске
- * @param {String}   [params.player]            Игрок для отображения (поиск скрыт)
+ * @param {String}   [params.player]            Игрок для отображения (поиск скрыт), или список PID, разделенный запятыми
  * @param {Boolean}  [params.byPID]             Параметр player является PID
+ * @param {String}   [params.theme]             Имя темы, будет добавлено в класс контейнера виджета
 ```

@@ -13,17 +13,18 @@
 </head>
 <body>
 
-    <script>
-        var dataset = window.frameElement.dataset;
-        window['SurvariumPlayersReady'] = function (Widget) {
-            new Widget({
-                target: document.body,
-                search: dataset.search,
-                player: dataset.player,
-                byPID:  dataset.bypid,
-                language: dataset.language
-            });
-        }
-    </script>
+<script>
+    var dataset = window.frameElement.dataset;
+    window['SurvariumPlayersReady'] = function (Widget) {
+        new Widget({
+            target  : document.body,
+            search  : dataset.search,
+            player  : dataset.player,
+            byPID   : dataset.bypid,
+            theme   : dataset.theme,
+            language: dataset.language
+        });
+    }
+</script>
 </body>
 </html>

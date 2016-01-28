@@ -8,20 +8,39 @@
             color: rgba(245, 245, 245, 0.65);
             background-color: #1e222b;
         }
+
+        .SurvariumPlayers_theme_mini {
+            font-size: 10px!important;
+        }
+        .SurvariumPlayers_theme_mini .SurvariumPlayers__match,
+        .SurvariumPlayers_theme_mini .SurvariumPlayers__stat_type_total,
+        .SurvariumPlayers_theme_mini .SurvariumPlayers__stats .def-list__title {
+            display: none;
+        }
     </style>
     <script src="/widgets/players.js" async></script>
 </head>
 <body>
-    <div id="search">
+    <div>
         <h2>Search</h2>
+        <div id="search"></div>
     </div>
 
-    <div id="player">
+    <div>
         <h2>Player without search</h2>
+        <div id="player">
+        </div>
     </div>
 
-    <div id="pid">
-        <h2>Player by PID</h2>
+    <div>
+        <h2>Player by PIDS</h2>
+        <div id="pid"></div>
+    </div>
+
+    <div>
+        <h2>Callback mode</h2>
+        <div id="callback"></div>
+        <pre id="callback_results"></pre>
     </div>
 
     <script>
@@ -39,8 +58,16 @@
 
         new SurvariumPlayers({
             target: '#pid',
-            player: '15238791817735151910',
-            byPID : true
+            player: '15238791817735151910,4901257044251315838',
+            byPID : true,
+            theme : 'mini'
+        });
+
+        new SurvariumPlayers({
+            target: '#callback',
+            handleData: function (data) {
+                document.getElementById('callback_results').innerHTML = JSON.stringify(data, null, 4);
+            }
         });
     }
     </script>

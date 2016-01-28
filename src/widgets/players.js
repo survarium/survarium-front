@@ -64,9 +64,11 @@ var I18N   = {
  * @param {String|*} params.target              Target DOM elem or its selector
  * @param {String}   [params.language=russian]  Language (russian, english)
  * @param {Function} [params.handleError]       Error handler
+ * @param {Function} [params.handleData]        Data handler
  * @param {String}   [params.search]            Initial search string
- * @param {String}   [params.player]            Search player and hide search form
+ * @param {String}   [params.player]            Search player and hide search form (or list of pids)
  * @param {Boolean}  [params.byPID]             Player param is PID
+ * @param {String}   [params.theme]             Add theme name to container class
  * @constructor
  */
 function Widget(params) {
@@ -87,6 +89,8 @@ function Widget(params) {
 	this.language    = ~['english'].indexOf(params.language) ? params.language : 'russian';
 	this.i18n        = I18N[this.language];
 	this.handleError = (typeof params.handleError === 'function') ? params.handleError : this.error.bind(this, null);
+	this.handleData  = (typeof params.handleData  === 'function') ? params.handleData  : this._suggest.bind(this);
+	this.theme       = params.theme;
 
 	this.build();
 	this.init(params);
@@ -98,6 +102,10 @@ Widget.prototype.build = function () {
 	var container = elems.elem = $('<div>', {
 		class: `${WIDGET}`
 	});
+
+	if (this.theme) {
+		container.addClass(`${WIDGET}_theme_${this.theme}`);
+	}
 
 	var search = elems.search = $('<input>', {
 		minlength  : 2,
@@ -123,7 +131,7 @@ Widget.prototype.build = function () {
 
 	this._initInput();
 
-	this.target.append(container.append([search, suggest]));
+	this.target.empty().append(container.append([search, suggest]));
 };
 
 Widget.prototype.init = function (params) {
@@ -230,7 +238,7 @@ Widget.prototype.search = function (search, options) {
 			lang     : this.language,
 			pid      : options.pid ? this.__search : undefined
 		})
-		.then(this._suggest.bind(this))
+		.then(this.handleData.bind(this))
 		.fail(this.handleError);
 };
 
