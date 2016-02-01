@@ -39,7 +39,6 @@ module.exports = function (params) {
 
 	return {
 		name: 'player',
-		hrefParam: 'active',
 		title: i18n.title,
 		pane: pane,
 		active: isActive,
