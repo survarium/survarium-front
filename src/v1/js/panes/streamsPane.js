@@ -32,6 +32,7 @@ module.exports = function (params) {
 
 	return {
 		name      : 'streams',
+		hrefParam : 'active',
 		title     : i18n.title,
 		pane      : pane,
 		active    : isActive,
@@ -39,7 +40,7 @@ module.exports = function (params) {
 			streams: streams
 		},
 		events    : {
-			onOpen: function () {
+			onOpen : function () {
 				this.active !== 'streams' && streams.load();
 			},
 			onClose: function () {
