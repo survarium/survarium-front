@@ -40,8 +40,8 @@ module.exports = function (params) {
 			return this._empty();
 		}
 		this._data = player;
+		this._table(player.stats);
 		this._graph(player.stats);
-		return this._table(player.stats);
 	};
 
 	Class.prototype._empty = function () {
@@ -442,7 +442,6 @@ module.exports = function (params) {
 			}]
 		});
 		var api = this.tableApi = table.api();
-		var self = this;
 		table.on('click', 'tr', function () {
 			counters.goal('Match', {
 				action: 'from:player',
