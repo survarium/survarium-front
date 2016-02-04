@@ -1,4 +1,3 @@
 User-agent: *
 Disallow:
 Disallow: /public
-Sitemap: /api/v1/sitemap.xml
